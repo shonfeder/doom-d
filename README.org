@@ -1,0 +1,8 @@
+#+TITLE:   Shon's Config for Doom Emacs
+#+DATE:    May 25, 2019
+
+* Description
+Configures https://github.com/hlissner/doom-emacs to suite my needs.
+
+* Features
+** TODO lsp-mode integration for Elixir
