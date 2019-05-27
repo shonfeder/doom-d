@@ -14,7 +14,7 @@
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 
-;;; ELIXIR
+;;;; ELIXIR
 
 ;; Create a buffer-local hook to run elixir-format on save, only when we enable elixir-mode.
 (add-hook 'elixir-mode-hook
@@ -38,3 +38,11 @@
 ;;                                             "ta" 'exunit-verify
 ;;                                             "tk" 'exunit-rerun
 ;;                                             "tt" 'exunit-verify-single))
+
+;;;; ORG
+
+
+(add-hook! org-tree-slide-mode
+  (setq +org-present-text-scale 3)
+  (org-tree-slide-presentation-profile)
+  (setq org-tree-slide-skip-outline-level 5))
