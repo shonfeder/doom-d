@@ -4,11 +4,15 @@
 
 ;;;; Code:
 
+;;;; LOCAL SETTINGS
+
+(let ((local-settings "~/.doom.d/local.el"))
+  (if (file-exists-p local-settings)
+      (load-file local-settings)))
+
 ;;;; GENERAL
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
-
-(setq doom-font (font-spec :family "Source Code Pro" :size 30))
 
 ;;; ELIXIR
 
