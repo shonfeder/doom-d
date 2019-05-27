@@ -3,11 +3,14 @@
 ;; Place your private configuration here
 
 ;;;; Code:
+
+;;;; GENERAL
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 
-;;; ELIXIR
+(setq doom-font (font-spec :family "Source Code Pro" :size 30))
 
+;;; ELIXIR
 
 ;; Create a buffer-local hook to run elixir-format on save, only when we enable elixir-mode.
 (add-hook 'elixir-mode-hook
