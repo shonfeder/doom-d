@@ -21,14 +21,23 @@
 (add-hook 'elixir-mode-hook
           (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
 
-(def-package! elixir-mode
-  :after (lsp-mode))
+(require 'lsp-mode)
 
-(def-package! lsp-mode
-  :hook
-  (elixir-mode . lsp)
-  :init
-  (add-to-list 'exec-path "/Users/shonfeder/opt/elixir-ls-release"))
+(setq flycheck-elixir-mix-executable "/Users/shonfeder/.asdf/shims/mix")
+(setq elixir-enable-compilation-checking t)
+
+; (add-hook 'elixir-mode-hook #'lsp)
+
+(add-hook! elixir-mode
+  (lsp)
+  (setq lsp-ui-flycheck-enable t))
+
+;; TODO elixir-mix checker is not working for some reason failing with
+;; Suspicious state from syntax checker elixir-mix: Flycheck checker elixir-mix returned non-zero exit code 1, but its output contained no errors: ** (Mix) The task "elixir" could not be found
+;; (require 'flycheck-mix)
+;; (flycheck-mix-setup)
+;; (flycheck-add-next-checker 'elixir-mix 'elixir-credo)
+;; (flycheck-add-next-checker 'elixir-mix '(warning . elixir-credo))
 
 ;; TODO
 ;; (with-eval-after-load 'elixir-mode
