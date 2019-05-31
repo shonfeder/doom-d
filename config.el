@@ -20,16 +20,12 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
-;; Create a buffer-local hook to run elixir-format on save, only when we enable elixir-mode.
-(add-hook 'elixir-mode-hook
-          (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
+;;;; ELIXIR
 
 (require 'lsp-mode)
 
 (setq flycheck-elixir-mix-executable "/Users/shonfeder/.asdf/shims/mix")
 (setq elixir-enable-compilation-checking t)
-
-; (add-hook 'elixir-mode-hook #'lsp)
 
 (add-hook! elixir-mode
   (lsp)
@@ -53,7 +49,6 @@
 ;;                                             "tt" 'exunit-verify-single))
 
 ;;;; ORG
-
 
 (add-hook! org-tree-slide-mode
   (setq +org-present-text-scale 3)
