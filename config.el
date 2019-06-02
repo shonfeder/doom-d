@@ -54,3 +54,20 @@
   (setq +org-present-text-scale 3)
   (org-tree-slide-presentation-profile)
   (setq org-tree-slide-skip-outline-level 5))
+
+;;;; KEY BINDINGS
+
+(map!
+ ;;;; 't' is for "text"
+ ;; 'tt' is for "transpose text"
+ :n "ttw" #'transpose-words
+ :n "ttl" #'transpose-lines
+ :n "ttp" #'transpose-paragraphs
+
+ ;;;; 'g' is for "go to"
+ :n "gw" #'evil-avy-goto-word-or-subword-1
+ :n "gl" #'evil-avy-goto-line
+
+ ;;;; '/' is for "search"
+ :leader (:prefix-map ("/" . "search")
+           :desc "Search for thing at point" "t" #'swiper-thing-at-point))
