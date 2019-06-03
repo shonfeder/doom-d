@@ -68,6 +68,15 @@
  :n "gw" #'evil-avy-goto-word-or-subword-1
  :n "gl" #'evil-avy-goto-line
 
+ :n "C-;" #'iedit-mode
+
  ;;;; '/' is for "search"
  :leader (:prefix-map ("/" . "search")
-           :desc "Search for thing at point" "t" #'swiper-thing-at-point))
+           :desc "Search for thing at point" "t" #'swiper-thing-at-point)
+
+ ;;;; SPC is for "space"
+ :leader (:prefix-map ("g" . "git")
+           (:prefix-map ("y" . "yank")
+             :desc "Yank git link" "l" #'git-link
+             :desc "Yank git commit link" "h" #'git-link-homepage))
+ )
