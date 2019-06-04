@@ -79,4 +79,7 @@
            (:prefix-map ("y" . "yank")
              :desc "Yank git link" "l" #'git-link
              :desc "Yank git commit link" "h" #'git-link-homepage))
+
+ :leader (:prefix-map ("F". "frame")
+           :desc "Switch other frame" "o" #'other-frame)
  )
