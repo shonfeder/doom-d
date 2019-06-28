@@ -81,5 +81,6 @@
              :desc "Yank git commit link" "h" #'git-link-homepage))
 
  :leader (:prefix-map ("F". "frame")
-           :desc "Switch other frame" "o" #'other-frame)
+           :desc "Switch other frame" "o" #'other-frame
+           :desc "Create new frame" "n" #'new-frame)
  )
