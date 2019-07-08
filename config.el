@@ -15,6 +15,9 @@
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
 
+(add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
+(add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
+
 ;;;; FLYSPELL
 
 (add-hook 'text-mode-hook 'flyspell-mode)
