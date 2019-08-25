@@ -8,3 +8,4 @@
 
 (package! flycheck-mix)
 (package! ob-elixir)
+(package! restclient)
