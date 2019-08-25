@@ -58,6 +58,10 @@
   (org-tree-slide-presentation-profile)
   (setq org-tree-slide-skip-outline-level 5))
 
+(add-hook! org-mode
+  (map!
+   :localleader "Sa" #'org-archive-subtree))
+
 ;;;; KEY BINDINGS
 
 (map!
