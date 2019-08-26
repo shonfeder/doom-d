@@ -149,7 +149,7 @@
        web               ; the tubes
        ;;vala              ; GObjective-C
 
-       :emaiL
+       :email
        (mu4e +gmail)       ; WIP
        ;;notmuch             ; WIP
        ;;(wanderlust +gmail) ; WIP
