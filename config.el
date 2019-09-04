@@ -60,7 +60,10 @@
 
 (add-hook! org-mode
   (map!
-   :localleader "Sa" #'org-archive-subtree))
+   ;;;; 'S' is for "sub-tree"
+   :n ",Sa" #'org-archive-subtree
+   :n ",Sk" #'org-move-subtree-up
+   :n ",Sj" #'org-move-subtree-down))
 
 ;;;; KEY BINDINGS
 
