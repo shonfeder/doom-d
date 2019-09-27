@@ -18,10 +18,14 @@
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 
+
 ;;;; FLYSPELL
 
 (add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+;; This is too slow when loading modes
+;; Can I figure out a way to load the hook asyncronously?
+;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
 
 ;;;; ORG
 
