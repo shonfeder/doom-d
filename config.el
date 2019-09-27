@@ -41,6 +41,18 @@
    :n ",Sk" #'org-move-subtree-up
    :n ",Sj" #'org-move-subtree-down))
 
+;;;;;; BIBLIOGRAPHY MANAGEMENT
+
+;;    org-ref settings
+(setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
+
+;; see org-ref for use of these variables
+(setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+      org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
+      org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
+
+;; use ivy as completion engine
+(setq org-ref-completion-library 'org-ref-ivy-cite)
 ;;;; KEY BINDINGS
 
 (map!

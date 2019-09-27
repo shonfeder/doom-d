@@ -9,3 +9,4 @@
 (package! flycheck-mix)
 (package! ob-elixir)
 (package! restclient)
+(package! org-ref)
