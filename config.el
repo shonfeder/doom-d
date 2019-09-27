@@ -53,6 +53,41 @@
 
 ;; use ivy as completion engine
 (setq org-ref-completion-library 'org-ref-ivy-cite)
+
+;;;; SYNECHEPEDIA
+(defvar synechepedia-dir
+  (file-name-as-directory "~/Dropbox/synechepedia"))
+(defvar synechepedia-org-dir
+  (file-name-as-directory (concat synechepedia-dir "org")))
+(defvar synechepedia-site-dir
+  (file-name-as-directory (concat synechepedia-dir "shonfeder.github.io")))
+(defvar synechepedia-config-file
+  (concat synechepedia-org-dir ".publish.el"))
+
+(load-file "~/Dropbox/synechepedia/org/.publish.el")
+
+
+;; see https://emacs.stackexchange.com/a/32654/293
+(defun publish-synechepedia ()
+  "org-publish from source and push both repos"
+  (interactive)
+  (save-buffer)
+  (org-publish-project "synechepedia")
+  (cl-labels
+      ((push-repo (dir)
+                  (cd dir)
+                  (magit-run-git "add" "--all")
+                  (magit-run-git "commit" "--all"
+                                 (format-time-string "--message=Update %F %R"))
+                  (let ((current-branch (magit-get-current-branch)))
+                    (magit-git-push current-branch
+                                    (concat "origin/" current-branch)
+                                    nil))))
+    (let ((current-dir default-directory))
+      (push-repo synechepedia-org-dir)
+      (push-repo synechepedia-site-dir)
+      (cd current-dir))))
+
 ;;;; KEY BINDINGS
 
 (map!
