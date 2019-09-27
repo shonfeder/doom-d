@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: Recurse Center Log
+# key: rc-log
+# --
+
+#+TITLE: Day ${1:N}: ${2:Title}
+#+DATE: <2019-09-25 Tue>
+
+#+BEGIN_QUOTE
+${3:<MOTTO>}
+#+END_QUOTE
+
+* Vibe
+
+$4
+
+* Today's Progress
+
+** Community
+** PLT: 1ML × Type Theory
+** Category theory
+** Writing
+
+* Tomorrow's Program
+
+** PLT: 1ML × Type Theory
+** Community
+** Writing
+
+bibliography:~/Dropbox/bibliography/references.bib
