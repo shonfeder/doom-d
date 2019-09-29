@@ -4,15 +4,11 @@
 # --
 
 #+TITLE: Day ${1:N}: ${2:Title}
-#+DATE: <2019-09-25 Tue>
+#+DATE: `(format-time-string "<%Y-%m-%d %a>")`
 
 #+BEGIN_QUOTE
 ${3:<MOTTO>}
 #+END_QUOTE
-
-* Vibe
-
-$4
 
 * Today's Progress
 
