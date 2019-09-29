@@ -72,6 +72,9 @@
   "org-publish from source and push both repos"
   (interactive)
   (save-buffer)
+  ;; Disbale flyspell mode, cause it makes publishing super slow
+  (flyspell-mode-off)
+  (remove-hook 'text-mode-hook 'flyspell-mode)
   (org-publish-project "synechepedia")
   (cl-labels
       ((push-repo (dir)
@@ -86,7 +89,9 @@
     (let ((current-dir default-directory))
       (push-repo synechepedia-org-dir)
       (push-repo synechepedia-site-dir)
-      (cd current-dir))))
+      (cd current-dir)))
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (turn-on-flyspell))
 
 ;;;; KEY BINDINGS
 
