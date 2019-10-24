@@ -122,6 +122,14 @@
            :desc "Create new frame" "n" #'new-frame)
  )
 
+
+;; OCaml
+
+(map!
+ :map (merlin-mode-map)
+ :localleader (:prefix ("y". "yank")
+                :desc "Yank type" "t" #'merlin-copy-enclosing))
+
 (map!
  :map (org-mode-map)
  :localleader (:prefix ("S" . "subtree")
