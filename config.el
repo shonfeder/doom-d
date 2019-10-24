@@ -21,7 +21,13 @@
 
 ;;;; FLYSPELL
 
-(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook! text-mode
+  (flyspell-mode 1))
+
+(add-hook! flyspell-mode
+  (setq flyspell-issue-message-flag nil)
+  (setq +flyspell-immediately nil))
+
 ;; This is too slow when loading modes
 ;; Can I figure out a way to load the hook asyncronously?
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
