@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: function pattern
+# key: func
+# contributor: Shon Feder
+# --
+
+let $1 = function
+  | $2 -> $3

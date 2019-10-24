@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: begin/end block
+# key: beg
+# --
+
+begin
+  $1
+end

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Top-level Function Binding
+# key: fun
+# --
+
+let $1 ($2:$3) = $2
