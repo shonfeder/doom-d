@@ -40,14 +40,7 @@
   (org-tree-slide-presentation-profile)
   (setq org-tree-slide-skip-outline-level 5))
 
-(add-hook! org-mode
-  (map!
-   ;;;; 'S' is for "sub-tree"
-   :n ",Sa" #'org-archive-subtree
-   :n ",Sk" #'org-move-subtree-up
-   :n ",Sj" #'org-move-subtree-down))
-
-;;;;;; BIBLIOGRAPHY MANAGEMENT
+;;;; BIBLIOGRAPHY MANAGEMENT
 
 ;;    org-ref settings
 (setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
@@ -115,16 +108,23 @@
  :n "C-;" #'iedit-mode
 
  ;;;; '/' is for "search"
- :leader (:prefix-map ("/" . "search")
+ :leader (:prefix ("/" . "search")
            :desc "Search for thing at point" "t" #'swiper-thing-at-point)
 
  ;;;; SPC is for "space"
- :leader (:prefix-map ("g" . "git")
-           (:prefix-map ("y" . "yank")
+ :leader (:prefix ("g" . "git")
+           (:prefix ("y" . "yank")
              :desc "Yank git link" "l" #'git-link
              :desc "Yank git commit link" "h" #'git-link-homepage))
 
- :leader (:prefix-map ("F". "frame")
+ :leader (:prefix ("F". "frame")
            :desc "Switch other frame" "o" #'other-frame
            :desc "Create new frame" "n" #'new-frame)
  )
+
+(map!
+ :map (org-mode-map)
+ :localleader (:prefix ("S" . "subtree")
+                :desc "Archive"   "a" #'org-archive-subtree
+                :desc "Move up"   "k" #'org-move-subtree-up
+                :desc "Move down" "j" #'org-move-subtree-down))
