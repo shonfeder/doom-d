@@ -167,6 +167,16 @@
  :localleader (:prefix ("y". "yank")
                 :desc "Yank type" "t" #'merlin-copy-enclosing))
 
+;; F*
+
+(add-hook! fstar-mode
+           ;; sync the opam environment to work with sandbocked install of fstar
+           (add-hook 'find-file-hook (lambda () (opam-update-env nil)))
+           ;; (opam-update-env nil)
+           )
+
+;; ORG-MODE
+
 (map!
  :map (org-mode-map)
  :localleader (:prefix ("S" . "subtree")

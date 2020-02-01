@@ -10,3 +10,4 @@
 (package! ob-elixir)
 (package! restclient)
 (package! org-ref)
+(package! fstar-mode)
