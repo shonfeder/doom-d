@@ -32,6 +32,8 @@
 ;; Can I figure out a way to load the hook asyncronously?
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
+;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
+(add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
 
 ;;;; ORG
 
