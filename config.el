@@ -37,6 +37,34 @@
 
 ;;;; ORG
 
+(add-hook! org-mode
+  (setq org-directory "~/Sync/org")
+  ;; Don't use inline css in exported source code
+  (setq org-html-htmlize-output-type 'css)
+  (setq org-export-allow-bind-keywords 't)
+  (setq org-export-with-sub-superscripts nil)
+  (setq org-agenda-files
+        '("~/Sync/org/notes.org"
+          "~/Sync/org/todo.org"
+          "~/Sync/org/scheduled.org"))
+  (setq org-refile-targets
+        '((nil :maxlevel . 3) ; Support refiling in the current file
+          ("~/Sync/org/notes.org" :maxlevel . 3)
+          ("~/Sync/org/scheduled.org" :level . 1)
+          ("~/Sync/org/eventual.org" :level . 1)))
+  (setq org-tag-alist
+        '(("@email" . ?e)
+          ("@home" . ?h)
+          ("@errands" . ?r)
+          ("@phone" . ?p)
+          ("@travel" . ?t)
+          ("@work" . ?w)
+          ("@synechepedia" . ?s)))
+  (setf (alist-get "t" org-capture-templates nil nil 'equal)
+        '("Inbox todo" entry
+          (file+headline +org-capture-todo-file "Inbox")
+          "* TODO %?\n%i\n%a")))
+
 (add-hook! org-tree-slide-mode
   (setq +org-present-text-scale 3)
   (org-tree-slide-presentation-profile)
