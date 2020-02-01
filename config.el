@@ -158,6 +158,10 @@
 
 ;; OCaml
 
+(add-hook! tuareg-mode
+           ;; run dune build in the correct opam environment
+           (setq compile-command "opam exec dune build"))
+
 (map!
  :map (merlin-mode-map)
  :localleader (:prefix ("y". "yank")
