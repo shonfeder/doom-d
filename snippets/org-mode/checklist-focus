@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: checklist-focus
+# key: chk-focus
+# contributor: Shon Feder <shon.feder@gmail.com>
+# --
+
+- [ ] What is the task? :: $1
+- [ ] Do you have something to drink?
+- [ ] Are distractions closed?
+  - [ ] Shut the door (if relevant)
+  - [ ] dnd phone, close twitter/gmail/reddit tabs
+- [ ] Select and play music
+- [ ] Why are you doing this task? :: $2
+- [ ] What are the parts to this task?
+  - $3
+- [ ] What's an achievable goal for this sitting? :: $4
+- [ ] How long will you work until you take a break? :: $5

@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: Software Workcycle
+# key: chk-sw
+# contributor: Shon Feder <shon.feder@gmail.com>
+# --
+
+* TODO ${1:Goal}
+:PROPERTIES:
+:ESTIMATE: ${2:min/hr}
+:END:
+
+** TODO Estimate Time and Subtasks
+:PROPERTIES:
+:ESTIMATE: 5min
+:END:
+:LOGBOOK:
+${3:Clockin!}
+:END:
+
+** TODO $4

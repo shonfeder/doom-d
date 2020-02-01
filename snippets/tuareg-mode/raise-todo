@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: raise todo
+# key: todo
+# --
+
+raise (Failure "TODO")
