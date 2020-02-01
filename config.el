@@ -104,6 +104,7 @@
   ;; Disbale flyspell mode, cause it makes publishing super slow
   (flyspell-mode-off)
   (remove-hook 'text-mode-hook 'flyspell-mode)
+  ;; set `t` to force republish all or `f` to only republish changes
   (org-publish-project "synechepedia")
   (cl-labels
       ((push-repo (dir)
@@ -122,6 +123,7 @@
   (add-hook 'text-mode-hook 'flyspell-mode)
   (turn-on-flyspell))
 
+
 ;;;; KEY BINDINGS
 
 (map!
@@ -130,6 +132,7 @@
  :n "ttw" #'transpose-words
  :n "ttl" #'transpose-lines
  :n "ttp" #'transpose-paragraphs
+ :nv "ta"  #'align-regexp
 
  ;;;; 'g' is for "go to"
  :n "gw" #'evil-avy-goto-word-or-subword-1
