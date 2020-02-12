@@ -18,6 +18,9 @@
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 
+;;;; TEXT MANIPULATION FUNCTIONS
+(fset 'surround-word-with-quotes
+      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("ysiW\"" 0 "%d")) arg)))
 
 ;;;; FLYSPELL
 
@@ -36,6 +39,13 @@
 (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
 
 ;;;; ORG
+
+(map!
+ :map (org-mode-map)
+ :localleader (:prefix ("S" . "subtree")
+                :desc "Archive"   "a" #'org-archive-subtree
+                :desc "Move up"   "k" #'org-move-subtree-up
+                :desc "Move down" "j" #'org-move-subtree-down))
 
 (add-hook! org-mode
   (setq org-directory "~/Sync/org")
@@ -127,12 +137,20 @@
 ;;;; KEY BINDINGS
 
 (map!
+ ;; TODO Switch to 't' leader
  ;;;; 't' is for "text"
  ;; 'tt' is for "transpose text"
  :n "ttw" #'transpose-words
  :n "ttl" #'transpose-lines
  :n "ttp" #'transpose-paragraphs
  :nv "ta"  #'align-regexp
+ ;;;; 'tl' is for 'text lookup'
+ ;; 'tld is for 'text lokup definition'
+ :nv "tld" #'define-word-at-point
+ ;; 'tle is for 'text lokup etymology'
+ :nv "tle" #'etymology-of-word-at-point
+ ;; 's' is for "surround" TODO
+ ;; :n "ts\"" '(execute-kbd-macro (symbol-function 'surround-word-with-quotes))
 
  ;;;; 'g' is for "go to"
  :n "gw" #'evil-avy-goto-word-or-subword-1
@@ -145,10 +163,10 @@
            :desc "Search for thing at point" "t" #'swiper-thing-at-point)
 
  ;;;; SPC is for "space"
- :leader (:prefix ("g" . "git")
-           (:prefix ("y" . "yank")
-             :desc "Yank git link" "l" #'git-link
-             :desc "Yank git commit link" "h" #'git-link-homepage))
+;; :leader (:prefix ("g" . "git")
+;;           (:prefix ("y" . "yank")
+;;             :desc "Yank git link" "l" #'git-link
+;;             :desc "Yank git commit link" "h" #'git-link-homepage))
 
  :leader (:prefix ("F". "frame")
            :desc "Switch other frame" "o" #'other-frame
@@ -167,19 +185,13 @@
  :localleader (:prefix ("y". "yank")
                 :desc "Yank type" "t" #'merlin-copy-enclosing))
 
+
+;; The same require added by opam user-setup
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+
 ;; F*
 
 (add-hook! fstar-mode
            ;; sync the opam environment to work with sandbocked install of fstar
-           (add-hook 'find-file-hook (lambda () (opam-update-env nil)))
-           ;; (opam-update-env nil)
-           )
+           (add-hook 'find-file-hook (lambda () (opam-update-env nil))))
 
-;; ORG-MODE
-
-(map!
- :map (org-mode-map)
- :localleader (:prefix ("S" . "subtree")
-                :desc "Archive"   "a" #'org-archive-subtree
-                :desc "Move up"   "k" #'org-move-subtree-up
-                :desc "Move down" "j" #'org-move-subtree-down))
