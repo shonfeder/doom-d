@@ -97,6 +97,26 @@
   (org-tree-slide-presentation-profile)
   (setq org-tree-slide-skip-outline-level 5))
 
+
+;; org-clock
+
+(map!
+ :map (org-mode-map)
+ :localleader
+ :desc "org-clock-display" "c D" #'org-clock-display)
+
+(defun org-clock-csv-buffer-to-file ()
+  "Export a csv of the org-clock entries in the current buffer
+
+Uses `org-clock-csv-to-file'."
+  (interactive)
+  (let* ((time-now (format-time-string "%Y-%m-%d"))
+         (srcfile (file-name-base (buffer-file-name)))
+         (fname (expand-file-name
+                 (concat srcfile "-org-clock-export-" time-now ".csv"))))
+    (org-clock-csv-to-file fname (buffer-file-name))
+    (message "Exported timesheet to %s" fname)))
+
 ;;;; BIBLIOGRAPHY MANAGEMENT
 
 ;;    org-ref settings
@@ -211,4 +231,3 @@
 (add-hook! fstar-mode
            ;; sync the opam environment to work with sandbocked install of fstar
            (add-hook 'find-file-hook (lambda () (opam-update-env nil))))
-
