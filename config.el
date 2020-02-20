@@ -42,6 +42,8 @@
 
 (map!
  :map (org-mode-map)
+ :localleader
+ :desc "Org Columns" "C" #'org-columns
  :localleader (:prefix ("S" . "subtree")
                 :desc "Archive"   "a" #'org-archive-subtree
                 :desc "Move up"   "k" #'org-move-subtree-up
