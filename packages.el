@@ -56,6 +56,7 @@
 (package! flycheck-mix)
 (package! fstar-mode)
 (package! ob-elixir)
+(package! org-clock-csv)
 (package! org-ref)
 (package! restclient)
 
