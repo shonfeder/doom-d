@@ -11,6 +11,7 @@
       (load-file local-settings)))
 
 ;;;; GENERAL
+
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
@@ -51,19 +52,33 @@
 
 (add-hook! org-mode
   (setq org-directory "~/Sync/org")
+
+  ;; EXPORT
   ;; Don't use inline css in exported source code
   (setq org-html-htmlize-output-type 'css)
   (setq org-export-allow-bind-keywords 't)
   (setq org-export-with-sub-superscripts nil)
+
+  ;; CLOCK
+  ;; Set default column view headings: Task Priority Effort Clock_Summary
+  ;; See https://writequit.org/denver-emacs/presentations/2017-04-11-time-clocking-with-org.html
+  (setq org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
+  (setq org-clock-in-switch-to-state "STRT")
+
+  ;; AGENDA
   (setq org-agenda-files
         '("~/Sync/org/notes.org"
           "~/Sync/org/todo.org"
-          "~/Sync/org/scheduled.org"))
+          "~/Sync/org/scheduled.org"
+          "~/Sync/informal-systems/org/informal.org"))
   (setq org-refile-targets
         '((nil :maxlevel . 3) ; Support refiling in the current file
           ("~/Sync/org/notes.org" :maxlevel . 3)
           ("~/Sync/org/scheduled.org" :level . 1)
-          ("~/Sync/org/eventual.org" :level . 1)))
+          ("~/Sync/org/eventual.org" :level . 1)
+          ("~/Sync/informal-systems/org/informal.org" :level . 1)))
+
+  ;; TODOS
   (setq org-tag-alist
         '(("@email" . ?e)
           ("@home" . ?h)
