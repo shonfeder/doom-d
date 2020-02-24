@@ -64,3 +64,7 @@
 (package! etymology-of-word :recipe (:type git
                                      :host github
                                      :repo "Camsbury/etymology-of-word"))
+
+(package! fira-code-mode :recipe (:type git
+                                  :host github
+                                  :repo "jming422/fira-code-mode"))
