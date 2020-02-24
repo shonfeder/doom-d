@@ -62,12 +62,12 @@
 
 (map!
  :map (org-mode-map)
- :localleader
- :desc "Org Columns" "C" #'org-columns
+ :localleader :desc "Org Columns" "C" #'org-columns
  :localleader (:prefix ("S" . "subtree")
-                :desc "Archive"   "a" #'org-archive-subtree
-                :desc "Move up"   "k" #'org-move-subtree-up
-                :desc "Move down" "j" #'org-move-subtree-down))
+                :desc "Archive"       "a" #'org-archive-subtree
+                :desc "Move up"       "k" #'org-move-subtree-up
+                :desc "Move down"     "j" #'org-move-subtree-down
+                :desc "Narrow toggle" "n" #'org-toggle-narrow-to-subtree))
 
 (add-hook! org-mode
   (setq org-directory "~/Sync/org")
