@@ -10,6 +10,20 @@
   (if (file-exists-p local-settings)
       (load-file local-settings)))
 
+;;;; FONT
+
+(add-hook! prettify-symbols-mode
+  (push '(":-"    . ?⊣) prettify-symbols-alist)
+  (push '("pi"    . ?∀) prettify-symbols-alist)
+  (push '("sigma" . ?∃) prettify-symbols-alist))
+
+(add-hook! prog-mode
+           fira-code-mode)
+
+
+;; FIXME Fallback font for unicode
+(setq doom-unicode-font (font-spec :family "DejaVu Sans Mono" :size 30))
+
 ;;;; GENERAL
 
 (setq-default evil-escape-key-sequence "jk")
