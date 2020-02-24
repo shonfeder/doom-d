@@ -55,6 +55,11 @@
 
 ;;;; ORG
 
+;;;; FIXME Unduing https://github.com/hlissner/doom-emacs/issues/2393
+(define-key!
+  [remap org-set-tags-command]     #'org-set-tags-command)
+
+
 (map!
  :map (org-mode-map)
  :localleader
