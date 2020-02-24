@@ -250,3 +250,12 @@ Uses `org-clock-csv-to-file'."
 (add-hook! fstar-mode
            ;; sync the opam environment to work with sandbocked install of fstar
            (add-hook 'find-file-hook (lambda () (opam-update-env nil))))
+
+;; λ-Prolog
+;; TODO Package up properly
+(load-file "~/lib/teyjus/emacs/teyjus.el")
+
+(defun teyjus-prettify-symbols-add ()
+  (interactive)
+  (push '("o" . ?•) prettify-symbols-alist)
+  (push '(";" . ?|) prettify-symbols-alist))
