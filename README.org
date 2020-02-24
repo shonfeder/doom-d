@@ -4,8 +4,9 @@
 * Description
 Configures https://github.com/hlissner/doom-emacs to suite my needs.
 
-* Features
-** Optional =local.el= configuration file
-Allowing tweaks for specific machines, while using the same underlying
-configuration file.
-** Use flyspell by default on prog and text modes
+# TODO update features
+# * Features
+# ** Optional =local.el= configuration file
+# Allowing tweaks for specific machines, while using the same underlying
+# configuration file.
+# ** Use flyspell by default on prog and text modes
