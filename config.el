@@ -233,11 +233,12 @@ Uses `org-clock-csv-to-file'."
  :leader (:prefix ("/" . "search")
            :desc "Search for thing at point" "t" #'swiper-thing-at-point)
 
+ :leader "d" #'save-buffer
  ;;;; SPC is for "space"
-;; :leader (:prefix ("g" . "git")
-;;           (:prefix ("y" . "yank")
-;;             :desc "Yank git link" "l" #'git-link
-;;             :desc "Yank git commit link" "h" #'git-link-homepage))
+ ;; :leader (:prefix ("g" . "git")
+ ;;           (:prefix ("y" . "yank")
+ ;;             :desc "Yank git link" "l" #'git-link
+ ;;             :desc "Yank git commit link" "h" #'git-link-homepage))
 
  :leader (:prefix ("F". "frame")
            :desc "Switch other frame" "o" #'other-frame
