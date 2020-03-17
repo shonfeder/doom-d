@@ -53,8 +53,10 @@
 
 ;; From elpa/melpa
 (package! define-word)
+(package! dhall-mode)
 (package! flycheck-mix)
 (package! fstar-mode)
+(package! graphviz-dot-mode)
 (package! ob-elixir)
 (package! org-clock-csv)
 (package! org-ref)
