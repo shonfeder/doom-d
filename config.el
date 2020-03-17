@@ -72,8 +72,12 @@
                 :desc "Move down"     "j" #'org-move-subtree-down
                 :desc "Narrow toggle" "n" #'org-toggle-narrow-to-subtree))
 
+(defun my/org-file (f)
+  (concat (file-name-as-directory org-directory) f))
+
 (add-hook! org-mode
-  (setq org-directory "~/Sync/org")
+  (setq my-informal-org "~/Sync/informal-systems/org/informal.org")
+  (setq org-directory "~/Dropbox/org")
 
   ;; EXPORT
   ;; Don't use inline css in exported source code
@@ -89,16 +93,18 @@
 
   ;; AGENDA
   (setq org-agenda-files
-        '("~/Sync/org/notes.org"
-          "~/Sync/org/todo.org"
-          "~/Sync/org/scheduled.org"
-          "~/Sync/informal-systems/org/informal.org"))
+        (list
+         (my/org-file "notes.org")
+         (my/org-file "todo.org" )
+         (my/org-file "scheduled.org")
+         my-informal-org))
+
   (setq org-refile-targets
-        '((nil :maxlevel . 3) ; Support refiling in the current file
-          ("~/Sync/org/notes.org" :maxlevel . 3)
-          ("~/Sync/org/scheduled.org" :level . 1)
-          ("~/Sync/org/eventual.org" :level . 1)
-          ("~/Sync/informal-systems/org/informal.org" :level . 1)))
+        `((nil :maxlevel . 3) ; Support refiling in the current file
+          (,(my/org-file "notes.org") :maxlevel . 3)
+          (,(my/org-file "scheduled.org") :level . 1)
+          (,(my/org-file "eventual.org") :level . 1)
+          (,my-informal-org :level . 1)))
 
   ;; TODOS
   (setq org-tag-alist
