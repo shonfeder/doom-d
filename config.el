@@ -30,8 +30,10 @@
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
 
+;; TODO Refactor
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
+(add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
 
 ;;;; TEXT MANIPULATION FUNCTIONS
 (fset 'surround-word-with-quotes
