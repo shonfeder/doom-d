@@ -106,15 +106,19 @@
           (,(my/org-file "eventual.org") :level . 1)
           (,my-informal-org :level . 1)))
 
-  ;; TODOS
   (setq org-tag-alist
         '(("@email" . ?e)
           ("@home" . ?h)
-          ("@errands" . ?r)
-          ("@phone" . ?p)
           ("@travel" . ?t)
           ("@work" . ?w)
-          ("@synechepedia" . ?s)))
+          ("@synechepedia" . ?s)
+          ("#community" . ?c)
+          ("#design". ?d)
+          ("#implementing" . ?i)
+          ("#meeting" . ?m)
+          ("#planning" . ?l)
+          ("#productivity" . ?p)
+          ("#research" . ?r)))
   (setf (alist-get "t" org-capture-templates nil nil 'equal)
         '("Inbox todo" entry
           (file+headline +org-capture-todo-file "Inbox")
