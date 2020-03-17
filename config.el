@@ -143,11 +143,13 @@
 Uses `org-clock-csv-to-file'."
   (interactive)
   (let* ((time-now (format-time-string "%Y-%m-%d"))
-         (srcfile (file-name-base (buffer-file-name)))
+         (srcfile (buffer-file-name))
+         (basename (file-name-base srcfile))
+         (arcfile (concat srcfile "_archive"))
          (fname (expand-file-name
-                 (concat srcfile "-org-clock-export-" time-now ".csv"))))
-    (org-clock-csv-to-file fname (buffer-file-name))
-    (message "Exported timesheet to %s" fname)))
+                 (concat basename "-org-clock-export-" time-now ".csv"))))
+    (org-clock-csv-to-file fname (list arcfile srcfile))
+    (message "Exported timesheet to %s from (%s %s)" fname arcfile srcfile)))
 
 ;;;; BIBLIOGRAPHY MANAGEMENT
 
