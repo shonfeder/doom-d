@@ -280,3 +280,15 @@ Uses `org-clock-csv-to-file'."
   (push '("o"  . ?•) prettify-symbols-alist)
   (push '(";"  . ?|) prettify-symbols-alist)
   (push '("in" . ?∈) prettify-symbols-alist))
+
+;; MARKDOWN
+
+(map!
+ :map (markdown-mode-map)
+ :localleader (:prefix ("s". "style")
+                :desc "Bold" "b" #'markdown-insert-bold
+                :desc "Italic" "i" #'markdown-insert-italic
+                :desc "Code" "c" #'markdown-insert-code
+                :desc "Code Block" "C" #'markdown-insert-gfm-code-block
+                :desc "Quote" "q" #'markdown-insert-blockquote
+                :desc "Footenote" "f" #'markdown-insert-footnote))
