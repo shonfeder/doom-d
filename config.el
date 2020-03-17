@@ -273,5 +273,10 @@ Uses `org-clock-csv-to-file'."
 
 (defun teyjus-prettify-symbols-add ()
   (interactive)
-  (push '("o" . ?•) prettify-symbols-alist)
-  (push '(";" . ?|) prettify-symbols-alist))
+
+  (push '("="  . ?≐) prettify-symbols-alist)
+  (push '("i:" . ?ι) prettify-symbols-alist)
+  (push '("o:" . ?ο) prettify-symbols-alist)
+  (push '("o"  . ?•) prettify-symbols-alist)
+  (push '(";"  . ?|) prettify-symbols-alist)
+  (push '("in" . ?∈) prettify-symbols-alist))
