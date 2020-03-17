@@ -13,7 +13,7 @@
 ;;;; FONT
 
 (add-hook! prettify-symbols-mode
-  (push '(":-"    . ?⊣) prettify-symbols-alist)
+  (push '(":-"    . ?⟸) prettify-symbols-alist)
   (push '("pi"    . ?∀) prettify-symbols-alist)
   (push '("sigma" . ?∃) prettify-symbols-alist))
 
