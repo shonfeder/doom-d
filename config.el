@@ -294,4 +294,5 @@ Uses `org-clock-csv-to-file'."
                 :desc "Code" "c" #'markdown-insert-code
                 :desc "Code Block" "C" #'markdown-insert-gfm-code-block
                 :desc "Quote" "q" #'markdown-insert-blockquote
-                :desc "Footenote" "f" #'markdown-insert-footnote))
+                :desc "Footenote" "f" #'markdown-insert-footnote
+                :desc "Strikethru" "s" #'markdown-insert-strike-through))
