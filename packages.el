@@ -55,7 +55,6 @@
 (package! define-word)
 (package! dhall-mode)
 (package! flycheck-mix)
-(package! fstar-mode)
 (package! graphviz-dot-mode)
 (package! ob-elixir)
 (package! org-clock-csv)
@@ -66,7 +65,3 @@
 (package! etymology-of-word :recipe (:type git
                                      :host github
                                      :repo "Camsbury/etymology-of-word"))
-
-(package! fira-code-mode :recipe (:type git
-                                  :host github
-                                  :repo "jming422/fira-code-mode"))

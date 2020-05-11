@@ -17,13 +17,6 @@
   (push '("pi"    . ?∀) prettify-symbols-alist)
   (push '("sigma" . ?∃) prettify-symbols-alist))
 
-(add-hook! prog-mode
-           fira-code-mode)
-
-
-;; FIXME Fallback font for unicode
-(setq doom-unicode-font (font-spec :family "DejaVu Sans Mono" :size 30))
-
 ;;;; GENERAL
 
 (setq-default evil-escape-key-sequence "jk")
@@ -58,6 +51,7 @@
 (add-to-list '+format-on-save-enabled-modes 'json-mode t)
 (add-to-list '+format-on-save-enabled-modes 'js2-mode t)
 (add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
+(add-to-list '+format-on-save-enabled-modes 'sh-mode t)
 
 ;;;; ORG
 
@@ -93,6 +87,7 @@
   ;; See https://writequit.org/denver-emacs/presentations/2017-04-11-time-clocking-with-org.html
   (setq org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
   (setq org-clock-in-switch-to-state "STRT")
+  (setq org-duration-format (quote h:mm))
 
   ;; AGENDA
   (setq org-agenda-files
@@ -252,11 +247,11 @@ Uses `org-clock-csv-to-file'."
 ;; OCaml
 
 (add-hook! tuareg-mode
-           ;; run dune build in the correct opam environment
-           (setq compile-command "opam exec dune build"))
+  ;; run dune build in the correct opam environment
+  (setq compile-command "opam exec dune build"))
 
 (map!
- :map (merlin-mode-map)
+ :map (tuareg-mode-map)
  :localleader (:prefix ("y". "yank")
                 :desc "Yank type" "t" #'merlin-copy-enclosing))
 
@@ -296,3 +291,18 @@ Uses `org-clock-csv-to-file'."
                 :desc "Quote" "q" #'markdown-insert-blockquote
                 :desc "Footenote" "f" #'markdown-insert-footnote
                 :desc "Strikethru" "s" #'markdown-insert-strike-through))
+
+;; TYPESCRIPT
+
+(add-hook! typescript-mode
+  (setq typescript-indent-level 2))
+
+;; DIRED
+(add-hook! dired-mode
+  (dired-hide-details-mode)
+  (setq dired-guess-shell-alist-user
+        '(("\\.pdf\\'"  "xdg-open")
+          ("\\.PDF\\'"  "xdg-open")
+          ("\\.djvu\\'" "xdg-open")
+          ("\\.docx\\'" "xdg-open")
+          ("\\.DOCX\\'" "xdg-open") )))
