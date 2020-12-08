@@ -54,14 +54,26 @@
 ;; From elpa/melpa
 (package! define-word)
 (package! dhall-mode)
-(package! flycheck-mix)
 (package! graphviz-dot-mode)
-(package! ob-elixir)
 (package! org-clock-csv)
 (package! org-ref)
 (package! restclient)
+(package! bazel-mode)
+(package! yaml-mode)
+(package! polymode)
+(package! poly-markdown)
+(package! epresent)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
                                      :host github
                                      :repo "Camsbury/etymology-of-word"))
+
+(package! tla-mode :recipe (:type git
+                             :host github
+                             :repo "ratish-punnoose/tla-mode"))
+
+(package! maude-mode :recipe (:type git
+                             :host github
+                             :repo "ssaavedra/maude-mode"))
+

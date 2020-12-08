@@ -11,17 +11,19 @@
       (load-file local-settings)))
 
 ;;;; FONT
+;;;;
 
-(add-hook! prettify-symbols-mode
-  (push '(":-"    . ?⟸) prettify-symbols-alist)
-  (push '("pi"    . ?∀) prettify-symbols-alist)
-  (push '("sigma" . ?∃) prettify-symbols-alist))
+ ;; (add-hook! prettify-symbols-mode
+ ;;   (push '(":-"    . ?⟸) prettify-symbols-alist)
+ ;;   (push '("pi"    . ?∀) prettify-symbols-alist)
+ ;;   (push '("sigma" . ?∃) prettify-symbols-alist))
 
 ;;;; GENERAL
 
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
+(setq auth-sources '("~/.authinfo"))
 
 ;; TODO Refactor
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
@@ -35,7 +37,8 @@
 ;;;; FLYSPELL
 
 (add-hook! text-mode
-  (flyspell-mode 1))
+  (flyspell-mode 1)
+  (auto-fill-mode 1))
 
 (add-hook! flyspell-mode
   (setq flyspell-issue-message-flag nil)
@@ -52,8 +55,14 @@
 (add-to-list '+format-on-save-enabled-modes 'js2-mode t)
 (add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
 (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
+(add-to-list '+format-on-save-enabled-modes 'scala-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'tuareg-mode t)
 
 ;;;; ORG
+
+;; org-roam
+
+(require 'org-roam-protocol)
 
 ;;;; FIXME Unduing https://github.com/hlissner/doom-emacs/issues/2393
 (define-key!
@@ -76,6 +85,12 @@
   (setq my-informal-org "~/Sync/informal-systems/org/informal.org")
   (setq org-directory "~/Dropbox/org")
 
+  (setq org-link-frame-setup
+        '((vm . vm-visit-folder-other-frame)
+          (vm-imap . vm-visit-imap-folder-other-frame)
+          (gnus . org-gnus-no-new-news)
+          (file . find-file-other-window)
+          (wl . wl-other-frame)))
   ;; EXPORT
   ;; Don't use inline css in exported source code
   (setq org-html-htmlize-output-type 'css)
@@ -110,13 +125,17 @@
           ("@travel" . ?t)
           ("@work" . ?w)
           ("@synechepedia" . ?s)
+          ("#apalache" . ?a)
           ("#community" . ?c)
           ("#design". ?d)
+          ("#devenv" . ?v)
           ("#implementing" . ?i)
           ("#meeting" . ?m)
           ("#planning" . ?l)
           ("#productivity" . ?p)
-          ("#research" . ?r)))
+          ("#research" . ?r)
+          ("#support" . ?u)))
+
   (setf (alist-get "t" org-capture-templates nil nil 'equal)
         '("Inbox todo" entry
           (file+headline +org-capture-todo-file "Inbox")
@@ -227,10 +246,6 @@ Uses `org-clock-csv-to-file'."
 
  :n "C-;" #'iedit-mode
 
- ;;;; '/' is for "search"
- :leader (:prefix ("/" . "search")
-           :desc "Search for thing at point" "t" #'swiper-thing-at-point)
-
  :leader "d" #'save-buffer
  ;;;; SPC is for "space"
  ;; :leader (:prefix ("g" . "git")
@@ -247,8 +262,9 @@ Uses `org-clock-csv-to-file'."
 ;; OCaml
 
 (add-hook! tuareg-mode
-  ;; run dune build in the correct opam environment
-  (setq compile-command "opam exec dune build"))
+           ;; run dune build in the correct opam environment
+           (setq compile-command "opam exec dune build")
+           (setq merlin-error-after-save '("ml" "mli")))
 
 (map!
  :map (tuareg-mode-map)
@@ -306,3 +322,10 @@ Uses `org-clock-csv-to-file'."
           ("\\.djvu\\'" "xdg-open")
           ("\\.docx\\'" "xdg-open")
           ("\\.DOCX\\'" "xdg-open") )))
+
+;; TLA+
+
+
+;; SCALA
+;; (add-hook! scala-mode
+;;   (setq flycheck-scala-executable "mvn scala:cc -DemacsMode=true"))
