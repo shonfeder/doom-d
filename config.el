@@ -279,16 +279,40 @@ Uses `org-clock-csv-to-file'."
 
 
 ;; OCaml
+;;
 
-(add-hook! tuareg-mode
-           ;; run dune build in the correct opam environment
-           (setq compile-command "opam exec dune build")
-           (setq merlin-error-after-save '("ml" "mli")))
+(defun my/ocaml-compile (cmd)
+  (interactive)
+  (save-buffer)
+  (let* ((default-directory
+           (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
+         (compile-command (concat "(cd " default-directory " && dune " cmd ")"))
+         (compilation-directory
+          (or (locate-dominating-file buffer-file-name "Makefile") nil)))
+    (recompile)))
+
+(defun my/ocaml-compile-check ()
+  (interactive)
+  (my/ocaml-compile "build @check"))
+
+(defun my/ocaml-compile-build ()
+  (interactive)
+  (my/ocaml-compile "build"))
+
+(defun my/ocaml-compile-test ()
+  (interactive)
+  (my/ocaml-compile "test"))
 
 (map!
  :map (tuareg-mode-map)
- :localleader (:prefix ("y". "yank")
-                :desc "Yank type" "t" #'merlin-copy-enclosing))
+ :localleader
+ :desc "Check" :n "c" 'my/ocaml-compile-check
+ :desc "Build" :n "b" 'my/ocaml-compile-build
+ :desc "Test" :n "T" 'my/ocaml-compile-test
+ :desc "Next error" :n "n" 'merlin-error-next
+ :desc "Prev error " :n "p" 'merlin-error-prev
+ (:prefix ("y". "yank")
+  :desc "Yank type" "t" #'merlin-copy-enclosing))
 
 
 ;; The same require added by opam user-setup
