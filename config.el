@@ -64,6 +64,25 @@
 
 (require 'org-roam-protocol)
 
+(add-hook! org-roam-mode
+  (setq org-roam-dailies-capture-templates
+        '(("t" "test" entry #'org-roam-capture--get-point
+           "* Routine
+
+- [ ] Exercised
+- [ ] Mediated
+
+* Events
+
+- %?
+
+* [[file:../20201228235441-joy.org][Joy]]
+
+-
+"
+           :file-name "daily/%<%Y-%m-%d>"
+           :head "#+title: %<%Y-%m-%d>\n"))))
+
 ;;;; FIXME Unduing https://github.com/hlissner/doom-emacs/issues/2393
 (define-key!
   [remap org-set-tags-command]     #'org-set-tags-command)
