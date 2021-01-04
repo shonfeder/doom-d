@@ -372,3 +372,9 @@ Uses `org-clock-csv-to-file'."
 ;; SCALA
 ;; (add-hook! scala-mode
 ;;   (setq flycheck-scala-executable "mvn scala:cc -DemacsMode=true"))
+
+;; FIXME is this the result of a regression in doom-emacs?
+;; MAGIT
+(map!
+ :map magit-status-mode-map
+ :n "<tab>" 'magit-section-toggle)
