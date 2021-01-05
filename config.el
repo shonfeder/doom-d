@@ -20,6 +20,7 @@
 
 ;;;; GENERAL
 
+(setq org-roam-directory "~/Dropbox/org/roam")
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
@@ -61,7 +62,6 @@
 ;;;; ORG
 
 ;; org-roam
-
 (require 'org-roam-protocol)
 
 (add-hook! org-roam-mode
@@ -160,6 +160,7 @@
           (file+headline +org-capture-todo-file "Inbox")
           "* TODO %?\n%i\n%a")))
 
+;;;  FIXME?
 (add-hook! org-tree-slide-mode
   (setq +org-present-text-scale 3)
   (org-tree-slide-presentation-profile)
