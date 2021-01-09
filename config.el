@@ -317,7 +317,8 @@ Uses `org-clock-csv-to-file'."
 
 
 ;; The same require added by opam user-setup
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+(if (file-exists-p "~/.emacs.d/opam-user-setup.el")
+    (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
 ;; F*
 
@@ -326,8 +327,8 @@ Uses `org-clock-csv-to-file'."
            (add-hook 'find-file-hook (lambda () (opam-update-env nil))))
 
 ;; λ-Prolog
-;; TODO Package up properly
-(load-file "~/lib/teyjus/emacs/teyjus.el")
+(if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
+    (load-file "~/lib/teyjus/emacs/teyjus.el"))
 
 (defun teyjus-prettify-symbols-add ()
   (interactive)
