@@ -308,6 +308,9 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (my/ocaml-compile "test"))
 
+(if (file-exists-p "~/lib/ocaml/dune-watch.el")
+    (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
+
 (map!
  :map (tuareg-mode-map)
  :localleader
