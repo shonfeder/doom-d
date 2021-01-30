@@ -30,6 +30,7 @@
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 (add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
+(add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
 
 ;;;; TEXT MANIPULATION FUNCTIONS
 (fset 'surround-word-with-quotes
