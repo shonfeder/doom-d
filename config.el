@@ -315,6 +315,26 @@ Uses `org-clock-csv-to-file'."
 (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
+(add-hook! tuareg-mode
+  (setq dune-watch-minor-mode 't)
+  ;; Customization to ocaml font faces
+  (custom-set-faces!
+    '(tuareg-font-lock-extension-node-face
+      :background nil
+      :foreground "seagreen")
+    '(tuareg-font-lock-constructor-face
+      :foreground "CadetBlue")
+    '(tuareg-font-lock-module-face
+      :foreground "DarkSalmon")
+    '(tuareg-font-lock-governing-face
+      :foreground "MistyRose4"
+      :inherit 'italic)
+    '(tuareg-font-lock-operator-face
+      :foreground "SteelBlue")))
+
+(add-hook! dune-watch-minor-mood
+  (setq dune-watch-command-format
+        "opam exec -- dune %s --watch --terminal-persistence=clear-on-rebuild"))
 (map!
  :map (tuareg-mode-map)
  :localleader
