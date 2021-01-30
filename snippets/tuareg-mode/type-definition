@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: type-definition
+# key: ty
+# --
+
+type ${1:t} =
+  | ${2}
