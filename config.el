@@ -105,6 +105,9 @@
   (setq my-informal-org "~/Sync/informal-systems/org/informal.org")
   (setq org-directory "~/Dropbox/org")
 
+  ;; Workaround for https://github.com/hlissner/doom-emacs/issues/3172
+  (electric-indent-local-mode -1)
+
   (setq org-link-frame-setup
         '((vm . vm-visit-folder-other-frame)
           (vm-imap . vm-visit-imap-folder-other-frame)
