@@ -338,18 +338,26 @@ Uses `org-clock-csv-to-file'."
 (map!
  :map (tuareg-mode-map)
  :localleader
- :desc "Check" :n "c" 'my/ocaml-compile-check
- :desc "Build" :n "b" 'my/ocaml-compile-build
- :desc "Test" :n "T" 'my/ocaml-compile-test
- :desc "Next error" :n "n" 'merlin-error-next
+ :desc "Check"       :n "c" 'my/ocaml-compile-check
+ :desc "Build"       :n "b" 'my/ocaml-compile-build
+ :desc "Test"        :n "T" 'my/ocaml-compile-test
+ :desc "Dune Watch"  :n "w" 'dune-watch-minor-mode
+ :desc "Next error"  :n "n" 'merlin-error-next
  :desc "Prev error " :n "p" 'merlin-error-prev
+ :desc "ocamlformat" :n "f" #'ocamlformat
  (:prefix ("y". "yank")
   :desc "Yank type" "t" #'merlin-copy-enclosing))
 
-
-;; The same require added by opam user-setup
-(if (file-exists-p "~/.emacs.d/opam-user-setup.el")
-    (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
+(map!
+ :mode dune-mode
+ :localleader
+ :desc "Alias stanza"           :n "a" #'dune-insert-alias-form
+ :desc "Copy files stanza"      :n "c" #'dune-insert-copyfiles-form
+ :desc "Env stanza"             :n "E" #'dune-insert-env-form
+ :desc "Test stanza"            :n "T" #'dune-insert-test-form
+ :desc "Install stanza"         :n "i" #'dune-insert-install-form
+ :desc "Executable stanza"      :n "e" #'dune-insert-executable-form
+ :desc "Ignored subdirs stanza" :n "u" #'dune-insert-ignored-subdirs-form)
 
 ;; F*
 
