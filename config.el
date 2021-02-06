@@ -58,7 +58,8 @@
 (add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
 (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
 (add-to-list '+format-on-save-enabled-modes 'scala-mode t)
-;; (add-to-list '+format-on-save-enabled-modes 'tuareg-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'tuareg-mode t
+;; (add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
 
 ;;;; ORG
 
