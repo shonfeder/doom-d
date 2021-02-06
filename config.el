@@ -342,8 +342,9 @@ Uses `org-clock-csv-to-file'."
  :desc "Build"       :n "b" 'my/ocaml-compile-build
  :desc "Test"        :n "T" 'my/ocaml-compile-test
  :desc "Dune Watch"  :n "w" 'dune-watch-minor-mode
- :desc "Next error"  :n "n" 'merlin-error-next
- :desc "Prev error " :n "p" 'merlin-error-prev
+ :desc "Promote"     :n "p" 'dune-promote
+ :desc "Next error"  :n "N" 'merlin-error-next
+ :desc "Prev error " :n "P" 'merlin-error-prev
  :desc "ocamlformat" :n "f" #'ocamlformat
  (:prefix ("y". "yank")
   :desc "Yank type" "t" #'merlin-copy-enclosing))
@@ -354,10 +355,11 @@ Uses `org-clock-csv-to-file'."
  :desc "Alias stanza"           :n "a" #'dune-insert-alias-form
  :desc "Copy files stanza"      :n "c" #'dune-insert-copyfiles-form
  :desc "Env stanza"             :n "E" #'dune-insert-env-form
- :desc "Test stanza"            :n "T" #'dune-insert-test-form
- :desc "Install stanza"         :n "i" #'dune-insert-install-form
  :desc "Executable stanza"      :n "e" #'dune-insert-executable-form
- :desc "Ignored subdirs stanza" :n "u" #'dune-insert-ignored-subdirs-form)
+ :desc "Ignored subdirs stanza" :n "u" #'dune-insert-ignored-subdirs-form
+ :desc "Install stanza"         :n "i" #'dune-insert-install-form
+ :desc "Library stanza"         :n "l" #'dune-insert-library-form
+ :desc "Test stanza"            :n "t" #'dune-insert-test-form)
 
 ;; F*
 
