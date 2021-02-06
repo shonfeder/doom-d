@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: expect-ppx-form
+# key: expect
+# --
+[%expect {|$1|}]
