@@ -51,8 +51,7 @@
 (add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
 (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
 (add-to-list '+format-on-save-enabled-modes 'scala-mode t)
-;; (add-to-list '+format-on-save-enabled-modes 'tuareg-mode t
-;; (add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
+(add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
 
 ;;;; ORG
 
@@ -278,6 +277,14 @@ Uses `org-clock-csv-to-file'."
 ;; OCaml
 ;;
 
+;; TODO Add to tuareg mode
+(defun my/jump-to-dune-file ()
+  (interactive)
+  (let*
+      ((project-root (locate-dominating-file buffer-file-name "dune-project"))
+       (dune-file (concat (file-name-as-directory project-root) "dune-project")))
+    (find-file-other-window dune-file)))
+
 (defun my/ocaml-compile (cmd)
   (interactive)
   (save-buffer)
@@ -309,6 +316,7 @@ Uses `org-clock-csv-to-file'."
       (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
 
   (setq dune-watch-minor-mode 't)
+  (setq tuareg-prettify-symbols-full nil)
   ;; Customization to ocaml font faces
   (custom-set-faces!
     '(tuareg-font-lock-extension-node-face
@@ -317,12 +325,18 @@ Uses `org-clock-csv-to-file'."
     '(tuareg-font-lock-constructor-face
       :foreground "CadetBlue")
     '(tuareg-font-lock-module-face
-      :foreground "DarkSalmon")
+      :foreground "DarkSalmon"
+      :weight light)
     '(tuareg-font-lock-governing-face
       :foreground "MistyRose4"
       :inherit 'italic)
     '(tuareg-font-lock-operator-face
       :foreground "SteelBlue")))
+
+(add-hook! merlin-mode
+  (custom-set-faces!
+    '(merlin-eldoc-occurrences-face
+      :backgrond "grey15")))
 
 (add-hook! dune-watch-minor-mood
   (setq dune-watch-command-format
@@ -330,14 +344,15 @@ Uses `org-clock-csv-to-file'."
 (map!
  :map (tuareg-mode-map)
  :localleader
- :desc "Check"       :n "c" 'my/ocaml-compile-check
- :desc "Build"       :n "b" 'my/ocaml-compile-build
- :desc "Test"        :n "T" 'my/ocaml-compile-test
- :desc "Dune Watch"  :n "w" 'dune-watch-minor-mode
- :desc "Promote"     :n "p" 'dune-promote
- :desc "Next error"  :n "N" 'merlin-error-next
- :desc "Prev error " :n "P" 'merlin-error-prev
- :desc "ocamlformat" :n "f" #'ocamlformat
+ :desc "Check"             :n "c" 'my/ocaml-compile-check
+ :desc "Build"             :n "b" 'my/ocaml-compile-build
+ :desc "Test"              :n "T" 'my/ocaml-compile-test
+ :desc "Dune Watch"        :n "w" 'dune-watch-minor-mode
+ :desc "Promote"           :n "p" 'dune-promote
+ :desc "Next error"        :n "N" 'merlin-error-next
+ :desc "Prev error "       :n "P" 'merlin-error-prev
+ :desc "ocamlformat"       :n "f" #'ocamlformat
+ :desc "dune-project file" :n "d" #'my/jump-to-dune-file
  (:prefix ("y". "yank")
   :desc "Yank type" "t" #'merlin-copy-enclosing))
 
@@ -362,16 +377,6 @@ Uses `org-clock-csv-to-file'."
 ;; λ-Prolog
 ;; (if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
 ;;     (load-file "~/lib/teyjus/emacs/teyjus.el"))
-
-;; (defun teyjus-prettify-symbols-add ()
-;;   (interactive)
-
-;;   (push '("="  . ?≐) prettify-symbols-alist)
-;;   (push '("i:" . ?ι) prettify-symbols-alist)
-;;   (push '("o:" . ?ο) prettify-symbols-alist)
-;;   (push '("o"  . ?•) prettify-symbols-alist)
-;;   (push '(";"  . ?|) prettify-symbols-alist)
-;;   (push '("in" . ?∈) prettify-symbols-alist))
 
 ;; MARKDOWN
 
@@ -417,3 +422,7 @@ Uses `org-clock-csv-to-file'."
 ;; writegood
 (add-hook! writegood-mode
   (writegood-passive-voice-turn-off))
+
+;; Rast
+(if (file-exists-p "~/Sync/oss/rast/rast/edit/rast-mode.el")
+    (require 'rast "~/Sync/oss/rast/rast/edit/rast-mode.el"))
