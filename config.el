@@ -10,14 +10,6 @@
   (if (file-exists-p local-settings)
       (load-file local-settings)))
 
-;;;; FONT
-;;;;
-
- ;; (add-hook! prettify-symbols-mode
- ;;   (push '(":-"    . ?⟸) prettify-symbols-alist)
- ;;   (push '("pi"    . ?∀) prettify-symbols-alist)
- ;;   (push '("sigma" . ?∃) prettify-symbols-alist))
-
 ;;;; GENERAL
 
 (setq org-roam-directory "~/Dropbox/org/roam")
@@ -38,13 +30,14 @@
 
 ;;;; FLYSPELL
 
-(add-hook! text-mode
-  (flyspell-mode 1)
-  (auto-fill-mode 1))
+;; TODO RM?
+;; (add-hook! text-mode
+;;   (flyspell-mode 1)
+;;   (auto-fill-mode 1))
 
-(add-hook! flyspell-mode
-  (setq flyspell-issue-message-flag nil)
-  (setq +flyspell-immediately nil))
+;; (add-hook! flyspell-mode
+;;   (setq flyspell-issue-message-flag nil)
+;;   (setq +flyspell-immediately nil))
 
 ;; This is too slow when loading modes
 ;; Can I figure out a way to load the hook asyncronously?
@@ -64,7 +57,7 @@
 ;;;; ORG
 
 ;; org-roam
-(require 'org-roam-protocol)
+;; (require 'org-roam-protocol)
 
 ;;;  FIXME WTF for some reason the hook isn't working :(
 (setq org-roam-dailies-capture-templates
@@ -144,11 +137,8 @@
           (,my-informal-org :level . 1)))
 
   (setq org-tag-alist
-        '(("@email" . ?e)
-          ("@home" . ?h)
-          ("@travel" . ?t)
-          ("@work" . ?w)
-          ("@synechepedia" . ?s)
+        '(("@synechepedia" . ?s)
+          ("@ocaml" . ?o)
           ("#apalache" . ?a)
           ("#community" . ?c)
           ("#design". ?d)
@@ -158,7 +148,9 @@
           ("#planning" . ?l)
           ("#productivity" . ?p)
           ("#research" . ?r)
-          ("#support" . ?u)))
+          ("#support" . ?u)
+          ("#plaintext" . ?t)
+          ("#DOVES" . ?f)))
 
   (setf (alist-get "t" org-capture-templates nil nil 'equal)
         '("Inbox todo" entry
@@ -216,13 +208,12 @@ Uses `org-clock-csv-to-file'."
 (defvar synechepedia-config-file
   (concat synechepedia-org-dir ".publish.el"))
 
-(load-file "~/Dropbox/synechepedia/org/.publish.el")
-
 
 ;; see https://emacs.stackexchange.com/a/32654/293
 (defun publish-synechepedia ()
   "org-publish from source and push both repos"
   (interactive)
+  (require 'synechepedia "~/Dropbox/synechepedia/org/.publish.el")
   (save-buffer)
   ;; Disbale flyspell mode, cause it makes publishing super slow
   (flyspell-mode-off)
@@ -309,14 +300,14 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (my/ocaml-compile "test"))
 
-(if (file-exists-p "~/lib/ocaml/dune-watch.el")
-    (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
-
 ;; The same require added by opam user-setup
 (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
 (add-hook! tuareg-mode
+  (if (file-exists-p "~/lib/ocaml/dune-watch.el")
+      (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
+
   (setq dune-watch-minor-mode 't)
   ;; Customization to ocaml font faces
   (custom-set-faces!
@@ -369,18 +360,18 @@ Uses `org-clock-csv-to-file'."
            (add-hook 'find-file-hook (lambda () (opam-update-env nil))))
 
 ;; λ-Prolog
-(if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
-    (load-file "~/lib/teyjus/emacs/teyjus.el"))
+;; (if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
+;;     (load-file "~/lib/teyjus/emacs/teyjus.el"))
 
-(defun teyjus-prettify-symbols-add ()
-  (interactive)
+;; (defun teyjus-prettify-symbols-add ()
+;;   (interactive)
 
-  (push '("="  . ?≐) prettify-symbols-alist)
-  (push '("i:" . ?ι) prettify-symbols-alist)
-  (push '("o:" . ?ο) prettify-symbols-alist)
-  (push '("o"  . ?•) prettify-symbols-alist)
-  (push '(";"  . ?|) prettify-symbols-alist)
-  (push '("in" . ?∈) prettify-symbols-alist))
+;;   (push '("="  . ?≐) prettify-symbols-alist)
+;;   (push '("i:" . ?ι) prettify-symbols-alist)
+;;   (push '("o:" . ?ο) prettify-symbols-alist)
+;;   (push '("o"  . ?•) prettify-symbols-alist)
+;;   (push '(";"  . ?|) prettify-symbols-alist)
+;;   (push '("in" . ?∈) prettify-symbols-alist))
 
 ;; MARKDOWN
 
@@ -422,3 +413,7 @@ Uses `org-clock-csv-to-file'."
 (map!
  :map magit-status-mode-map
  :n "<tab>" 'magit-section-toggle)
+
+;; writegood
+(add-hook! writegood-mode
+  (writegood-passive-voice-turn-off))
