@@ -52,6 +52,7 @@
 
 ;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
 (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
+(add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
 (add-to-list '+format-on-save-enabled-modes 'typescript-mode t)
 (add-to-list '+format-on-save-enabled-modes 'json-mode t)
 (add-to-list '+format-on-save-enabled-modes 'js2-mode t)
