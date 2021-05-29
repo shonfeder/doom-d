@@ -43,6 +43,13 @@
 ;; Can I figure out a way to load the hook asyncronously?
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
+;; LSP Mode
+
+(map!
+ :map lsp-mode-map
+ :leader
+ :desc "Find in other window" "c O" #'xref-find-definitions-other-window)
+
 ;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
 (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
 (add-to-list '+format-on-save-enabled-modes 'typescript-mode t)
