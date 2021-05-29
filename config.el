@@ -415,6 +415,8 @@ Uses `org-clock-csv-to-file'."
 
 ;; TLA+
 
+(add-hook! tla+-mode
+  (setq tla+-tlatools-path "/opt/TLA+Toolbox/tla2tools.jar"))
 
 ;; SCALA
 ;; (add-hook! scala-mode
