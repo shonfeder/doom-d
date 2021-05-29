@@ -58,11 +58,11 @@
 (package! org-clock-csv)
 (package! org-ref)
 (package! restclient)
-(package! bazel-mode)
 (package! yaml-mode)
 (package! polymode)
 (package! poly-markdown)
 (package! epresent)
+(package! systemd)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
