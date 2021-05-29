@@ -316,7 +316,6 @@ Uses `org-clock-csv-to-file'."
       (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
 
   (setq dune-watch-minor-mode 't)
-  (setq tuareg-prettify-symbols-full nil)
   ;; Customization to ocaml font faces
   (custom-set-faces!
     '(tuareg-font-lock-extension-node-face
