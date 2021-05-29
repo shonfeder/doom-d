@@ -290,7 +290,7 @@ Uses `org-clock-csv-to-file'."
   (save-buffer)
   (let* ((default-directory
            (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
-         (compile-command (concat "(cd " default-directory " && dune " cmd ")"))
+         (compile-command (concat "(cd " default-directory " && opam exec -- dune " cmd ")"))
          (compilation-directory
           (or (locate-dominating-file buffer-file-name "Makefile") nil)))
     (recompile)))
