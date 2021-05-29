@@ -346,6 +346,7 @@ Uses `org-clock-csv-to-file'."
  :desc "Check"             :n "c" 'my/ocaml-compile-check
  :desc "Build"             :n "b" 'my/ocaml-compile-build
  :desc "Test"              :n "T" 'my/ocaml-compile-test
+ :desc "type enclosing"    :n "t" #'merlin-type-enclosing
  :desc "Dune Watch"        :n "w" 'dune-watch-minor-mode
  :desc "Promote"           :n "p" 'dune-promote
  :desc "Next error"        :n "N" 'merlin-error-next
