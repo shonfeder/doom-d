@@ -37,9 +37,7 @@
        ;;indent-guides     ; highlighted indent columns
        (ligatures         ; ligatures or substitute text with pretty symbols
         +extra
-        +fira
-        +iosevka
-        )
+        +fira)
        ;;minimap           ; show a map of the code on the side
        modeline          ; snazzy, Atom-inspired modeline, plus API
        nav-flash         ; blink cursor line after big motions
@@ -150,7 +148,8 @@
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
-       ocaml             ; an objective camel
+       (ocaml
+        -pretty)             ; an objective camel
        (org              ; organize your plain life in plain text
         +attach          ; custom attachment system
         +babel           ; running code in org

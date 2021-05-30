@@ -28,6 +28,25 @@
 (fset 'surround-word-with-quotes
       (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("ysiW\"" 0 "%d")) arg)))
 
+
+;; From https://emacs.stackexchange.com/a/34882/293
+(defun my/add-visual-replacement (from to)
+  "Make `prettify-symbols-mode' replace string FROM with string TO.
+
+Updates `prettify-symbols-alist'.  You may need to toggle
+`prettify-symbols-mode' to make the changes take effect.
+
+Each character of TO is vertically aligned using the baseline,
+such that base-left of the character is aligned with base-right
+of the preceding character.  Refer to `reference-point-alist'
+for more information."
+  (push (cons from (let ((composition nil))
+                     (dolist (char (string-to-list to)
+                                   (nreverse (cdr composition)))
+                       (push char composition)
+                       (push '(Br . Bl) composition))))
+        prettify-symbols-alist))
+
 ;;;; FLYSPELL
 
 ;; TODO RM?
@@ -319,9 +338,17 @@ Uses `org-clock-csv-to-file'."
 (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
+(add-hook! prog-mode
+  ;; Enable fira-code ligatures
+  (fira-code-mode)
+  (prettify-symbols-mode-set-explicitly))
+
+
 (add-hook! tuareg-mode
   (if (file-exists-p "~/lib/ocaml/dune-watch.el")
       (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
+
+  (my/add-visual-replacement "fun" "λ..")
 
   (setq dune-watch-minor-mode 't)
   ;; Customization to ocaml font faces

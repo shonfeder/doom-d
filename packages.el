@@ -63,6 +63,7 @@
 (package! poly-markdown)
 (package! epresent)
 (package! systemd)
+(package! fira-code-mode)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
