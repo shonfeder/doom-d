@@ -70,9 +70,8 @@
                                      :host github
                                      :repo "Camsbury/etymology-of-word"))
 
-;; (package! tla-mode :recipe (:type git
-;;                              :host github
-;;                              :repo "ratish-punnoose/tla-mode"))
+(package! tla+-mode :recipe (:type git
+                             :repo "https://git.sdf.org/bch/tlamode.git"))
 
 (package! maude-mode :recipe (:type git
                              :host github
