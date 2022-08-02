@@ -47,12 +47,11 @@ for more information."
                        (push '(Br . Bl) composition))))
         prettify-symbols-alist))
 
-;;;; FLYSPELL
+;;;; General Writing
 
-;; TODO RM?
-;; (add-hook! text-mode
-;;   (flyspell-mode 1)
-;;   (auto-fill-mode 1))
+(add-hook! text-mode
+  (flyspell-mode 1)
+  (auto-fill-mode 1))
 
 ;; (add-hook! flyspell-mode
 ;;   (setq flyspell-issue-message-flag nil)
@@ -77,7 +76,6 @@ for more information."
 (add-to-list '+format-on-save-enabled-modes 'js2-mode t)
 (add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
 (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
-(add-to-list '+format-on-save-enabled-modes 'scala-mode t)
 (add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
 
 ;;;; ORG
@@ -156,7 +154,7 @@ for more information."
          my-informal-org))
 
   (setq org-refile-targets
-        `((nil :maxlevel . 3) ; Support refiling in the current file
+        `((nil :maxlevel . 3)           ; Support refiling in the current file
           (,(my/org-file "notes.org") :maxlevel . 3)
           (,(my/org-file "scheduled.org") :level . 1)
           (,(my/org-file "eventual.org") :level . 1)
@@ -166,6 +164,7 @@ for more information."
         '(("@synechepedia" . ?s)
           ("@ocaml" . ?o)
           ("#apalache" . ?a)
+          ("#audits" . ?x)
           ("#community" . ?c)
           ("#design". ?d)
           ("#devenv" . ?v)
@@ -181,7 +180,16 @@ for more information."
   (setf (alist-get "t" org-capture-templates nil nil 'equal)
         '("Inbox todo" entry
           (file+headline +org-capture-todo-file "Inbox")
-          "* TODO %?\n%i\n%a")))
+          "* TODO %?\n%i\n%a"))
+
+  (add-to-list
+   'org-capture-templates
+   '("c" "Code note" entry
+     (file+headline +org-capture-todo-file "Inbox")
+     "* TODO %?\n#+begin_src\n%i\n#+end_src\nfile:%F::%(with-current-buffer (org-capture-get :original-buffer) (number-to-string (line-number-at-pos)))\n%a")
+   't)
+
+  )
 
 ;;;  FIXME?
 (add-hook! org-tree-slide-mode
@@ -264,11 +272,11 @@ Uses `org-clock-csv-to-file'."
   (turn-on-flyspell))
 
 
-;;;; KEY BINDINGS
+;; KEY BINDINGS
 
 (map!
  ;; TODO Switch to 't' leader
- ;;;; 't' is for "text"
+ ;; 't' is for "text"
  ;; 'tt' is for "transpose text"
  :n "ttw" #'transpose-words
  :n "ttl" #'transpose-lines
@@ -338,10 +346,10 @@ Uses `org-clock-csv-to-file'."
 (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
-(add-hook! prog-mode
-  ;; Enable fira-code ligatures
-  (fira-code-mode)
-  (prettify-symbols-mode-set-explicitly))
+;; (add-hook! prog-mode
+;;   ;; Enable fira-code ligatures
+;;   (fira-code-mode)
+;;   (prettify-symbols-mode-set-explicitly))
 
 
 (add-hook! tuareg-mode
@@ -447,8 +455,19 @@ Uses `org-clock-csv-to-file'."
   (setq tla+-tlatools-path "/opt/TLA+Toolbox/tla2tools.jar"))
 
 ;; SCALA
-;; (add-hook! scala-mode
-;;   (setq flycheck-scala-executable "mvn scala:cc -DemacsMode=true"))
+(add-hook! scala-mode
+  ;; do not like what this does to the text
+  (prettify-symbols-mode -1))
+
+;; PYTHON
+
+(add-hook! python-mode
+  (poetry-tracking-mode))
+
+(map!
+ :map (python-mode-map)
+ :localleader
+ :desc "poetry mode" "p" #'poetry)
 
 ;; FIXME is this the result of a regression in doom-emacs?
 ;; MAGIT
@@ -463,3 +482,8 @@ Uses `org-clock-csv-to-file'."
 ;; Rast
 (if (file-exists-p "~/Sync/oss/rast/rast/edit/rast-mode.el")
     (require 'rast "~/Sync/oss/rast/rast/edit/rast-mode.el"))
+
+;; Informal Audits stuff
+(let ((audit-snips "~/Sync/informal-systems/mvd/audits/audits-internal/guide/snippets/"))
+  (if (file-exists-p audit-snips)
+      (add-to-list 'yas-snippet-dirs audit-snips 't)))

@@ -36,8 +36,7 @@
        ;;hydra
        ;;indent-guides     ; highlighted indent columns
        (ligatures         ; ligatures or substitute text with pretty symbols
-        +extra
-        +fira)
+        +extra)
        ;;minimap           ; show a map of the code on the side
        modeline          ; snazzy, Atom-inspired modeline, plus API
        nav-flash         ; blink cursor line after big motions
@@ -46,7 +45,7 @@
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
-       ;; unicode           ; extended unicode support for various languages
+       unicode           ; extended unicode support for various languages
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
@@ -88,7 +87,8 @@
 
        :tools
        ;;ansible
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       (debugger         ; FIXME stepping through code, to help you add bugs
+        +lsp)
        direnv
        docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
@@ -100,11 +100,11 @@
        (magit +forge)      ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
-       ;;pdf               ; pdf enhancements
+       pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
-       ;;terraform         ; infrastructure as code
+       terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
 
@@ -136,7 +136,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        ;;json              ; At least it ain't XML
-       ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
+       (java +meghanada) ; the poster child for carpal tunnel syndrome
        javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -144,10 +144,10 @@
        ;;lean
        ;;factor
        ;;ledger            ; an accounting system in Emacs
-       ;;lua               ; one-based indices? one-based indices
+       lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
-       ;;nix               ; I hereby declare "nix geht mehr!"
+       nix               ; I hereby declare "nix geht mehr!"
        (ocaml
         -pretty)             ; an objective camel
        (org              ; organize your plain life in plain text
@@ -160,7 +160,7 @@
         +pomodoro        ; be fruitful with the tomato technique
         +present         ; Emacs for presentations
         +protocol        ; Support for org-protocol:// links
-        +roam)           ; org-roam support
+        +brain)           ; org-brainproto support
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
@@ -173,7 +173,7 @@
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
        rest              ; Emacs as a REST client
-       ;; rst               ; ReST in peace
+       rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        (rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
         +lsp)
