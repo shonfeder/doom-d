@@ -64,6 +64,7 @@
 (package! epresent)
 (package! systemd)
 (package! fira-code-mode)
+(package! z3-mode)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git

@@ -113,7 +113,7 @@
        ;;tty               ; improve the terminal Emacs experience
 
        :lang
-       ;;agda              ; types of types of types of types...
+       ;; agda              ; types of types of types of types...
        ;;cc                ; C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
@@ -150,17 +150,18 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        (ocaml
         -pretty)             ; an objective camel
-       (org              ; organize your plain life in plain text
-        +attach          ; custom attachment system
-        +babel           ; running code in org
-        +capture         ; org-capture in and outside of Emacs
-        +export          ; Exporting org to whatever you want
-        +habit           ; Keep track of your habits
-        +pandoc          ; export-with-pandoc support
-        +pomodoro        ; be fruitful with the tomato technique
-        +present         ; Emacs for presentations
-        +protocol        ; Support for org-protocol:// links
-        +roam)           ; org-roam support
+       (org                  ; organize your plain life in plain text
+        +attach              ; custom attachment system
+        +babel               ; running code in org
+        +capture             ; org-capture in and outside of Emacs
+        +export              ; Exporting org to whatever you want
+        +habit               ; Keep track of your habits
+        +pandoc              ; export-with-pandoc support
+        +pomodoro            ; be fruitful with the tomato technique
+        +present             ; Emacs for presentations
+        +protocol            ; Support for org-protocol:// links
+        ;; +roam             ; org-roam support
+        )
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more

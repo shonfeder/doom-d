@@ -12,7 +12,7 @@
 
 ;;;; GENERAL
 
-(setq org-roam-directory "~/Dropbox/org/roam")
+;; (setq org-roam-directory "~/Dropbox/org/roam")
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
@@ -50,9 +50,9 @@ for more information."
 ;;;; FLYSPELL
 
 ;; TODO RM?
-;; (add-hook! text-mode
-;;   (flyspell-mode 1)
-;;   (auto-fill-mode 1))
+(add-hook! text-mode
+  ;; (flyspell-mode 1)
+  (auto-fill-mode 1))
 
 ;; (add-hook! flyspell-mode
 ;;   (setq flyspell-issue-message-flag nil)
@@ -79,6 +79,7 @@ for more information."
 (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
 (add-to-list '+format-on-save-enabled-modes 'scala-mode t)
 (add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
+(add-to-list '+format-on-save-enabled-modes 'tuareg-mode t)
 
 ;;;; ORG
 
@@ -86,23 +87,23 @@ for more information."
 ;; (require 'org-roam-protocol)
 
 ;;;  FIXME WTF for some reason the hook isn't working :(
-(setq org-roam-dailies-capture-templates
-      '(("d" "default" entry #'org-roam-capture--get-point
-         "* Routine
+;; (setq org-roam-dailies-capture-templates
+;;       '(("d" "default" entry #'org-roam-capture--get-point
+;;          "* Routine
 
-- [ ] Exercised
-- [ ] Mediated
+;; - [ ] Exercised
+;; - [ ] Mediated
 
-* Events
+;; * Events
 
-- %?
+;; - %?
 
-* [[file:../20201228235441-joy.org][Joy]]
+;; * [[file:../20201228235441-joy.org][Joy]]
 
--
-"
-         :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n")))
+;; -
+;; "
+;;          :file-name "daily/%<%Y-%m-%d>"
+;;          :head "#+title: %<%Y-%m-%d>\n")))
 
 ;;;; FIXME Unduing https://github.com/hlissner/doom-emacs/issues/2393
 (define-key!
@@ -125,6 +126,14 @@ for more information."
   (setq my-informal-org "~/Sync/informal-systems/org/informal.org")
   (setq org-directory "~/Dropbox/org")
 
+  ;; Configure org-ref
+  (require 'org-ref)
+  ;; use ivy as completion engine
+  (setq org-ref-completion-library 'org-ref-ivy-cite)
+  (require 'org-ref-ivy-cite)
+  ;; Enable org-ref cite completion using ivy bound to C-c [
+  (org-ref-ivy-cite-completion)
+
   ;; Workaround for https://github.com/hlissner/doom-emacs/issues/3172
   (electric-indent-local-mode -1)
 
@@ -146,6 +155,7 @@ for more information."
   (setq org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
   (setq org-clock-in-switch-to-state "STRT")
   (setq org-duration-format (quote h:mm))
+  (setq org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 2:00 3:00")))
 
   ;; AGENDA
   (setq org-agenda-files
@@ -156,7 +166,7 @@ for more information."
          my-informal-org))
 
   (setq org-refile-targets
-        `((nil :maxlevel . 3) ; Support refiling in the current file
+        `((nil :maxlevel . 3)           ; Support refiling in the current file
           (,(my/org-file "notes.org") :maxlevel . 3)
           (,(my/org-file "scheduled.org") :level . 1)
           (,(my/org-file "eventual.org") :level . 1)
@@ -220,9 +230,6 @@ Uses `org-clock-csv-to-file'."
 (setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
       org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
       org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
-
-;; use ivy as completion engine
-(setq org-ref-completion-library 'org-ref-ivy-cite)
 
 ;;;; SYNECHEPEDIA
 (defvar synechepedia-dir
@@ -350,22 +357,29 @@ Uses `org-clock-csv-to-file'."
 
   (my/add-visual-replacement "fun" "λ..")
 
+  ;; Don't insert new comment indicators on new lines
+  (setq +evil-want-o/O-to-continue-comments nil)
+
   (setq dune-watch-minor-mode 't)
-  ;; Customization to ocaml font faces
-  (custom-set-faces!
-    '(tuareg-font-lock-extension-node-face
-      :background nil
-      :foreground "seagreen")
-    '(tuareg-font-lock-constructor-face
-      :foreground "CadetBlue")
-    '(tuareg-font-lock-module-face
-      :foreground "DarkSalmon"
-      :weight light)
-    '(tuareg-font-lock-governing-face
-      :foreground "MistyRose4"
-      :inherit 'italic)
-    '(tuareg-font-lock-operator-face
-      :foreground "SteelBlue")))
+
+  ;; ;; Customization to ocaml font faces
+  ;; (custom-set-faces!
+  ;;   '(tuareg-font-lock-extension-node-face
+  ;;     :background nil
+  ;;     :foreground "seagreen")
+  ;;   '(tuareg-font-lock-constructor-face
+  ;;     :foreground "CadetBlue")
+  ;;   '(tuareg-font-lock-module-face
+  ;;     :foreground "DarkSalmon"
+  ;;     :weight light)
+  ;;   '(tuareg-font-lock-governing-face
+  ;;     :foreground "MistyRose4"
+  ;;     :inherit 'italic)
+  ;;   '(tuareg-font-lock-operator-face
+  ;;     :foreground "SteelBlue"))
+
+  )
+
 
 (add-hook! merlin-mode
   (custom-set-faces!
@@ -410,8 +424,8 @@ Uses `org-clock-csv-to-file'."
            (add-hook 'find-file-hook (lambda () (opam-update-env nil))))
 
 ;; λ-Prolog
-;; (if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
-;;     (load-file "~/lib/teyjus/emacs/teyjus.el"))
+(if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
+    (load-file "~/lib/teyjus/emacs/teyjus.el"))
 
 ;; MARKDOWN
 
@@ -446,6 +460,9 @@ Uses `org-clock-csv-to-file'."
 (add-hook! tla+-mode
   (setq tla+-tlatools-path "/opt/TLA+Toolbox/tla2tools.jar"))
 
+(add-hook! z3-mode
+  (setq z3-solver-cmd "/bin/env z3"))
+
 ;; SCALA
 ;; (add-hook! scala-mode
 ;;   (setq flycheck-scala-executable "mvn scala:cc -DemacsMode=true"))
@@ -463,3 +480,7 @@ Uses `org-clock-csv-to-file'."
 ;; Rast
 (if (file-exists-p "~/Sync/oss/rast/rast/edit/rast-mode.el")
     (require 'rast "~/Sync/oss/rast/rast/edit/rast-mode.el"))
+
+;;  Agda
+(load-file (let ((coding-system-for-read 'utf-8))
+                (shell-command-to-string "agda-mode locate")))
