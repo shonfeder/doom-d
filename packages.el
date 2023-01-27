@@ -65,7 +65,7 @@
 (package! systemd)
 (package! fira-code-mode)
 (package! protobuf-mode)
-(package! poetry)
+;; (package! poetry)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
@@ -80,3 +80,5 @@
                              :repo "ssaavedra/maude-mode"))
 
 (unpin! magit forge)
+
+(package! evil-colemak-basics) ; colemak remaps

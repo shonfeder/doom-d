@@ -12,6 +12,21 @@
 
 ;;;; GENERAL
 
+(setq my/using-external-monitor 't)
+
+(defun my/toggle-monitor-settings ()
+  "Toggle font etc. between external monitors"
+  (interactive)
+  (setq my/using-external-monitor (not my/using-external-monitor))
+  (if my/using-external-monitor
+      (setq doom-font (font-spec :family "Fira Code Light" :size 26))
+    (setq doom-font (font-spec :family "Fira Code Light" :size 18)))
+  ;; (doom/reload)
+  ;; (sleep-for 1)
+  (doom/reload-theme))
+(my/toggle-monitor-settings)
+
+(setq doom-theme 'doom-ephemeral)
 (setq org-roam-directory "~/Dropbox/org/roam")
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
@@ -23,6 +38,13 @@
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 (add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
 (add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
+
+;; Colemak keys for jumping
+(setq my/colemak-home-row '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?o))
+;; see https://github.com/abo-abo/avy/wiki/defcustom
+(setq avy-keys my/colemak-home-row)
+;; https://github.com/abo-abo/ace-window#aw-keys
+(setq aw-keys my/colemak-home-row)
 
 ;;;; TEXT MANIPULATION FUNCTIONS
 (fset 'surround-word-with-quotes
@@ -110,11 +132,13 @@ for more information."
 (map!
  :map (org-mode-map)
  :localleader :desc "Org Columns" "C" #'org-columns
- :localleader (:prefix ("S" . "subtree")
-                :desc "Archive"       "a" #'org-archive-subtree
-                :desc "Move up"       "k" #'org-move-subtree-up
-                :desc "Move down"     "j" #'org-move-subtree-down
-                :desc "Narrow toggle" "n" #'org-toggle-narrow-to-subtree))
+ :localleader (:prefix ("s" . "subtree")
+               :desc "Archive"       "a" #'org-archive-subtree
+               :desc "Move up"       "e" #'org-move-subtree-up
+               :desc "Move down"     "n" #'org-move-subtree-down
+               :desc "Demote"        "i" #'org-demote-subtree
+               :desc "Promote"       "m" #'org-promote-subtree
+               :desc "Narrow toggle" "t" #'org-toggle-narrow-to-subtree))
 
 (defun my/org-file (f)
   (concat (file-name-as-directory org-directory) f))
@@ -272,17 +296,16 @@ Uses `org-clock-csv-to-file'."
   (turn-on-flyspell))
 
 
-;; KEY BINDINGS
+;; GENRAL KEY BINDINGS
 
 (map!
- ;; TODO Switch to 't' leader
- ;; 't' is for "text"
+ ;; todo switch to 't' leader 't' is for "text"
  ;; 'tt' is for "transpose text"
  :n "ttw" #'transpose-words
  :n "ttl" #'transpose-lines
  :n "ttp" #'transpose-paragraphs
  :nv "ta"  #'align-regexp
- ;;;; 'tl' is for 'text lookup'
+;;;; 'tl' is for 'text lookup'
  ;; 'tld is for 'text lokup definition'
  :nv "tld" #'define-word-at-point
  ;; 'tle is for 'text lokup etymology'
@@ -290,22 +313,25 @@ Uses `org-clock-csv-to-file'."
  ;; 's' is for "surround" TODO
  ;; :n "ts\"" '(execute-kbd-macro (symbol-function 'surround-word-with-quotes))
 
- ;;;; 'g' is for "go to"
+ ;; 'g' is for "go to"
  :n "gw" #'evil-avy-goto-word-or-subword-1
  :n "gl" #'evil-avy-goto-line
 
  :n "C-;" #'iedit-mode
 
  :leader "d" #'save-buffer
- ;;;; SPC is for "space"
+;;;; SPC is for "space"
  ;; :leader (:prefix ("g" . "git")
  ;;           (:prefix ("y" . "yank")
  ;;             :desc "Yank git link" "l" #'git-link
  ;;             :desc "Yank git commit link" "h" #'git-link-homepage))
 
  :leader (:prefix ("F". "frame")
-           :desc "Switch other frame" "o" #'other-frame
-           :desc "Create new frame" "n" #'new-frame)
+          :desc "Switch other frame" "o" #'other-frame
+          :desc "Create new frame" "n" #'new-frame)
+
+ :leader "gp" #'magit-push
+ :leader "tm" #'my/toggle-monitor-settings
  )
 
 
@@ -426,13 +452,13 @@ Uses `org-clock-csv-to-file'."
 (map!
  :map (markdown-mode-map)
  :localleader (:prefix ("s". "style")
-                :desc "Bold" "b" #'markdown-insert-bold
-                :desc "Italic" "i" #'markdown-insert-italic
-                :desc "Code" "c" #'markdown-insert-code
-                :desc "Code Block" "C" #'markdown-insert-gfm-code-block
-                :desc "Quote" "q" #'markdown-insert-blockquote
-                :desc "Footenote" "f" #'markdown-insert-footnote
-                :desc "Strikethru" "s" #'markdown-insert-strike-through))
+               :desc "Bold" "b" #'markdown-insert-bold
+               :desc "Italic" "i" #'markdown-insert-italic
+               :desc "Code" "c" #'markdown-insert-code
+               :desc "Code Block" "C" #'markdown-insert-gfm-code-block
+               :desc "Quote" "q" #'markdown-insert-blockquote
+               :desc "Footenote" "f" #'markdown-insert-footnote
+               :desc "Strikethru" "s" #'markdown-insert-strike-through))
 
 ;; TYPESCRIPT
 
@@ -449,20 +475,22 @@ Uses `org-clock-csv-to-file'."
           ("\\.docx\\'" "xdg-open")
           ("\\.DOCX\\'" "xdg-open") )))
 
+(map!
+ :map dired-mode-map
+ :localleader "e" #'wdired-change-to-wdired-mode)
 ;; TLA+
 
 (add-hook! tla+-mode
   (setq tla+-tlatools-path "/opt/TLA+Toolbox/tla2tools.jar"))
 
 ;; SCALA
-(add-hook! scala-mode
-  ;; do not like what this does to the text
-  (prettify-symbols-mode -1))
+;; Disable terrible unicode replacements for types
+(add-to-list '+ligatures-in-modes 'scala-mode 'append)
+(setq +ligatures-extras-in-modes '(not scala-mode))
 
 ;; PYTHON
-
-(add-hook! python-mode
-  (poetry-tracking-mode))
+;; (add-hook! python-mode
+;;   (poetry-tracking-mode 0))
 
 (map!
  :map (python-mode-map)
@@ -471,6 +499,7 @@ Uses `org-clock-csv-to-file'."
 
 ;; FIXME is this the result of a regression in doom-emacs?
 ;; MAGIT
+;;
 (map!
  :map magit-status-mode-map
  :n "<tab>" 'magit-section-toggle)
@@ -487,3 +516,22 @@ Uses `org-clock-csv-to-file'."
 (let ((audit-snips "~/Sync/informal-systems/mvd/audits/audits-internal/guide/snippets/"))
   (if (file-exists-p audit-snips)
       (add-to-list 'yas-snippet-dirs audit-snips 't)))
+
+;; colemaks
+(add-hook! evil-colemak-basics-mode
+  ;; (setq evil-colemak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
+  (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
+
+(map!
+ :after evil-colemak-basics
+ :map evil-colemak-basics-keymap
+ :nv "j" #'ace-window
+ :nv "gn" #'evil-avy-goto-line-below
+ :nv "ge" #'evil-avy-goto-line-above
+
+ ;; fixes for DH
+ :nvm "m" #'evil-backward-char
+ :nvm "h" #'evil-set-marker
+ )
+
+(global-evil-colemak-basics-mode) ; Enable colemak rebinds
