@@ -65,17 +65,21 @@
 (package! systemd)
 (package! fira-code-mode)
 (package! z3-mode)
+(package! protobuf-mode)
+;; (package! poetry)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
                                      :host github
                                      :repo "Camsbury/etymology-of-word"))
 
-;; (package! tla-mode :recipe (:type git
-;;                              :host github
-;;                              :repo "ratish-punnoose/tla-mode"))
+(package! tla+-mode :recipe (:type git
+                             :repo "https://git.sdf.org/bch/tlamode.git"))
 
 (package! maude-mode :recipe (:type git
                              :host github
                              :repo "ssaavedra/maude-mode"))
 
+(unpin! magit forge)
+
+(package! evil-colemak-basics) ; colemak remaps
