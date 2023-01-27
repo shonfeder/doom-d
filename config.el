@@ -305,7 +305,8 @@ Uses `org-clock-csv-to-file'."
 ;; GENRAL KEY BINDINGS
 
 (map!
- ;; todo switch to 't' leader 't' is for "text"
+ ;; TODO Switch to 't' leader
+ ;; 't' is for "text"
  ;; 'tt' is for "transpose text"
  :n "ttw" #'transpose-words
  :n "ttl" #'transpose-lines
@@ -338,6 +339,9 @@ Uses `org-clock-csv-to-file'."
 
  :leader "gp" #'magit-push
  :leader "tm" #'my/toggle-monitor-settings
+
+ ;; eww browser launching
+ :leader "e" #'eww
  )
 
 
@@ -345,11 +349,19 @@ Uses `org-clock-csv-to-file'."
 ;;
 
 ;; TODO Add to tuareg mode
-(defun my/jump-to-dune-file ()
+(defun my/jump-to-dune-project-file ()
   (interactive)
   (let*
       ((project-root (locate-dominating-file buffer-file-name "dune-project"))
        (dune-file (concat (file-name-as-directory project-root) "dune-project")))
+    (find-file-other-window dune-file)))
+
+(defun my/jump-to-dune-file ()
+  (interactive)
+  (let*
+      (
+       (dune-root (locate-dominating-file buffer-file-name "dune"))
+       (dune-file (concat (file-name-as-directory dune-root) "dune")))
     (find-file-other-window dune-file)))
 
 (defun my/ocaml-compile (cmd)
@@ -430,11 +442,12 @@ Uses `org-clock-csv-to-file'."
  :desc "Test"              :n "T" 'my/ocaml-compile-test
  :desc "type enclosing"    :n "t" #'merlin-type-enclosing
  :desc "Dune Watch"        :n "w" 'dune-watch-minor-mode
- :desc "Promote"           :n "p" 'dune-promote
- :desc "Next error"        :n "N" 'merlin-error-next
- :desc "Prev error "       :n "P" 'merlin-error-prev
+ :desc "Promote"           :n "P" 'dune-promote
+ :desc "Next error"        :n "n" 'merlin-error-next
+ :desc "Prev error "       :n "p" 'merlin-error-prev
  :desc "ocamlformat"       :n "f" #'ocamlformat
  :desc "dune-project file" :n "d" #'my/jump-to-dune-file
+ :desc "dune-project file" :n "D" #'my/jump-to-dune-project-file
  (:prefix ("y". "yank")
   :desc "Yank type" "t" #'merlin-copy-enclosing))
 
