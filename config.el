@@ -554,6 +554,8 @@ Uses `org-clock-csv-to-file'."
 (map!
  :after evil-colemak-basics
  :map evil-colemak-basics-keymap
+ :n  "f" #'evil-avy-goto-word-or-subword-1
+
  :nv "j" #'ace-window
  :nv "gn" #'evil-avy-goto-line-below
  :nv "ge" #'evil-avy-goto-line-above
