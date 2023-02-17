@@ -42,8 +42,9 @@
 (setq my/colemak-home-row '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?o))
 ;; see https://github.com/abo-abo/avy/wiki/defcustom
 (setq avy-keys my/colemak-home-row)
-;; https://github.com/abo-abo/ace-window#aw-keys
-(setq aw-keys my/colemak-home-row)
+(after! ace-window
+  ;; https://github.com/abo-abo/ace-window#aw-keys
+  (setq aw-keys my/colemak-home-row))
 
 ;;;; TEXT MANIPULATION FUNCTIONS
 (fset 'surround-word-with-quotes
@@ -548,13 +549,13 @@ Uses `org-clock-csv-to-file'."
 
 ;; colemaks
 (add-hook! evil-colemak-basics-mode
-  ;; (setq evil-colemak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
+  ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
   (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
 
 (map!
  :after evil-colemak-basics
  :map evil-colemak-basics-keymap
- :n  "f" #'evil-avy-goto-word-or-subword-1
+ :n  "J" #'evil-avy-goto-word-or-subword-1
 
  :nv "j" #'ace-window
  :nv "gn" #'evil-avy-goto-line-below
