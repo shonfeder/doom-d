@@ -54,18 +54,20 @@
 ;; From elpa/melpa
 (package! define-word)
 (package! dhall-mode)
+(package! epresent)
+(package! fira-code-mode)
 (package! graphviz-dot-mode)
 (package! org-clock-csv)
 (package! org-ref)
-(package! restclient)
-(package! yaml-mode)
-(package! polymode)
+(package! ox-rss)
 (package! poly-markdown)
-(package! epresent)
-(package! systemd)
-(package! fira-code-mode)
-(package! z3-mode)
+(package! polymode)
 (package! protobuf-mode)
+(package! restclient)
+(package! systemd)
+(package! yaml-mode)
+(package! z3-mode)
+(package! elpher)
 ;; (package! poetry)
 
 ;; From source
@@ -73,13 +75,9 @@
                                      :host github
                                      :repo "Camsbury/etymology-of-word"))
 
-(package! tla+-mode :recipe (:type git
-                             :repo "https://git.sdf.org/bch/tlamode.git"))
 
 (package! maude-mode :recipe (:type git
                              :host github
                              :repo "ssaavedra/maude-mode"))
-
-(unpin! magit forge)
 
 (package! evil-colemak-basics) ; colemak remaps

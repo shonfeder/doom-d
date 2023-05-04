@@ -150,11 +150,12 @@ for more information."
 
   ;; Configure org-ref
   (require 'org-ref)
+  ;; TODO FIX!
   ;; use ivy as completion engine
-  (setq org-ref-completion-library 'org-ref-ivy-cite)
-  (require 'org-ref-ivy-cite)
+  ;; (setq org-ref-completion-library 'org-ref-ivy-cite)
+  ;; (require 'org-ref-ivy-cite)
   ;; Enable org-ref cite completion using ivy bound to C-c [
-  (org-ref-ivy-cite-completion)
+  ;; (org-ref-ivy-cite-completion)
 
   ;; Workaround for https://github.com/hlissner/doom-emacs/issues/3172
   (electric-indent-local-mode -1)
@@ -279,6 +280,7 @@ Uses `org-clock-csv-to-file'."
   "org-publish from source and push both repos"
   (interactive)
   (require 'synechepedia "~/Dropbox/synechepedia/org/.publish.el")
+  (require 'magit)
   (save-buffer)
   ;; Disbale flyspell mode, cause it makes publishing super slow
   (flyspell-mode-off)
@@ -507,8 +509,6 @@ Uses `org-clock-csv-to-file'."
  :localleader "e" #'wdired-change-to-wdired-mode)
 ;; TLA+
 
-(add-hook! tla+-mode
-  (setq tla+-tlatools-path "/opt/TLA+Toolbox/tla2tools.jar"))
 
 (add-hook! z3-mode
   (setq z3-solver-cmd "/bin/env z3"))
