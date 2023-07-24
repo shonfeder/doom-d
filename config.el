@@ -470,7 +470,7 @@ Uses `org-clock-csv-to-file'."
 
 (add-hook! fstar-mode
            ;; sync the opam environment to work with sandbocked install of fstar
-           (add-hook 'find-file-hook (lambda () (opam-update-env nil))))
+           (add-hook 'find-file-hook (lambda () (tuareg-opam-update-env nil))))
 
 ;; λ-Prolog
 (if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
@@ -555,9 +555,9 @@ Uses `org-clock-csv-to-file'."
 (map!
  :after evil-colemak-basics
  :map evil-colemak-basics-keymap
- :n  "J" #'evil-avy-goto-word-or-subword-1
+ :n  "J" #'ace-window
 
- :nv "j" #'ace-window
+ :nv "j" #'evil-avy-goto-word-or-subword-1
  :nv "gn" #'evil-avy-goto-line-below
  :nv "ge" #'evil-avy-goto-line-above
 
