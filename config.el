@@ -90,10 +90,16 @@ for more information."
  :leader
  :desc "Find in other window" "c O" #'xref-find-definitions-other-window)
 
+(map!
+ :map flycheck-mode-map
+ :localleader
+ :desc "List errors" "e" #'flycheck-list-errors)
+
 ;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
 (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
 (add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
-(add-to-list '+format-on-save-enabled-modes 'typescript-mode t)
+(add-to-list '+format-on-save-enabled-modes 'rjsx-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'typescript-mode t)
 (add-to-list '+format-on-save-enabled-modes 'json-mode t)
 (add-to-list '+format-on-save-enabled-modes 'js2-mode t)
 (add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
@@ -102,9 +108,6 @@ for more information."
 (add-to-list '+format-on-save-enabled-modes 'tuareg-mode t)
 
 ;;;; ORG
-
-;; org-roam
-;; (require 'org-roam-protocol)
 
 ;;;  FIXME WTF for some reason the hook isn't working :(
 ;; (setq org-roam-dailies-capture-templates
@@ -125,6 +128,9 @@ for more information."
 ;;          :file-name "daily/%<%Y-%m-%d>"
 ;;          :head "#+title: %<%Y-%m-%d>\n")))
 
+;; https://github.com/tecosaur/org-pandoc-import
+(use-package! org-pandoc-import :after org)
+
 ;;;; FIXME Unduing https://github.com/hlissner/doom-emacs/issues/2393
 (define-key!
   [remap org-set-tags-command]     #'org-set-tags-command)
@@ -139,7 +145,9 @@ for more information."
                :desc "Move down"     "n" #'org-move-subtree-down
                :desc "Demote"        "i" #'org-demote-subtree
                :desc "Promote"       "m" #'org-promote-subtree
-               :desc "Narrow toggle" "t" #'org-toggle-narrow-to-subtree))
+               :desc "Narrow toggle" "t" #'org-toggle-narrow-to-subtree)
+ :localleader (:prefix ("v" . "view")
+               :desc "Toggle latex" "l" #'org-latex-preview))
 
 (defun my/org-file (f)
   (concat (file-name-as-directory org-directory) f))
@@ -224,6 +232,14 @@ for more information."
      "* TODO %?\n#+begin_src\n%i\n#+end_src\nfile:%F::%(with-current-buffer (org-capture-get :original-buffer) (number-to-string (line-number-at-pos)))\n%a")
    't)
 
+  (setq org-format-latex-options
+        '(:foreground default
+          :background default
+          :scale 3
+          :html-foreground "Black"
+          :html-background "Transparent"
+          :html-scale 1.0
+          :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
   )
 
 ;;;  FIXME?
@@ -475,6 +491,11 @@ Uses `org-clock-csv-to-file'."
 ;; λ-Prolog
 (if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
     (load-file "~/lib/teyjus/emacs/teyjus.el"))
+
+;; QUINT
+(let ((quintmode "~/Sync/informal-systems/apalache/quint/editor-plugins/emacs/quint-mode.el"))
+  (if (file-exists-p quintmode)
+      (load-file quintmode)))
 
 ;; MARKDOWN
 

@@ -81,3 +81,9 @@
                              :repo "ssaavedra/maude-mode"))
 
 (package! evil-colemak-basics) ; colemak remaps
+
+;; https://github.com/tecosaur/org-pandoc-import
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
