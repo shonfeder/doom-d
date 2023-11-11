@@ -88,9 +88,14 @@
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
 
+
 (package! quint-mode
   :recipe (:type git
            :host github
            :repo "informalsystems/quint"
            :branch "main"
            :files ("editor-plugins/emacs/*.el")))
+
+(package! ocamlformat
+  :recipe (:host github :repo "ocaml-ppx/ocamlformat" :files ("emacs/*.el"))
+  :pin "6734dfc1992eb782f0a936ce3cd7c78b7c1d39d3")

@@ -267,6 +267,7 @@ Uses `org-clock-csv-to-file'."
     (message "Exported timesheet to %s from (%s %s)" fname arcfile srcfile)))
 
 ;;;; BIBLIOGRAPHY MANAGEMENT
+(setq org-cite-global-bibliography '("~/Dropbox/bibliography/references.bib"))
 
 ;;    org-ref settings
 (setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
@@ -293,22 +294,29 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (require 'synechepedia "~/Dropbox/synechepedia/org/.publish.el")
   (require 'magit)
+
   (save-buffer)
   ;; Disbale flyspell mode, cause it makes publishing super slow
   (flyspell-mode-off)
   (remove-hook 'text-mode-hook 'flyspell-mode)
+
+  ;; org-site config
+  ;; See https://blog.tecosaur.com/tmio/2021-07-31-citations.html#basic-usage
+  (setq org-cite-export-processors '((t csl)))
+
   ;; set `t` to force republish all or `f` to only republish changes
   (org-publish-project "synechepedia")
+
   (cl-labels
       ((push-repo (dir)
-                  (cd dir)
-                  (magit-run-git "add" "--all")
-                  (magit-run-git "commit" "--all"
-                                 (format-time-string "--message=Update %F %R"))
-                  (let ((current-branch (magit-get-current-branch)))
-                    (magit-git-push current-branch
-                                    (concat "origin/" current-branch)
-                                    nil))))
+         (cd dir)
+         (magit-run-git "add" "--all")
+         (magit-run-git "commit" "--all"
+                        (format-time-string "--message=Update %F %R"))
+         (let ((current-branch (magit-get-current-branch)))
+           (magit-git-push current-branch
+                           (concat "origin/" current-branch)
+                           nil))))
     (let ((current-dir default-directory))
       (push-repo synechepedia-org-dir)
       (push-repo synechepedia-site-dir)
@@ -381,7 +389,7 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (save-buffer)
   (let* ((default-directory
-           (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
+          (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
          (compile-command (concat "(cd " default-directory " && opam exec -- dune " cmd ")"))
          (compilation-directory
           (or (locate-dominating-file buffer-file-name "Makefile") nil)))
@@ -480,6 +488,7 @@ Uses `org-clock-csv-to-file'."
 
 (add-hook! fstar-mode
            ;; sync the opam environment to work with sandbocked install of fstar
+           (add-hook 'mode-local-init-hook (lambda () (tuareg-opam-update-env nil)))
            (add-hook 'find-file-hook (lambda () (tuareg-opam-update-env nil))))
 
 ;; λ-Prolog
