@@ -72,16 +72,12 @@ for more information."
 ;;;; General Writing
 
 (add-hook! text-mode
-  (flyspell-mode 1)
-  (auto-fill-mode 1))
-
-;; (add-hook! flyspell-mode
-;;   (setq flyspell-issue-message-flag nil)
-;;   (setq +flyspell-immediately nil))
+           ;; Sould be using spell-fu now?
+           ;; (flyspell-mode 1)
+           (auto-fill-mode 1))
 
 ;; This is too slow when loading modes
 ;; Can I figure out a way to load the hook asyncronously?
-;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 ;; LSP Mode
 
@@ -96,16 +92,16 @@ for more information."
  :desc "List errors" "e" #'flycheck-list-errors)
 
 ;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
-(add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
-(add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
-(add-to-list '+format-on-save-enabled-modes 'rjsx-mode t)
-;; (add-to-list '+format-on-save-enabled-modes 'typescript-mode t)
-(add-to-list '+format-on-save-enabled-modes 'json-mode t)
-(add-to-list '+format-on-save-enabled-modes 'js2-mode t)
-(add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
-(add-to-list '+format-on-save-enabled-modes 'sh-mode t)
-(add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
-(add-to-list '+format-on-save-enabled-modes 'tuareg-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'rjsx-mode t)
+;; ;; (add-to-list '+format-on-save-enabled-modes 'typescript-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'json-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'js2-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'markdown-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'tuareg-mode t)
 
 ;;;; ORG
 
@@ -316,9 +312,7 @@ Uses `org-clock-csv-to-file'."
     (let ((current-dir default-directory))
       (push-repo synechepedia-org-dir)
       (push-repo synechepedia-site-dir)
-      (cd current-dir)))
-  (add-hook 'text-mode-hook 'flyspell-mode)
-  (turn-on-flyspell))
+      (cd current-dir))))
 
 
 ;; GENRAL KEY BINDINGS
@@ -570,8 +564,8 @@ Uses `org-clock-csv-to-file'."
 
 ;; colemaks
 (add-hook! evil-colemak-basics-mode
-  ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
-  (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
+           ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
+           (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
 
 (map!
  :after evil-colemak-basics
