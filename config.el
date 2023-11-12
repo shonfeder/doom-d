@@ -411,10 +411,17 @@ Uses `org-clock-csv-to-file'."
 (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
-;; (add-hook! prog-mode
-;;   ;; Enable fira-code ligatures
-;;   (fira-code-mode)
-;;   (prettify-symbols-mode-set-explicitly))
+(add-hook!
+ prog-mode
+ (after! spell-fu
+   ;; Ensure spell-fu works in prog-modes
+   (setq spell-fu-faces-include
+         '(font-lock-comment-face
+           font-lock-doc-face
+           font-lock-string-face
+           tree-sitter-hl-face:comment
+           tree-sitter-hl-face:string
+           tree-sitter-hl-face:string.special))))
 
 
 (add-hook! tuareg-mode
