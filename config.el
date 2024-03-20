@@ -151,6 +151,8 @@ for more information."
 (add-hook! org-mode
   (setq my-informal-org "~/Sync/informal-systems/org/informal.org")
   (setq org-directory "~/Dropbox/org")
+  (setq org-modules '(ol-bibtex org-collector))
+
 
   ;; Configure org-ref
   (require 'org-ref)
@@ -309,14 +311,14 @@ Uses `org-clock-csv-to-file'."
 
   (cl-labels
       ((push-repo (dir)
-         (cd dir)
-         (magit-run-git "add" "--all")
-         (magit-run-git "commit" "--all"
-                        (format-time-string "--message=Update %F %R"))
-         (let ((current-branch (magit-get-current-branch)))
-           (magit-git-push current-branch
-                           (concat "origin/" current-branch)
-                           nil))))
+                  (cd dir)
+                  (magit-run-git "add" "--all")
+                  (magit-run-git "commit" "--all"
+                                 (format-time-string "--message=Update %F %R"))
+                  (let ((current-branch (magit-get-current-branch)))
+                    (magit-git-push current-branch
+                                    (concat "origin/" current-branch)
+                                    nil))))
     (let ((current-dir default-directory))
       (push-repo synechepedia-org-dir)
       (push-repo synechepedia-site-dir)
@@ -389,7 +391,7 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (save-buffer)
   (let* ((default-directory
-          (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
+           (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
          (compile-command (concat "(cd " default-directory " && opam exec -- dune " cmd ")"))
          (compilation-directory
           (or (locate-dominating-file buffer-file-name "Makefile") nil)))
@@ -538,7 +540,8 @@ Uses `org-clock-csv-to-file'."
 (map!
  :map dired-mode-map
  :localleader "e" #'wdired-change-to-wdired-mode)
-;; TLA+
+
+;; TLA+?
 
 
 (add-hook! z3-mode
@@ -582,6 +585,9 @@ Uses `org-clock-csv-to-file'."
 (add-hook! evil-colemak-basics-mode
            ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
            (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
+
+(add-hook! quint-mode
+  (lsp))
 
 (map!
  :after evil-colemak-basics
