@@ -365,6 +365,8 @@ Uses `org-clock-csv-to-file'."
 
  ;; eww browser launching
  :leader "e" #'eww
+ ;; RSS reader start
+ :leader "r" #'newsticker-show-news
  )
 
 
@@ -427,6 +429,7 @@ Uses `org-clock-csv-to-file'."
 
 
 (add-hook! tuareg-mode
+  (tuareg-opam-update-env (projectile-project-root))
   (if (file-exists-p "~/lib/ocaml/dune-watch.el")
       (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
 
@@ -568,6 +571,17 @@ Uses `org-clock-csv-to-file'."
  :map magit-status-mode-map
  :n "<tab>" 'magit-section-toggle)
 
+;; RSS
+
+(setq newsticker-url-list
+      '(("framasoft" "https://rss.framasoft.org")
+        ("ocaml.discourse" "https://discuss.ocaml.org/latest.rss")
+        ("Igor Konnov" "https://konnov.github.io/protocols-made-fun/feed.xml")))
+
+(map!
+ :map newsticker-treeview-mode-map
+ :n "q" 'newsticker-treeview-quit)
+
 ;; writegood
 (add-hook! writegood-mode
   (writegood-passive-voice-turn-off))
@@ -602,5 +616,10 @@ Uses `org-clock-csv-to-file'."
  :nvm "m" #'evil-backward-char
  :nvm "h" #'evil-set-marker
  )
+
+(map!
+ :mode eww-mode
+ :desc "Back"         :n "M" #'eww-back-url
+ :desc "Forward"      :n "I" #'eww-next-url)
 
 (global-evil-colemak-basics-mode) ; Enable colemak rebinds

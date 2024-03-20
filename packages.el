@@ -70,6 +70,8 @@
 (package! systemd)
 (package! yaml-mode)
 (package! z3-mode)
+(package! elpher)
+(package! adoc-mode)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
