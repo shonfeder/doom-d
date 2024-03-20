@@ -54,10 +54,13 @@
 ;; From elpa/melpa
 (package! define-word)
 (package! dhall-mode)
+(package! elpher)
 (package! epresent)
 (package! fira-code-mode)
 (package! graphviz-dot-mode)
+(package! nvm)                          ; Use the right node version
 (package! org-clock-csv)
+(package! org-contrib)
 (package! org-ref)
 (package! ox-rss)
 (package! poly-markdown)
@@ -67,8 +70,6 @@
 (package! systemd)
 (package! yaml-mode)
 (package! z3-mode)
-(package! elpher)
-;; (package! poetry)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
@@ -94,8 +95,22 @@
            :host github
            :repo "informalsystems/quint"
            :branch "main"
-           :files ("editor-plugins/emacs/*.el")))
+           :files ("editor-plugins/emacs/quint-mode.el")))
+
+(package! lsp-quint
+  :recipe (:type git
+           :host github
+           :repo "informalsystems/quint"
+           :branch "main"
+           :files ("editor-plugins/emacs/lsp-quint.el")))
 
 (package! ocamlformat
   :recipe (:host github :repo "ocaml-ppx/ocamlformat" :files ("emacs/*.el"))
   :pin "6734dfc1992eb782f0a936ce3cd7c78b7c1d39d3")
+
+(package! tla+-mode
+  :recipe (:type git
+           :host nil
+           :repo "https://git.sdf.org/bch/tlamode"
+           :files ("lisp/tla+-mode.el")
+           :branch "master"))
