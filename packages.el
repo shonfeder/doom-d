@@ -72,6 +72,11 @@
 (package! z3-mode)
 (package! elpher)
 (package! adoc-mode)
+(package! org-transclusion)
+
+;; Pinning to avoid broken versions
+;; (package! magit :pin "26be78e")
+;; (package! forge :pin "dc4e9ca")
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
@@ -91,28 +96,6 @@
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
 
-
-(package! quint-mode
-  :recipe (:type git
-           :host github
-           :repo "informalsystems/quint"
-           :branch "main"
-           :files ("editor-plugins/emacs/quint-mode.el")))
-
-(package! lsp-quint
-  :recipe (:type git
-           :host github
-           :repo "informalsystems/quint"
-           :branch "main"
-           :files ("editor-plugins/emacs/lsp-quint.el")))
-
 (package! ocamlformat
   :recipe (:host github :repo "ocaml-ppx/ocamlformat" :files ("emacs/*.el"))
   :pin "6734dfc1992eb782f0a936ce3cd7c78b7c1d39d3")
-
-(package! tla+-mode
-  :recipe (:type git
-           :host nil
-           :repo "https://git.sdf.org/bch/tlamode"
-           :files ("lisp/tla+-mode.el")
-           :branch "master"))

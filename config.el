@@ -6,31 +6,34 @@
 
 ;;;; LOCAL SETTINGS
 
-(let ((local-settings "~/.doom.d/local.el"))
-  (if (file-exists-p local-settings)
-      (load-file local-settings)))
+;; (let ((local-settings "~/.doom.d/local.el"))
+;;   (if (file-exists-p local-settings)
+;;       (load-file local-settings)))
 
 ;;;; GENERAL
 
 (setq my/using-external-monitor 't)
+(setq doom-font (font-spec :family "Fira Code Light" :size 28))
+(setq delete-by-moving-to-trash t)
 
 (defun my/toggle-monitor-settings ()
   "Toggle font etc. between external monitors"
   (interactive)
   (setq my/using-external-monitor (not my/using-external-monitor))
   (if my/using-external-monitor
-      (setq doom-font (font-spec :family "Fira Code Light" :size 26))
+      (setq doom-font (font-spec :family "Fira Code Light" :size 28))
     (setq doom-font (font-spec :family "Fira Code Light" :size 18)))
   ;; (doom/reload)
   ;; (sleep-for 1)
   (doom/reload-theme))
-(my/toggle-monitor-settings)
 
 (setq doom-theme 'doom-ephemeral)
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
 (setq auth-sources '("~/.authinfo"))
+
+(doom-load-envvars-file "~/.config/emacs/.local/env")
 
 ;; TODO Refactor
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
@@ -86,6 +89,10 @@ for more information."
  :leader
  :desc "Find in other window" "c O" #'xref-find-definitions-other-window)
 
+(add-hook! lsp-mode
+           ;; disable lens overlays
+           :append (setq lsp-lens-enable nil))
+
 (map!
  :map flycheck-mode-map
  :localleader
@@ -102,8 +109,20 @@ for more information."
 ;; (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
 ;; (add-to-list '+format-on-save-enabled-modes 'gfm-mode t)
 ;; (add-to-list '+format-on-save-enabled-modes 'tuareg-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'dune-mode t)
+;; (setopt
+;;  +format-on-save-enabled-modes
+;;  )
+
+
+;; (add-to-list '+format-on-save-enabled-modes )
 
 ;;;; ORG
+
+;;;; ROAM
+(setq org-roam-directory (file-truename "~/Sync/tarides/notes/org-roam/"))
+(org-roam-db-autosync-mode)
+;; (add-hook! org-roam-mode)
 
 ;;;  FIXME WTF for some reason the hook isn't working :(
 ;; (setq org-roam-dailies-capture-templates
@@ -131,17 +150,29 @@ for more information."
 (define-key!
   [remap org-set-tags-command]     #'org-set-tags-command)
 
+;; View the org TODOs but just for the current agenda
+(defun my/org-agenda-current-buffer ()
+  (interactive)
+  (let ((og-org-agenda-files org-agenda-files)
+        (tmp-org-agenda-files (list (buffer-file-name (current-buffer)))))
+    (setq org-agenda-files tmp-org-agenda-files)
+    (org-todo-list)
+    (setq org-agenda-files og-org-agenda-files)))
 
 (map!
  :map (org-mode-map)
+ :after evil-colemak-basics
  :localleader :desc "Org Columns" "C" #'org-columns
+ :localleader :desc "org-clock-display" "c D" #'org-clock-display
+ :localleader :desc "Buffer Todo List" "T" #'my/org-agenda-current-buffer
  :localleader (:prefix ("s" . "subtree")
                :desc "Archive"       "a" #'org-archive-subtree
                :desc "Move up"       "e" #'org-move-subtree-up
                :desc "Move down"     "n" #'org-move-subtree-down
                :desc "Demote"        "i" #'org-demote-subtree
                :desc "Promote"       "m" #'org-promote-subtree
-               :desc "Narrow toggle" "t" #'org-toggle-narrow-to-subtree)
+               :desc "Narrow toggle" "t" #'org-toggle-narrow-to-subtree
+               :desc "Todo Tree"     "T" #'org-show-todo-tree)
  :localleader (:prefix ("v" . "view")
                :desc "Toggle latex" "l" #'org-latex-preview))
 
@@ -149,7 +180,7 @@ for more information."
   (concat (file-name-as-directory org-directory) f))
 
 (add-hook! org-mode
-  (setq my-informal-org "~/Sync/informal-systems/org/informal.org")
+  (setq my-tarides-org "~/Sync/tarides/notes/notes.org")
   (setq org-directory "~/Dropbox/org")
   (setq org-modules '(ol-bibtex org-collector))
 
@@ -192,31 +223,14 @@ for more information."
          (my/org-file "notes.org")
          (my/org-file "todo.org" )
          (my/org-file "scheduled.org")
-         my-informal-org))
+         my-tarides-org))
 
   (setq org-refile-targets
         `((nil :maxlevel . 3)           ; Support refiling in the current file
           (,(my/org-file "notes.org") :maxlevel . 3)
           (,(my/org-file "scheduled.org") :level . 1)
           (,(my/org-file "eventual.org") :level . 1)
-          (,my-informal-org :level . 1)))
-
-  (setq org-tag-alist
-        '(("@synechepedia" . ?s)
-          ("@ocaml" . ?o)
-          ("#apalache" . ?a)
-          ("#audits" . ?x)
-          ("#community" . ?c)
-          ("#design". ?d)
-          ("#devenv" . ?v)
-          ("#implementing" . ?i)
-          ("#meeting" . ?m)
-          ("#planning" . ?l)
-          ("#productivity" . ?p)
-          ("#research" . ?r)
-          ("#support" . ?u)
-          ("#plaintext" . ?t)
-          ("#DOVES" . ?f)))
+          (,my-tarides-org :level . 1)))
 
   (setf (alist-get "t" org-capture-templates nil nil 'equal)
         '("Inbox todo" entry
@@ -248,11 +262,6 @@ for more information."
 
 
 ;; org-clock
-
-(map!
- :map (org-mode-map)
- :localleader
- :desc "org-clock-display" "c D" #'org-clock-display)
 
 (defun org-clock-csv-buffer-to-file ()
   "Export a csv of the org-clock entries in the current buffer
@@ -311,64 +320,67 @@ Uses `org-clock-csv-to-file'."
 
   (cl-labels
       ((push-repo (dir)
-                  (cd dir)
-                  (magit-run-git "add" "--all")
-                  (magit-run-git "commit" "--all"
-                                 (format-time-string "--message=Update %F %R"))
-                  (let ((current-branch (magit-get-current-branch)))
-                    (magit-git-push current-branch
-                                    (concat "origin/" current-branch)
-                                    nil))))
+         (cd dir)
+         (magit-run-git "add" "--all")
+         (magit-run-git "commit" "--all"
+                        (format-time-string "--message=Update %F %R"))
+         (let ((current-branch (magit-get-current-branch)))
+           (magit-git-push current-branch
+                           (concat "origin/" current-branch)
+                           nil))))
     (let ((current-dir default-directory))
       (push-repo synechepedia-org-dir)
       (push-repo synechepedia-site-dir)
       (cd current-dir))))
 
+;; https://github.com/nobiot/org-transclusion/issues/126#issuecomment-1694159821
+(defun org-transclusion-content-insert-add-overlay (beg end)
+  "Add fringe after transclusion."
+  (overlay-put (text-clone-make-overlay beg end (current-buffer))
+               'line-prefix
+               (org-transclusion-propertize-transclusion))
+  (overlay-put (text-clone-make-overlay beg end (current-buffer))
+               'wrap-prefix
+               (org-transclusion-propertize-transclusion)))
 
-;; GENRAL KEY BINDINGS
+;; https://github.com/nobiot/org-transclusion
+(use-package! org-transclusion
+  :after org
+  :init
+  (map!
+   :map (org-mode-map)
+   :localleader
+   :prefix ("u" . "transclUde")
 
-(map!
- ;; TODO Switch to 't' leader
- ;; 't' is for "text"
- ;; 'tt' is for "transpose text"
- :n "ttw" #'transpose-words
- :n "ttl" #'transpose-lines
- :n "ttp" #'transpose-paragraphs
- :nv "ta"  #'align-regexp
-;;;; 'tl' is for 'text lookup'
- ;; 'tld is for 'text lokup definition'
- :nv "tld" #'define-word-at-point
- ;; 'tle is for 'text lokup etymology'
- :nv "tle" #'etymology-of-word-at-point
- ;; 's' is for "surround" TODO
- ;; :n "ts\"" '(execute-kbd-macro (symbol-function 'surround-word-with-quotes))
+   :desc "Mode" "t" #'org-transclusion-mode
+   :desc "Deactivate" "D" #'org-transclusion-deactivate
+   :desc "Refresh" "f" #'org-transclusion-refresh
 
- ;; 'g' is for "go to"
- :n "gw" #'evil-avy-goto-word-or-subword-1
- :n "gl" #'evil-avy-goto-line
+   ;; Adding
+   :desc "Add" "a" #'org-transclusion-add
+   :desc "Add all" "A" #'org-transclusion-add-all
+   :desc "Add From link" "l" #'org-transclusion-make-from-link
 
- :n "C-;" #'iedit-mode
+   ;; Removing
+   :desc "Remove all" "r" #'org-transclusion-remove
+   :desc "Remove all" "R" #'org-transclusion-remove-all
 
- :leader "d" #'save-buffer
-;;;; SPC is for "space"
- ;; :leader (:prefix ("g" . "git")
- ;;           (:prefix ("y" . "yank")
- ;;             :desc "Yank git link" "l" #'git-link
- ;;             :desc "Yank git commit link" "h" #'git-link-homepage))
+   ;; Live sync
+   :desc "Start live sync" "s" #'org-transclusion-live-sync-start
+   :desc "Stop live sync" "S" #'org-transclusion-live-sync-exit
 
- :leader (:prefix ("F". "frame")
-          :desc "Switch other frame" "o" #'other-frame
-          :desc "Create new frame" "n" #'new-frame)
+   ;; Navigating
+   :desc "Open source" "o" #'org-transclusion-move-to-source
 
- :leader "gp" #'magit-push
- :leader "tm" #'my/toggle-monitor-settings
-
- ;; eww browser launching
- :leader "e" #'eww
- ;; RSS reader start
- :leader "r" #'newsticker-show-news
- )
-
+   ;; Subtrees
+   :desc "Promote Subtree" "m" #'org-transclusion-promote-subtree
+   :desc "Demote Subtree" "i" #'org-transclusion-demote-subtree)
+  :config
+  (add-hook 'before-save-hook #'org-transclusion-refresh)
+  (add-to-list 'org-transclusion-extensions 'org-transclusion-indent-mode)
+  (custom-set-faces! `(org-transclusion-fringe ; the backwards tick as opposed to apostrophe is *crucial*
+                       :foreground ,(doom-color 'green)
+                       :background ,(doom-color 'green))))
 
 ;; OCaml
 ;;
@@ -393,7 +405,7 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (save-buffer)
   (let* ((default-directory
-           (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
+          (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
          (compile-command (concat "(cd " default-directory " && opam exec -- dune " cmd ")"))
          (compilation-directory
           (or (locate-dominating-file buffer-file-name "Makefile") nil)))
@@ -417,6 +429,7 @@ Uses `org-clock-csv-to-file'."
 
 (add-hook!
  prog-mode
+ (which-function-mode 1)
  (after! spell-fu
    ;; Ensure spell-fu works in prog-modes
    (setq spell-fu-faces-include
@@ -429,11 +442,12 @@ Uses `org-clock-csv-to-file'."
 
 
 (add-hook! tuareg-mode
-  (tuareg-opam-update-env (projectile-project-root))
+           :local (prettify-symbols-mode -1))
+
+(add-hook! tuareg-mode
+  (opam-update-env (projectile-project-root))
   (if (file-exists-p "~/lib/ocaml/dune-watch.el")
       (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
-
-  (my/add-visual-replacement "fun" "λ..")
 
   ;; Don't insert new comment indicators on new lines
   (setq +evil-want-o/O-to-continue-comments nil)
@@ -507,11 +521,6 @@ Uses `org-clock-csv-to-file'."
 (if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
     (load-file "~/lib/teyjus/emacs/teyjus.el"))
 
-;; QUINT
-(let ((quintmode "~/Sync/informal-systems/apalache/quint/editor-plugins/emacs/quint-mode.el"))
-  (if (file-exists-p quintmode)
-      (load-file quintmode)))
-
 ;; MARKDOWN
 
 (map!
@@ -538,7 +547,15 @@ Uses `org-clock-csv-to-file'."
           ("\\.PDF\\'"  "xdg-open")
           ("\\.djvu\\'" "xdg-open")
           ("\\.docx\\'" "xdg-open")
-          ("\\.DOCX\\'" "xdg-open") )))
+          ("\\.DOCX\\'" "xdg-open")
+          ("\\.csv\\'" "xdg-open") )))
+
+(after! dirvish
+  (setq! dirvish-quick-access-entries
+         `(("h" "~/"                          "Home")
+           ("e" ,user-emacs-directory         "Emacs user directory")
+           ("d" "~/Downloads/"                "Downloads")
+           ("t" "~/.local/share/Trash/files/" "Trash"))))
 
 (map!
  :map dired-mode-map
@@ -576,7 +593,9 @@ Uses `org-clock-csv-to-file'."
 (setq newsticker-url-list
       '(("framasoft" "https://rss.framasoft.org")
         ("ocaml.discourse" "https://discuss.ocaml.org/latest.rss")
-        ("Igor Konnov" "https://konnov.github.io/protocols-made-fun/feed.xml")))
+        ("Igor Konnov" "https://konnov.github.io/protocols-made-fun/feed.xml")
+        ("Proof Society - Comments" "https://www.proofsociety.org/comments/feed/")
+        ("Proof Society - Entries" "https://www.proofsociety.org/entries/feed/")))
 
 (map!
  :map newsticker-treeview-mode-map
@@ -590,19 +609,12 @@ Uses `org-clock-csv-to-file'."
 (if (file-exists-p "~/Sync/oss/rast/rast/edit/rast-mode.el")
     (require 'rast "~/Sync/oss/rast/rast/edit/rast-mode.el"))
 
-;; Informal Audits stuff
-(let ((audit-snips "~/Sync/informal-systems/mvd/audits/audits-internal/guide/snippets/"))
-  (if (file-exists-p audit-snips)
-      (add-to-list 'yas-snippet-dirs audit-snips 't)))
-
 ;; colemaks
 (add-hook! evil-colemak-basics-mode
            ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
            (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
 
-(add-hook! quint-mode
-  (lsp))
-
+(global-evil-colemak-basics-mode) ; Enable colemak rebinds
 (map!
  :after evil-colemak-basics
  :map evil-colemak-basics-keymap
@@ -615,11 +627,75 @@ Uses `org-clock-csv-to-file'."
  ;; fixes for DH
  :nvm "m" #'evil-backward-char
  :nvm "h" #'evil-set-marker
- )
+
+ :gnvme "C-n" #'next-line
+ :gnvme "C-e" #'previous-line
+
+ :n "f" #'evil-find-char
+ :n "F" #'evil-find-char-backward
+
+ (:prefix ("t". "text")
+  :desc "Align Regexp" :nv "a" #'align-regexp
+  (:prefix ("l" . "lookup")
+   :desc "Define word" :nv "d" #'define-word-at-point
+   :desc "Etymology of word" :nv "e" #'etymology-of-word-at-point)
+  (:prefix ("t" . "transpose")
+   :desc "Words" :nv "w" #'transpose-words
+   :desc "Lines" :nv "l" #'transpose-lines
+   :desc "Paras" :nv "p" #'transpose-paragraphs))
+
+ ;; 's' is for "surround" TODO
+ ;; :n "ts\"" '(execute-kbd-macro (symbol-function 'surround-word-with-quotes))
+
+ :n "C-;" #'iedit-mode
+
+ :leader "d" #'save-buffer
+
+ :leader (:prefix ("F". "frame")
+          :desc "Switch other frame" "o" #'other-frame
+          :desc "Create new frame" "n" #'new-frame)
+
+ :leader "gp" #'magit-push
+ :leader "tm" #'my/toggle-monitor-settings
+
+ ;; eww browser launching
+ :leader "e" #'eww
+ ;; RSS reader start
+ :leader "r" #'newsticker-show-news)
 
 (map!
  :mode eww-mode
  :desc "Back"         :n "M" #'eww-back-url
  :desc "Forward"      :n "I" #'eww-next-url)
 
-(global-evil-colemak-basics-mode) ; Enable colemak rebinds
+
+(defun transform-thing-at-point (thing-type f)
+  (let* ((bounds (bounds-of-thing-at-point thing-type))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds)))
+         (newtext (funcall f text)))
+    (when bounds
+      (delete-region (car bounds) (cdr bounds))
+      (insert newtext))))
+
+(defun md-format-github-url (url)
+  (let ((parts
+         (string-split
+          (string-remove-prefix "https://github.com/" url) ; no op if prefix is not present
+          "/")))
+    (pcase parts
+      (`(,org ,repo ,_ ,id) (format "[%s/%s#%s](%s)" org repo id url))
+      (_ (error (format "point was not on a github url, instead found `%s`" url))))))
+
+(defun my/format-github-url ()
+  (interactive)
+  (transform-thing-at-point 'url 'md-format-github-url))
+
+(defun md-format-github-user (user)
+  (let ((name (string-remove-prefix "@" user)))
+    (format "[@%s](https://github.com/%s)" name name)))
+
+(defun my/format-github-handel ()
+  (interactive)
+  (transform-thing-at-point 'symbol 'md-format-github-user))
+
+;;  [@foobmarst](foobmarst)
