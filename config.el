@@ -7,13 +7,13 @@
 ;;;; LOCAL SETTINGS
 
 ;; (let ((local-settings "~/.doom.d/local.el"))
-;;   (if (file-exists-p local-settings)
+;;nnnn   (if (file-exists-p local-settings)
 ;;       (load-file local-settings)))
 
 ;;;; GENERAL
 
 (setq my/using-external-monitor 't)
-(setq doom-font (font-spec :family "Fira Code Light" :size 28))
+(setq doom-font (font-spec :family "Fira Code Light" :size 24))
 (setq delete-by-moving-to-trash t)
 
 (defun my/toggle-monitor-settings ()
@@ -21,13 +21,13 @@
   (interactive)
   (setq my/using-external-monitor (not my/using-external-monitor))
   (if my/using-external-monitor
-      (setq doom-font (font-spec :family "Fira Code Light" :size 28))
+      (setq doom-font (font-spec :family "Fira Code Light" :size 24))
     (setq doom-font (font-spec :family "Fira Code Light" :size 18)))
   ;; (doom/reload)
   ;; (sleep-for 1)
   (doom/reload-theme))
 
-(setq doom-theme 'doom-ephemeral)
+(setq doom-theme 'doom-wilmersdorf)
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-unordered-key-sequence 'true)
 (setq-default doom-localleader-key ",")
@@ -41,17 +41,13 @@
 (add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
 (add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
 
-;; Colemak keys for jumping
+;; Colemacs keys for jumping
 (setq my/colemak-home-row '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?o))
 ;; see https://github.com/abo-abo/avy/wiki/defcustom
 (setq avy-keys my/colemak-home-row)
 (after! ace-window
   ;; https://github.com/abo-abo/ace-window#aw-keys
   (setq aw-keys my/colemak-home-row))
-
-;;;; TEXT MANIPULATION FUNCTIONS
-(fset 'surround-word-with-quotes
-      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("ysiW\"" 0 "%d")) arg)))
 
 
 ;; From https://emacs.stackexchange.com/a/34882/293
@@ -120,8 +116,8 @@ for more information."
 ;;;; ORG
 
 ;;;; ROAM
-(setq org-roam-directory (file-truename "~/Sync/tarides/notes/org-roam/"))
-(org-roam-db-autosync-mode)
+                                        ;(setq org-roam-directory (file-truename "~/Sync/tarides/notes/org-roam/"))
+                                        ;e(org-roam-db-autosync-mode)
 ;; (add-hook! org-roam-mode)
 
 ;;;  FIXME WTF for some reason the hook isn't working :(
@@ -385,6 +381,9 @@ Uses `org-clock-csv-to-file'."
 ;; OCaml
 ;;
 
+;; TODO Load this is a propper package?
+(load-file "~/.config/doom/ocaml-defaults.el")
+
 ;; TODO Add to tuareg mode
 (defun my/jump-to-dune-project-file ()
   (interactive)
@@ -442,35 +441,53 @@ Uses `org-clock-csv-to-file'."
 
 
 (add-hook! tuareg-mode
-           :local (prettify-symbols-mode -1))
 
-(add-hook! tuareg-mode
-  (opam-update-env (projectile-project-root))
-  (if (file-exists-p "~/lib/ocaml/dune-watch.el")
-      (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
+           :local (prettify-symbols-mode -1)
 
-  ;; Don't insert new comment indicators on new lines
-  (setq +evil-want-o/O-to-continue-comments nil)
+           (opam-update-env (projectile-project-root))
+           (if (file-exists-p "~/lib/ocaml/dune-watch.el")
+               (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
 
-  (setq dune-watch-minor-mode 't)
+           ;; Don't insert new comment indicators on new lines
+           (setq +evil-want-o/O-to-continue-comments nil)
 
-  ;; ;; Customization to ocaml font faces
-  ;; (custom-set-faces!
-  ;;   '(tuareg-font-lock-extension-node-face
-  ;;     :background nil
-  ;;     :foreground "seagreen")
-  ;;   '(tuareg-font-lock-constructor-face
-  ;;     :foreground "CadetBlue")
-  ;;   '(tuareg-font-lock-module-face
-  ;;     :foreground "DarkSalmon"
-  ;;     :weight light)
-  ;;   '(tuareg-font-lock-governing-face
-  ;;     :foreground "MistyRose4"
-  ;;     :inherit 'italic)
-  ;;   '(tuareg-font-lock-operator-face
-  ;;     :foreground "SteelBlue"))
+           (setq dune-watch-minor-mode 't)
 
-  )
+           (custom-set-variables
+            '(indent-tabs-mode nil)
+            '(compilation-context-lines 2)
+            '(compilation-error-screen-columns nil)
+            '(compilation-scroll-output t)
+            '(compilation-search-path (quote (nil "src")))
+            '(electric-indent-mode nil)
+            '(next-line-add-newlines nil)
+            '(require-final-newline t)
+            '(sentence-end-double-space nil)
+            '(show-trailing-whitespace t)
+            '(visible-bell t)
+            '(show-paren-mode t)
+            '(next-error-highlight t)
+            '(next-error-highlight-no-select t)
+            '(backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
+            '(ac-use-fuzzy nil)
+            '(line-move-visual t))
+
+           ;; Customization to ocaml font faces
+           ;; (custom-set-faces!
+           ;;   '(tuareg-font-lock-extension-node-face
+           ;;     :background nil
+           ;;     :foreground "seagreen")
+           ;;   '(tuareg-font-lock-constructor-face
+           ;;     :foreground "CadetBlue")
+           ;;   '(tuareg-font-lock-module-face
+           ;;     :foreground "DarkSalmon"
+           ;;     :weight light)
+           ;;   '(tuareg-font-lock-governing-face
+           ;;     :foreground "MistyRose4"
+           ;;     :inherit 'italic)
+           ;;   '(tuareg-font-lock-operator-face
+           ;;     :foreground "SteelBlue"))
+           )
 
 
 (add-hook! merlin-mode
@@ -595,7 +612,8 @@ Uses `org-clock-csv-to-file'."
         ("ocaml.discourse" "https://discuss.ocaml.org/latest.rss")
         ("Igor Konnov" "https://konnov.github.io/protocols-made-fun/feed.xml")
         ("Proof Society - Comments" "https://www.proofsociety.org/comments/feed/")
-        ("Proof Society - Entries" "https://www.proofsociety.org/entries/feed/")))
+        ("Proof Society - Entries" "https://www.proofsociety.org/entries/feed/")
+        ("Arch News" "https://archlinux.org/feeds/news/")))
 
 (map!
  :map newsticker-treeview-mode-map
@@ -655,6 +673,16 @@ Uses `org-clock-csv-to-file'."
           :desc "Switch other frame" "o" #'other-frame
           :desc "Create new frame" "n" #'new-frame)
 
+ :leader (:prefix ("w". "window")
+                  "m" #'evil-window-left
+                  "i" #'evil-window-right
+                  "e" #'evil-window-up
+                  "n" #'evil-window-down
+                  "M" #'+evil/window-move-left
+                  "I" #'+evil/window-move-right
+                  "E" #'+evil/window-move-up
+                  "N" #'+evil/window-move-down)
+
  :leader "gp" #'magit-push
  :leader "tm" #'my/toggle-monitor-settings
 
@@ -668,6 +696,7 @@ Uses `org-clock-csv-to-file'."
  :desc "Back"         :n "M" #'eww-back-url
  :desc "Forward"      :n "I" #'eww-next-url)
 
+;;;; TEXT MANIPULATION FUNCTIONS
 
 (defun transform-thing-at-point (thing-type f)
   (let* ((bounds (bounds-of-thing-at-point thing-type))
@@ -698,4 +727,5 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (transform-thing-at-point 'symbol 'md-format-github-user))
 
-;;  [@foobmarst](foobmarst)
+(fset 'surround-word-with-quotes
+      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("ysiW\"" 0 "%d")) arg)))
