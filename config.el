@@ -12,6 +12,15 @@
 
 ;;;; GENERAL
 
+(defun my/doom-config-file (f)
+  "A file path relative to the doom user dir"
+  (file-name-concat doom-user-dir f))
+
+(defun my/load-if-exists (f)
+  "Load the given file, if it exists"
+  (if (file-exists-p f)
+      (load-file f)))
+
 (setq my/using-external-monitor 't)
 (setq doom-font (font-spec :family "Fira Code Light" :size 24))
 (setq delete-by-moving-to-trash t)
@@ -382,8 +391,10 @@ Uses `org-clock-csv-to-file'."
 ;; OCaml
 ;;
 
-;; TODO Load this is a propper package?
-(load-file "~/.config/doom/ocaml-defaults.el")
+(my/load-if-exists (my/doom-config-file "ocaml-defaults.el"))
+
+;; (if (file-exists-p (my/doom-config-file "ocaml-defaults.el"))
+;;     (load-file "~/.config/doom/ocaml-defaults.el"))
 
 ;; TODO Add to tuareg mode
 (defun my/jump-to-dune-project-file ()
@@ -536,8 +547,7 @@ Uses `org-clock-csv-to-file'."
            (add-hook 'find-file-hook (lambda () (tuareg-opam-update-env nil))))
 
 ;; λ-Prolog
-(if (file-exists-p "~/lib/teyjus/emacs/teyjus.el")
-    (load-file "~/lib/teyjus/emacs/teyjus.el"))
+(my/load-if-exists "~/lib/teyjus/emacs/teyjus.el")
 
 ;; MARKDOWN
 
