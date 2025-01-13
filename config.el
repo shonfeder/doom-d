@@ -33,7 +33,8 @@
 (setq-default doom-localleader-key ",")
 (setq auth-sources '("~/.authinfo"))
 
-(doom-load-envvars-file "~/.config/emacs/.local/env")
+;; rm?
+;; (doom-load-envvars-file "~/.config/emacs/.local/env")
 
 ;; TODO Refactor
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
