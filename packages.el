@@ -73,6 +73,7 @@
 (package! elpher)
 (package! adoc-mode)
 (package! org-transclusion)
+(package! jsonnet-mode)
 
 ;; Pinning to avoid broken versions
 ;; (package! magit :pin "26be78e")
