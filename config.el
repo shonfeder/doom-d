@@ -88,6 +88,13 @@ for more information."
 ;; This is too slow when loading modes
 ;; Can I figure out a way to load the hook asyncronously?
 
+;; eglot mode
+
+(add-hook! eglot-mode
+           ;; disable eglot inlays
+           :config
+           (eglot-inlay-hints-mode -1))
+
 ;; LSP Mode
 
 (map!
@@ -102,7 +109,8 @@ for more information."
 (map!
  :map flycheck-mode-map
  :localleader
- :desc "List errors" "e" #'flycheck-list-errors)
+ (:prefix ("e" . "error")
+  :desc "list" "e" #'flycheck-list-errors))
 
 ;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
 ;; (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
@@ -438,6 +446,23 @@ Uses `org-clock-csv-to-file'."
 (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
+(use-package! ocaml-eglot
+  :after tuareg
+  :hook
+  (tuareg-mode . ocaml-eglot)
+  (ocaml-eglot . eglot-ensure)
+  :config
+
+  (setq ocaml-eglot-construct-with-local-values 't)
+  (add-to-list '+lookup-references-functions #'ocaml-eglot-occurences)
+  (add-to-list '+lookup-type-definition-functions #'ocaml-eglot-find-declaration)
+  (add-to-list '+lookup-definition-functions #'ocaml-eglot-find-definition))
+
+(map! :after ocaml-eglot
+      :map doom-leader-code-map
+      (:prefix ("c" . "code")
+       :desc "Rename" :n "r" #'ocaml-eglot-rename))
+
 (add-hook!
  prog-mode
  (which-function-mode 1)
@@ -457,8 +482,6 @@ Uses `org-clock-csv-to-file'."
            :local (prettify-symbols-mode -1)
 
            (opam-update-env (projectile-project-root))
-           (if (file-exists-p "~/lib/ocaml/dune-watch.el")
-               (require 'dune-watch "~/lib/ocaml/dune-watch.el"))
 
            ;; Don't insert new comment indicators on new lines
            (setq +evil-want-o/O-to-continue-comments nil)
@@ -482,24 +505,7 @@ Uses `org-clock-csv-to-file'."
             '(next-error-highlight-no-select t)
             '(backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
             '(ac-use-fuzzy nil)
-            '(line-move-visual t))
-
-           ;; Customization to ocaml font faces
-           ;; (custom-set-faces!
-           ;;   '(tuareg-font-lock-extension-node-face
-           ;;     :background nil
-           ;;     :foreground "seagreen")
-           ;;   '(tuareg-font-lock-constructor-face
-           ;;     :foreground "CadetBlue")
-           ;;   '(tuareg-font-lock-module-face
-           ;;     :foreground "DarkSalmon"
-           ;;     :weight light)
-           ;;   '(tuareg-font-lock-governing-face
-           ;;     :foreground "MistyRose4"
-           ;;     :inherit 'italic)
-           ;;   '(tuareg-font-lock-operator-face
-           ;;     :foreground "SteelBlue"))
-           )
+            '(line-move-visual t)))
 
 
 (add-hook! merlin-mode
@@ -512,19 +518,32 @@ Uses `org-clock-csv-to-file'."
         "opam exec -- dune %s --watch --terminal-persistence=clear-on-rebuild"))
 (map!
  :map (tuareg-mode-map)
+ :after ocaml-eglot
+
  :localleader
- :desc "Check"             :n "c" 'my/ocaml-compile-check
- :desc "Build"             :n "b" 'my/ocaml-compile-build
- :desc "Test"              :n "T" 'my/ocaml-compile-test
- :desc "type enclosing"    :n "t" #'merlin-type-enclosing
- :desc "Dune Watch"        :n "w" 'dune-watch-minor-mode
- :desc "Promote"           :n "P" 'dune-promote
- :desc "Next error"        :n "n" 'merlin-error-next
- :desc "Prev error "       :n "p" 'merlin-error-prev
- :desc "ocamlformat"       :n "f" #'ocamlformat
- :desc "dune-project file" :n "d" #'my/jump-to-dune-file
- :desc "dune-project file" :n "D" #'my/jump-to-dune-project-file
- (:prefix ("y". "yank")
+ :desc "Type enclosing"  :n "t" #'ocaml-eglot-type-enclosing
+ :desc "Run ocamlformat" :n "f" #'ocamlformat
+ :desc "Case analysis"   :n "c" #'ocaml-eglot-destruct
+
+ (:prefix ("d" . "dune")
+  :desc "Check"                   :n "c" 'my/ocaml-compile-check
+  :desc "Build"                   :n "b" 'my/ocaml-compile-build
+  :desc "Test"                    :n "T" 'my/ocaml-compile-test
+  :desc "Dune Watch"              :n "w" 'dune-watch-minor-mode
+  :desc "Visit dune file"         :n "d" #'my/jump-to-dune-file
+  :desc "Visit dune-project file" :n "P" #'my/jump-to-dune-project-file
+  :desc "Promote"                 :n "p" 'dune-promote)
+
+ (:prefix ("h" . "hole")
+  :desc "Next hole" :n "n" 'ocaml-eglot-hole-next
+  :desc "Prev hole" :n "p" 'ocaml-eglot-hole-prev
+  :desc "Construct" :n "c" 'ocaml-eglot-construct)
+
+ (:prefix ("e" . "error")
+  :desc "Next error"       :n "n" 'ocaml-eglot-error-next
+  :desc "Prev error "      :n "p" 'ocaml-eglot-error-prev)
+
+ (:prefix ("y" . "yank")
   :desc "Yank type" "t" #'merlin-copy-enclosing))
 
 (map!

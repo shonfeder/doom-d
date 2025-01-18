@@ -100,3 +100,5 @@
 (package! ocamlformat
   :recipe (:host github :repo "ocaml-ppx/ocamlformat" :files ("emacs/*.el"))
   :pin "6734dfc1992eb782f0a936ce3cd7c78b7c1d39d3")
+
+(package! ocaml-eglot)
