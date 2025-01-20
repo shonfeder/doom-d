@@ -42,8 +42,18 @@
 (setq-default doom-localleader-key ",")
 (setq auth-sources '("~/.authinfo"))
 
-;; rm?
-;; (doom-load-envvars-file "~/.config/emacs/.local/env")
+(add-hook!
+ prog-mode
+ (which-function-mode 1)
+ (after! spell-fu
+   ;; Ensure spell-fu works in prog-modes
+   (setq spell-fu-faces-include
+         '(font-lock-comment-face
+           font-lock-doc-face
+           font-lock-string-face
+           tree-sitter-hl-face:comment
+           tree-sitter-hl-face:string
+           tree-sitter-hl-face:string.special))))
 
 ;; TODO Refactor
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
@@ -89,10 +99,8 @@ for more information."
 ;; Can I figure out a way to load the hook asyncronously?
 
 ;; eglot mode
-
-(add-hook! eglot-mode
+(add-hook! eglot-managed-mode
            ;; disable eglot inlays
-           :config
            (eglot-inlay-hints-mode -1))
 
 ;; LSP Mode
@@ -426,8 +434,9 @@ Uses `org-clock-csv-to-file'."
   (let* ((default-directory
           (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
          (compile-command (concat "(cd " default-directory " && opam exec -- dune " cmd ")"))
-         (compilation-directory
-          (or (locate-dominating-file buffer-file-name "Makefile") nil)))
+         ;; (compilation-directory
+         ;;  (or (locate-dominating-file buffer-file-name "Makefile") nil))
+         )
     (recompile)))
 
 (defun my/ocaml-compile-check ()
@@ -442,40 +451,17 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (my/ocaml-compile "test"))
 
+(defun my/ocaml-eglot-construct ()
+  "Construct a term, making a hole first if needed"
+  (interactive)
+  (if (equal (symbol-at-point) '_)
+      (ocaml-eglot-construct)
+    (progn (save-excursion (insert "_"))
+           (ocaml-eglot-construct))))
+
 ;; The same require added by opam user-setup
 (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
-
-(use-package! ocaml-eglot
-  :after tuareg
-  :hook
-  (tuareg-mode . ocaml-eglot)
-  (ocaml-eglot . eglot-ensure)
-  :config
-
-  (setq ocaml-eglot-construct-with-local-values 't)
-  (add-to-list '+lookup-references-functions #'ocaml-eglot-occurences)
-  (add-to-list '+lookup-type-definition-functions #'ocaml-eglot-find-declaration)
-  (add-to-list '+lookup-definition-functions #'ocaml-eglot-find-definition))
-
-(map! :after ocaml-eglot
-      :map doom-leader-code-map
-      (:prefix ("c" . "code")
-       :desc "Rename" :n "r" #'ocaml-eglot-rename))
-
-(add-hook!
- prog-mode
- (which-function-mode 1)
- (after! spell-fu
-   ;; Ensure spell-fu works in prog-modes
-   (setq spell-fu-faces-include
-         '(font-lock-comment-face
-           font-lock-doc-face
-           font-lock-string-face
-           tree-sitter-hl-face:comment
-           tree-sitter-hl-face:string
-           tree-sitter-hl-face:string.special))))
-
 
 (add-hook! tuareg-mode
 
@@ -516,6 +502,26 @@ Uses `org-clock-csv-to-file'."
 (add-hook! dune-watch-minor-mood
   (setq dune-watch-command-format
         "opam exec -- dune %s --watch --terminal-persistence=clear-on-rebuild"))
+
+(use-package! ocaml-eglot
+  :after tuareg
+  :hook
+  (tuareg-mode . ocaml-eglot)
+  (ocaml-eglot . eglot-ensure)
+  :config
+
+  (setq ocaml-eglot-construct-with-local-values 't)
+
+  (add-to-list '+lookup-documentation-functions #'ocaml-eglot-document)
+  (add-to-list '+lookup-references-functions #'ocaml-eglot-occurences)
+  (add-to-list '+lookup-type-definition-functions #'ocaml-eglot-find-declaration)
+  (add-to-list '+lookup-definition-functions #'ocaml-eglot-find-definition))
+
+(map! :after ocaml-eglot
+      :map doom-leader-code-map
+      :desc "Document identifier" "K" #'ocaml-eglot-document-identifier
+      :desc "Rename" "r" #'ocaml-eglot-rename)
+
 (map!
  :map (tuareg-mode-map)
  :after ocaml-eglot
@@ -523,7 +529,9 @@ Uses `org-clock-csv-to-file'."
  :localleader
  :desc "Type enclosing"  :n "t" #'ocaml-eglot-type-enclosing
  :desc "Run ocamlformat" :n "f" #'ocamlformat
- :desc "Case analysis"   :n "c" #'ocaml-eglot-destruct
+ :desc "Construct"       :n "c" #'my/ocaml-eglot-construct
+ :desc "Deconstruct"     :n "C" #'ocaml-eglot-destruct
+ :desc "Search"          :n "s" #'ocaml-eglot-search
 
  (:prefix ("d" . "dune")
   :desc "Check"                   :n "c" 'my/ocaml-compile-check
@@ -536,8 +544,7 @@ Uses `org-clock-csv-to-file'."
 
  (:prefix ("h" . "hole")
   :desc "Next hole" :n "n" 'ocaml-eglot-hole-next
-  :desc "Prev hole" :n "p" 'ocaml-eglot-hole-prev
-  :desc "Construct" :n "c" 'ocaml-eglot-construct)
+  :desc "Prev hole" :n "p" 'ocaml-eglot-hole-prev)
 
  (:prefix ("e" . "error")
   :desc "Next error"       :n "n" 'ocaml-eglot-error-next
@@ -556,7 +563,7 @@ Uses `org-clock-csv-to-file'."
  :desc "Ignored subdirs stanza" :n "u" #'dune-insert-ignored-subdirs-form
  :desc "Install stanza"         :n "i" #'dune-insert-install-form
  :desc "Library stanza"         :n "l" #'dune-insert-library-form
- :desc "Test stanza"            :n "t" #'dune-insert-test-form)
+ :desc "Test stanza"            :n "t") #'dune-insert-test-form
 
 ;; F*
 
