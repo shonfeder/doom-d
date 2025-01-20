@@ -4,12 +4,6 @@
 
 ;;;; Code:
 
-;;;; LOCAL SETTINGS
-
-;; (let ((local-settings "~/.doom.d/local.el"))
-;;nnnn   (if (file-exists-p local-settings)
-;;       (load-file local-settings)))
-
 ;;;; GENERAL
 
 (defun my/doom-config-file (f)
@@ -766,3 +760,13 @@ Uses `org-clock-csv-to-file'."
 
 (fset 'surround-word-with-quotes
       (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("ysiW\"" 0 "%d")) arg)))
+
+;; GENERAL postamble
+;; These things can be unstable, so we'd like to ensure the rest of the config
+;; can be loaded before we try them
+
+;;;; LOCAL SETTINGS
+
+(let ((local-settings (my/doom-config-file "local.el")))
+  (if (file-exists-p local-settings)
+      (load-file local-settings)))
