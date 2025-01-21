@@ -214,7 +214,7 @@
        ;;(rss +org)        ; emacs as an RSS reader
 
        :config
-       ;;literate
+       literate
        (default +bindings +smartparens))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

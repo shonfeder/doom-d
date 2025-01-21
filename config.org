@@ -1,8 +1,13 @@
+#+begin_src emacs-lisp
 ;;; ~/.doom.d/config.el -*- lexical-binding: t; -*-
 
 ;;; WARNING for config.el:
 ;;; This config is generated from ./config.org
+#+end_src
 
+* General configuration
+
+#+begin_src emacs-lisp
 ; A mellow, low-contrast, dark theme
 (setq doom-theme 'doom-wilmersdorf)
 
@@ -13,7 +18,10 @@
 
 ; Requires installing FiraCode: https://github.com/tonsky/FiraCode
 (setq doom-font (font-spec :family "Fira Code Light" :size 24))
+#+end_src
 
+** Helper functions
+#+begin_src emacs-lisp
 (defun my/doom-config-file (f)
   "A file path relative to the doom user dir"
   (file-name-concat doom-user-dir f))
@@ -22,7 +30,10 @@
   "Load the given file, if it exists"
   (if (file-exists-p f)
       (load-file f)))
+#+end_src
 
+** Handling eternal monitors
+#+begin_src emacs-lisp
 (setq my/using-external-monitor 't)
 
 (defun my/toggle-monitor-settings ()
@@ -35,7 +46,12 @@
   ;; (doom/reload)
   ;; (sleep-for 1)
   (doom/reload-theme))
+#+end_src
 
+
+** Colemaks-dh configuration
+
+#+begin_src emacs-lisp
 ;; Colemacs keys for jumping
 (global-evil-colemak-basics-mode) ; Enable colemak rebinds
 
@@ -50,7 +66,10 @@
 (add-hook! evil-colemak-basics-mode
   ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
   (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
+#+end_src
 
+** Global key bindings
+#+begin_src emacs-lisp
 (map!
  :after evil-colemak-basics
  :map evil-colemak-basics-keymap
@@ -108,7 +127,10 @@
  :leader "e" #'eww
  ;; RSS reader start
  :leader "r" #'newsticker-show-news)
+#+end_src
+** dired 📁
 
+#+begin_src emacs-lisp
 ;; DIRED
 (add-hook! dired-mode
   (dired-hide-details-mode)
@@ -131,6 +153,11 @@
  :map dired-mode-map
  :localleader "e" #'wdired-change-to-wdired-mode)
 
+#+end_src
+
+* Reading
+
+#+begin_src emacs-lisp
 (setq newsticker-url-list
       '(("framasoft" "https://rss.framasoft.org")
         ("ocaml.discourse" "https://discuss.ocaml.org/latest.rss")
@@ -147,7 +174,11 @@
  :mode eww-mode
  :desc "Back"         :n "M" #'eww-back-url
  :desc "Forward"      :n "I" #'eww-next-url)
+#+end_src
 
+* Writing Prose
+
+#+begin_src emacs-lisp
 (add-hook! writegood-mode
   ;; be little
   (writegood-passive-voice-turn-off))
@@ -155,7 +186,10 @@
 (add-hook! text-mode
    ; automatic line breaking
    (auto-fill-mode 1))
+#+end_src
 
+** Text manipulations
+#+begin_src emacs-lisp
 (defun transform-thing-at-point (thing-type f)
   (let* ((bounds (bounds-of-thing-at-point thing-type))
          (text   (buffer-substring-no-properties (car bounds) (cdr bounds)))
@@ -167,7 +201,11 @@
 ; FIXME
 (fset 'surround-word-with-quotes
       (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("ysiW\"" 0 "%d")) arg)))
+#+end_src
 
+** org-mode 💙
+
+#+begin_src emacs-lisp
 ;; https://github.com/tecosaur/org-pandoc-import
 (use-package! org-pandoc-import :after org)
 
@@ -406,7 +444,10 @@ Uses `org-clock-csv-to-file'."
   (custom-set-faces! `(org-transclusion-fringe ; the backwards tick as opposed to apostrophe is *crucial*
                        :foreground ,(doom-color 'green)
                        :background ,(doom-color 'green))))
+#+end_src
+** markdown
 
+#+begin_src emacs-lisp
 (map!
  :map (markdown-mode-map)
  :localleader (:prefix ("s". "style")
@@ -439,7 +480,15 @@ Uses `org-clock-csv-to-file'."
 (defun my/format-github-handel ()
   (interactive)
   (transform-thing-at-point 'symbol 'md-format-github-user))
+#+end_src
 
+
+* Writing Programs
+
+** Tools
+*** Spell checking
+In comments.
+#+begin_src emacs-lisp
 (add-hook!
  prog-mode
  (which-function-mode 1)
@@ -452,18 +501,28 @@ Uses `org-clock-csv-to-file'."
            tree-sitter-hl-face:comment
            tree-sitter-hl-face:string
            tree-sitter-hl-face:string.special))))
+#+end_src
 
+*** Magit
+
+#+begin_src emacs-lisp
 ;; FIXME is this the result of a regression in doom-emacs?
 ;; MAGIT
 ;;
 (map!
  :map magit-status-mode-map
  :n "<tab>" 'magit-section-toggle)
+#+end_src
 
+*** Eglot
+#+begin_src emacs-lisp
 (add-hook! eglot-managed-mode
            ;; disable eglot inlays
            (eglot-inlay-hints-mode -1))
+#+end_src
 
+*** LSP
+#+begin_src emacs-lisp
 (map!
  :map lsp-mode-map
  :leader
@@ -472,13 +531,21 @@ Uses `org-clock-csv-to-file'."
 (add-hook! lsp-mode
            ;; disable lens overlays
            :append (setq lsp-lens-enable nil))
+#+end_src
 
+*** Flycheck
+#+begin_src emacs-lisp
 (map!
  :map flycheck-mode-map
  :localleader
  (:prefix ("e" . "error")
   :desc "list" "e" #'flycheck-list-errors))
+#+end_src
+*** Autoformatting
 
+Disabling autoformatting for specific modes.
+
+#+begin_src emacs-lisp
 ;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
 ;; (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
 ;; (add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
@@ -494,13 +561,24 @@ Uses `org-clock-csv-to-file'."
 ;; (setopt
 ;;  +format-on-save-enabled-modes
 ;;  )
+#+end_src
 
+
+** Languages
+
+*** Mapping file extensions to their major mode
+
+#+begin_src emacs-lisp
 ;; TODO Refactor
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 (add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
 (add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
+#+end_src
 
+*** OCaml 🐫
+
+#+begin_src emacs-lisp
 (my/load-if-exists (my/doom-config-file "ocaml-defaults.el"))
 
 ;; (if (file-exists-p (my/doom-config-file "ocaml-defaults.el"))
@@ -659,20 +737,44 @@ Uses `org-clock-csv-to-file'."
  :desc "Library stanza"         :n "l" #'dune-insert-library-form
  :desc "Test stanza"            :n "t") #'dune-insert-test-form
 
+
+#+end_src
+
+*** F☆
+
+#+begin_src emacs-lisp
 (add-hook! fstar-mode
            ;; sync the opam environment to work with sandboxed install of fstar
            (add-hook 'mode-local-init-hook (lambda () (tuareg-opam-update-env nil)))
            (add-hook 'find-file-hook (lambda () (tuareg-opam-update-env nil))))
+#+end_src
 
+
+*** λ-Prolog
+
+#+begin_src emacs-lisp
 (my/load-if-exists "~/lib/teyjus/emacs/teyjus.el")
+#+end_src
 
+#+begin_src
+
+#+end_src
+
+*** Z3
+#+begin_src emacs-lisp
 (add-hook! z3-mode
   (setq z3-solver-cmd "/bin/env z3"))
-
+#+end_src
+*** Scala
+#+begin_src emacs-lisp
 ;; Disable terrible unicode replacements for types
 (add-to-list '+ligatures-in-modes 'scala-mode 'append)
 (setq +ligatures-extras-in-modes '(not scala-mode))
+#+end_src
 
+*** Python
+
+#+begin_src emacs-lisp
 (add-hook! python-mode
   (poetry-tracking-mode 0))
 
@@ -680,7 +782,19 @@ Uses `org-clock-csv-to-file'."
  :map (python-mode-map)
  :localleader
  :desc "poetry mode" "p" #'poetry)
+#+end_src
 
+* Local configuration
+
+An elisp file ~local.el~ can be used to set configuration specific to a
+particular machine.
+
+These things can be unstable, so they are at the end of the config to allow the
+core stuff to be loaded before the local configuration, so we still have most of
+the config in place in case the latter fails.
+
+#+begin_src emacs-lisp
 (let ((local-settings (my/doom-config-file "local.el")))
   (if (file-exists-p local-settings)
       (load-file local-settings)))
+#+end_src
