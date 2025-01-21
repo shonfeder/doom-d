@@ -78,10 +78,9 @@
   (:prefix ("t" . "transpose")
    :desc "Words" :nv "w" #'transpose-words
    :desc "Lines" :nv "l" #'transpose-lines
-   :desc "Paras" :nv "p" #'transpose-paragraphs))
-
- ;; 's' is for "surround" TODO
- ;; :n "ts\"" '(execute-kbd-macro (symbol-function 'surround-word-with-quotes))
+   :desc "Paras" :nv "p" #'transpose-paragraphs)
+  (:prefix ("s" . "surround")
+   :desc "Word with \"" :n "'" #'my/surround-word-with-quotes))
 
  :n "C-;" #'iedit-mode
 
@@ -164,9 +163,10 @@
       (delete-region (car bounds) (cdr bounds))
       (insert newtext))))
 
-; FIXME
-(fset 'surround-word-with-quotes
-      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("ysiW\"" 0 "%d")) arg)))
+(defun my/surround-word-with-quotes ()
+  "Surround the symbol at point in quotaton marks."
+  (interactive)
+  (transform-thing-at-point 'symbol (lambda (word) (format "%s%s%s" "\"" word "\""))))
 
 ;; https://github.com/tecosaur/org-pandoc-import
 (use-package! org-pandoc-import :after org)
