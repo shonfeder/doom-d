@@ -20,7 +20,7 @@
   (interactive
    (list
     (let ((default
-            (car (split-string (opam-shell-command-to-string "opam switch show --safe")))))
+           (car (split-string (opam-shell-command-to-string "opam switch show --safe")))))
       (completing-read
        (concat "opam switch (" default "): ")
        (split-string (opam-shell-command-to-string "opam switch list -s --safe") "\n")
@@ -53,8 +53,8 @@
 
 (defun opam-setup-complete ()
   (if (require 'company nil t)
-    (opam-setup-add-ocaml-hook
-      (lambda ()
+      (opam-setup-add-ocaml-hook
+       (lambda ()
          (company-mode)
          (defalias 'auto-complete 'company-complete)))
     (require 'auto-complete nil t)))
@@ -85,9 +85,9 @@
   ;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
   ;; by spaces.
   (define-key merlin-mode-map
-    (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
+              (kbd "C-c <up>") 'merlin-type-enclosing-go-up)
   (define-key merlin-mode-map
-    (kbd "C-c <down>") 'merlin-type-enclosing-go-down)
+              (kbd "C-c <down>") 'merlin-type-enclosing-go-down)
   (set-face-background 'merlin-type-face "skyblue"))
 
 (defun opam-setup-utop ()
@@ -98,8 +98,8 @@
 (defun opam-setup-ocamlformat ()
   (load (concat opam-share "/emacs/site-lisp/ocamlformat"))
   (opam-setup-add-ocaml-hook
-    (lambda ()
-      (define-key tuareg-mode-map (kbd "C-c C-f") #'ocamlformat))))
+   (lambda ()
+     (define-key tuareg-mode-map (kbd "C-c C-f") #'ocamlformat))))
 
 (defvar opam-tools
   '(("tuareg" . opam-setup-tuareg)
@@ -123,16 +123,46 @@
   (interactive)
   (dolist (tool opam-tools)
     (when (member (car tool) opam-tools-installed)
-     (funcall (symbol-function (cdr tool))))))
+      (funcall (symbol-function (cdr tool))))))
+
+(defun file-contents (filename)
+  "Return the contents of FILENAME."
+  (with-temp-buffer
+    (insert-file-contents filename)
+    (buffer-string)))
+
+(defun find-in-list (p l)
+  "Find the first item in l satisfying predicate p"
+  (if (null l)
+      'nil
+    (if (funcall p (car l))
+        (car l)
+      (find-in-list p (cdr l)))))
+
+(defun current-opam-switch ()
+  "Read the opam config to figure out its default switch"
+  (if (file-exists-p "~/.opam/config")
+      (let* ((opam-config (file-contents "~/.opam/config"))
+             (config-lines (split-string opam-config "\n"))
+             (switch-line (find-in-list (lambda (line) (string-prefix-p "switch:" line)) config-lines)))
+        (if switch-line
+            (file-name-concat "~/.opam" (string-trim (cadr (split-string switch-line " ")) "\"" "\""))
+          'nil))
+    'nil))
 
 (opam-auto-tools-setup)
 ;; ## end of OPAM user-setup addition for emacs / base ## keep this line
 ;; ## added by OPAM user-setup for emacs / ocp-indent ## 65214403b3078b656c4b15cadd17e2ae ## you can edit, but keep this line
 ;; Load ocp-indent from its original switch when not found in current switch
 (when (not (member "ocp-indent" opam-tools-installed))
-  (autoload 'ocp-setup-indent "/home/sf/Repos/opam-repo-ci/_opam/share/emacs/site-lisp/ocp-indent.el" "Improved indentation for Tuareg mode")
-  (autoload 'ocp-indent-caml-mode-setup "/home/sf/Repos/opam-repo-ci/_opam/share/emacs/site-lisp/ocp-indent.el" "Improved indentation for Caml mode")
-  (add-hook 'tuareg-mode-hook 'ocp-setup-indent t)
-  (add-hook 'caml-mode-hook 'ocp-indent-caml-mode-setup  t)
-  (setq ocp-indent-path "/home/sf/Repos/opam-repo-ci/_opam/bin/ocp-indent"))
+  (let* ((switch-dir (current-opam-switch))
+         (ocp-indent-el (file-name-concat switch-dir "share/emacs/site-lisp/ocp-indent.el"))
+         (ocp-indent-bin (file-name-concat switch-dir "bin/ocp-indent")))
+    (if switch
+        (progn
+          (autoload 'ocp-setup-indent ocp-indent-el "Improved indentation for Tuareg mode")
+          (autoload 'ocp-indent-caml-mode-setup ocp-indent-el "Improved indentation for Caml mode")
+          (add-hook 'tuareg-mode-hook 'ocp-setup-indent t)
+          (add-hook 'caml-mode-hook 'ocp-indent-caml-mode-setup  t)
+          (setq ocp-indent-path ocp-indent-bin)))))
 ;; ## end of OPAM user-setup addition for emacs / ocp-indent ## keep this line
