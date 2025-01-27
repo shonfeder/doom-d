@@ -13,7 +13,7 @@
 ;;
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
-
+;;
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -214,7 +214,7 @@
        ;;(rss +org)        ; emacs as an RSS reader
 
        :config
-       ;; literate
+       literate
        (default +bindings +smartparens))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

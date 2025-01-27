@@ -90,15 +90,20 @@
           :desc "Switch other frame" "o" #'other-frame
           :desc "Create new frame" "n" #'new-frame)
 
+ :leader (:prefix ("j". "jump")
+          :desc "Jump Forward" :nv "j" #'evil-jump-forward
+          :desc "Jump Backward" :nv "J" #'evil-jump-backward
+          :desc "Show Jumps" :nv "s" #'evil-show-jumps)
+
  :leader (:prefix ("w". "window")
-          "m" #'evil-window-left
-          "i" #'evil-window-right
-          "e" #'evil-window-up
-          "n" #'evil-window-down
-          "M" #'+evil/window-move-left
-          "I" #'+evil/window-move-right
-          "E" #'+evil/window-move-up
-          "N" #'+evil/window-move-down)
+                  "m" #'evil-window-left
+                  "i" #'evil-window-right
+                  "e" #'evil-window-up
+                  "n" #'evil-window-down
+                  "M" #'+evil/window-move-left
+                  "I" #'+evil/window-move-right
+                  "E" #'+evil/window-move-up
+                  "N" #'+evil/window-move-down)
 
  :leader "gp" #'magit-push
  :leader "tm" #'my/toggle-monitor-settings
