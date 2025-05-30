@@ -14,6 +14,10 @@
 ; Requires installing FiraCode: https://github.com/tonsky/FiraCode
 (setq doom-font (font-spec :family "Fira Code Light" :size 24))
 
+; Workaround for bug preventing bulk edits via wgrep
+; See https://github.com/mhayashi1120/Emacs-wgrep/issues/36
+(setq consult-grep-max-columns 1000)
+
 (defun my/doom-config-file (f)
   "A file path relative to the doom user dir"
   (file-name-concat doom-user-dir f))
@@ -113,18 +117,17 @@
  ;; RSS reader start
  :leader "r" #'newsticker-show-news)
 
-;; DIRED
 (add-hook! dired-mode
-  (dired-hide-details-mode)
   (setq dired-guess-shell-alist-user
         '(("\\.pdf\\'"  "xdg-open")
           ("\\.PDF\\'"  "xdg-open")
           ("\\.djvu\\'" "xdg-open")
           ("\\.docx\\'" "xdg-open")
           ("\\.DOCX\\'" "xdg-open")
-          ("\\.csv\\'" "xdg-open") )))
+          ("\\.csv\\'" "xdg-open"))))
 
 (after! dirvish
+  (setq dirvish-hide-details t)
   (setq! dirvish-quick-access-entries
          `(("h" "~/"                          "Home")
            ("e" ,user-emacs-directory         "Emacs user directory")
@@ -141,7 +144,9 @@
         ("Igor Konnov" "https://konnov.github.io/protocols-made-fun/feed.xml")
         ("Proof Society - Comments" "https://www.proofsociety.org/comments/feed/")
         ("Proof Society - Entries" "https://www.proofsociety.org/entries/feed/")
-        ("Arch News" "https://archlinux.org/feeds/news/")))
+        ("Arch News" "https://archlinux.org/feeds/news/")
+        ("Pxtl.ca" "https://pxtl.ca/rss.xml")
+        ))
 
 (map!
  :map newsticker-treeview-mode-map
@@ -463,7 +468,9 @@ Uses `org-clock-csv-to-file'."
 ;;
 (map!
  :map magit-status-mode-map
- :n "<tab>" 'magit-section-toggle)
+ :n "<tab>" 'magit-section-toggle
+ :n "f" 'magit-fetch
+ :n "F" 'magit-pull)
 
 (add-hook! eglot-managed-mode
            ;; disable eglot inlays
@@ -677,9 +684,6 @@ Uses `org-clock-csv-to-file'."
 ;; Disable terrible unicode replacements for types
 (add-to-list '+ligatures-in-modes 'scala-mode 'append)
 (setq +ligatures-extras-in-modes '(not scala-mode))
-
-(add-hook! python-mode
-  (poetry-tracking-mode 0))
 
 (map!
  :map (python-mode-map)

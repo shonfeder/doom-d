@@ -71,6 +71,7 @@
 
        :emacs
        (dired            ; making dired pretty [functional]
+        +dirvish
         +icons)
        electric          ; smarter, keyword-based electric-indent
        eww               ; the internet is gross
@@ -160,7 +161,8 @@
        nix               ; I hereby declare "nix geht mehr!"
        (ocaml
         +tree-sitter
-        +lsp)             ; an objective camel
+        ;; +lsp
+        )             ; an objective camel
        (org              ; organize your plain life in plain text
         +attach          ; custom attachment system
         +babel           ; running code in org

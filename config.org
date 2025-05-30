@@ -19,6 +19,9 @@
 ; Requires installing FiraCode: https://github.com/tonsky/FiraCode
 (setq doom-font (font-spec :family "Fira Code Light" :size 24))
 
+; Workaround for bug preventing bulk edits via wgrep
+; See https://github.com/mhayashi1120/Emacs-wgrep/issues/36
+(setq consult-grep-max-columns 1000)
 #+end_src
 
 ** Helper functions
@@ -136,18 +139,17 @@
 ** dired 📁
 
 #+begin_src emacs-lisp
-;; DIRED
 (add-hook! dired-mode
-  (dired-hide-details-mode)
   (setq dired-guess-shell-alist-user
         '(("\\.pdf\\'"  "xdg-open")
           ("\\.PDF\\'"  "xdg-open")
           ("\\.djvu\\'" "xdg-open")
           ("\\.docx\\'" "xdg-open")
           ("\\.DOCX\\'" "xdg-open")
-          ("\\.csv\\'" "xdg-open") )))
+          ("\\.csv\\'" "xdg-open"))))
 
 (after! dirvish
+  (setq dirvish-hide-details t)
   (setq! dirvish-quick-access-entries
          `(("h" "~/"                          "Home")
            ("e" ,user-emacs-directory         "Emacs user directory")
@@ -169,7 +171,9 @@
         ("Igor Konnov" "https://konnov.github.io/protocols-made-fun/feed.xml")
         ("Proof Society - Comments" "https://www.proofsociety.org/comments/feed/")
         ("Proof Society - Entries" "https://www.proofsociety.org/entries/feed/")
-        ("Arch News" "https://archlinux.org/feeds/news/")))
+        ("Arch News" "https://archlinux.org/feeds/news/")
+        ("Pxtl.ca" "https://pxtl.ca/rss.xml")
+        ))
 
 (map!
  :map newsticker-treeview-mode-map
@@ -517,7 +521,9 @@ In comments.
 ;;
 (map!
  :map magit-status-mode-map
- :n "<tab>" 'magit-section-toggle)
+ :n "<tab>" 'magit-section-toggle
+ :n "f" 'magit-fetch
+ :n "F" 'magit-pull)
 #+end_src
 
 *** Eglot
@@ -781,9 +787,6 @@ Disabling autoformatting for specific modes.
 *** Python
 
 #+begin_src emacs-lisp
-(add-hook! python-mode
-  (poetry-tracking-mode 0))
-
 (map!
  :map (python-mode-map)
  :localleader
