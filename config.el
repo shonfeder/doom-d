@@ -3,19 +3,19 @@
 ;;; WARNING for config.el:
 ;;; This config is generated from ./config.org
 
-; A mellow, low-contrast, dark theme
+;; A mellow, low-contrast, dark theme
 (setq doom-theme 'doom-wilmersdorf)
 
 (setq-default doom-localleader-key ",")
 
-; Make dired use trash instead of removing things
+;; Make dired use trash instead of removing things
 (setq delete-by-moving-to-trash t)
 
-; Requires installing FiraCode: https://github.com/tonsky/FiraCode
-(setq doom-font (font-spec :family "Fira Code Light" :size 24))
+;; Requires installing FiraCode: https://github.com/tonsky/FiraCode
+(setq doom-font (font-spec :family "Fira Code Light" :size 22))
 
-; Workaround for bug preventing bulk edits via wgrep
-; See https://github.com/mhayashi1120/Emacs-wgrep/issues/36
+;; Workaround for bug preventing bulk edits via wgrep
+;; See https://github.com/mhayashi1120/Emacs-wgrep/issues/36
 (setq consult-grep-max-columns 1000)
 
 (defun my/doom-config-file (f)
@@ -52,8 +52,8 @@
   (setq aw-keys my/colemak-home-row))
 
 (add-hook! evil-colemak-basics-mode
-  ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
-  (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
+           ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
+           (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
 
 (map!
  :after evil-colemak-basics
@@ -70,9 +70,6 @@
 
  :gnvme "C-n" #'next-line
  :gnvme "C-e" #'previous-line
-
- :n "f" #'evil-find-char
- :n "F" #'evil-find-char-backward
 
  (:prefix ("t". "text")
   :desc "Align Regexp" :nv "a" #'align-regexp
@@ -110,6 +107,7 @@
                   "N" #'+evil/window-move-down)
 
  :leader "gp" #'magit-push
+ :leader "gM" #'magit-remote
  :leader "tm" #'my/toggle-monitor-settings
 
  ;; eww browser launching
@@ -158,12 +156,12 @@
  :desc "Forward"      :n "I" #'eww-next-url)
 
 (add-hook! writegood-mode
-  ;; be little
-  (writegood-passive-voice-turn-off))
+           ;; be little
+           (writegood-passive-voice-turn-off))
 
 (add-hook! text-mode
-   ; automatic line breaking
-   (auto-fill-mode 1))
+           ;; automatic line breaking
+           (auto-fill-mode 1))
 
 (defun transform-thing-at-point (thing-type f)
   (let* ((bounds (bounds-of-thing-at-point thing-type))
@@ -669,7 +667,7 @@ Uses `org-clock-csv-to-file'."
  :desc "Ignored subdirs stanza" :n "u" #'dune-insert-ignored-subdirs-form
  :desc "Install stanza"         :n "i" #'dune-insert-install-form
  :desc "Library stanza"         :n "l" #'dune-insert-library-form
- :desc "Test stanza"            :n "t") #'dune-insert-test-form
+ :desc "Test stanza"            :n "t" #'dune-insert-test-form)
 
 (add-hook! fstar-mode
            ;; sync the opam environment to work with sandboxed install of fstar
