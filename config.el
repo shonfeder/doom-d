@@ -563,15 +563,17 @@ Uses `org-clock-csv-to-file'."
     (progn (save-excursion (insert "_"))
            (ocaml-eglot-construct))))
 
+;; TODO
 ;; The same require added by opam user-setup
-(if (file-exists-p "~/.emacs.d/opam-user-setup.el")
-    (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
+;; (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
+;;     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
 (add-hook! tuareg-mode
 
            :local (prettify-symbols-mode -1)
 
-           (opam-update-env (projectile-project-root))
+           ;; TODO?
+           ;; (opam-update-env (projectile-project-root))
 
            ;; Don't insert new comment indicators on new lines
            (setq +evil-want-o/O-to-continue-comments nil)
@@ -613,6 +615,12 @@ Uses `org-clock-csv-to-file'."
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure)
   :config
+
+  (opam-switch-mode -1)
+
+  ;; TODO Clean up: see https://preview.dune.build/
+  (add-to-list 'exec-path "~/.local/bin" t)
+  (setenv "PATH" (concat (expand-file-name "~/.local/bin") ":" (getenv "PATH")))
 
   (setq ocaml-eglot-construct-with-local-values 't)
 
