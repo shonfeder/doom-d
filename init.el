@@ -104,7 +104,9 @@
        (eval +overlay)     ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
        lsp
-       (magit +forge)      ; a git porcelain for Emacs
+       (magit
+        ;; +forge see https://github.com/magit/forge/issues/598#issuecomment-1928068226
+        )      ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        pdf               ; pdf enhancements
