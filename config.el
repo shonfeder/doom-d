@@ -340,8 +340,6 @@ Uses `org-clock-csv-to-file'."
   (require 'magit)
 
   (save-buffer)
-  ;; Disbale flyspell mode, cause it makes publishing super slow
-  (flyspell-mode-off)
   (remove-hook 'text-mode-hook 'flyspell-mode)
 
   ;; org-site config
@@ -537,7 +535,7 @@ Uses `org-clock-csv-to-file'."
   (save-buffer)
   (let* ((default-directory
           (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
-         (compile-command (concat "(cd " default-directory " && opam exec -- dune " cmd ")"))
+         (compile-command (concat "(cd " default-directory "&& dune " cmd ")"))
          ;; (compilation-directory
          ;;  (or (locate-dominating-file buffer-file-name "Makefile") nil))
          )
@@ -605,22 +603,23 @@ Uses `org-clock-csv-to-file'."
     '(merlin-eldoc-occurrences-face
       :backgrond "grey15")))
 
-(add-hook! dune-watch-minor-mood
+(add-hook! dune-watch-minor-mode
   (setq dune-watch-command-format
-        "opam exec -- dune %s --watch --terminal-persistence=clear-on-rebuild"))
+        "dune %s --watch --terminal-persistence=clear-on-rebuild"))
+
 
 (use-package! ocaml-eglot
   :after tuareg
+  :init
   :hook
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure)
   :config
-
-  (opam-switch-mode -1)
+  
 
   ;; TODO Clean up: see https://preview.dune.build/
-  (add-to-list 'exec-path "~/.local/bin" t)
-  (setenv "PATH" (concat (expand-file-name "~/.local/bin") ":" (getenv "PATH")))
+  ;; (add-to-list 'exec-path "~/.local/bin" t)
+  ;; (setenv "PATH" (concat (expand-file-name "~/.local/bin") ":" (getenv "PATH")))
 
   (setq ocaml-eglot-construct-with-local-values 't)
 
@@ -676,11 +675,6 @@ Uses `org-clock-csv-to-file'."
  :desc "Install stanza"         :n "i" #'dune-insert-install-form
  :desc "Library stanza"         :n "l" #'dune-insert-library-form
  :desc "Test stanza"            :n "t" #'dune-insert-test-form)
-
-(add-hook! fstar-mode
-           ;; sync the opam environment to work with sandboxed install of fstar
-           (add-hook 'mode-local-init-hook (lambda () (tuareg-opam-update-env nil)))
-           (add-hook 'find-file-hook (lambda () (tuareg-opam-update-env nil))))
 
 (my/load-if-exists "~/lib/teyjus/emacs/teyjus.el")
 
