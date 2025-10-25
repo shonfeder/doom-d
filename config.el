@@ -12,7 +12,7 @@
 (setq delete-by-moving-to-trash t)
 
 ;; Requires installing FiraCode: https://github.com/tonsky/FiraCode
-(setq doom-font (font-spec :family "Fira Code Light" :size 22))
+(setq doom-font (font-spec :family "Fira Code Light" :size 16))
 
 ;; Workaround for bug preventing bulk edits via wgrep
 ;; See https://github.com/mhayashi1120/Emacs-wgrep/issues/36
@@ -509,10 +509,7 @@ Uses `org-clock-csv-to-file'."
 (add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
 (add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
 
-(my/load-if-exists (my/doom-config-file "ocaml-defaults.el"))
-
-;; (if (file-exists-p (my/doom-config-file "ocaml-defaults.el"))
-;;     (load-file "~/.config/doom/ocaml-defaults.el"))
+;; (my/load-if-exists (my/doom-config-file "ocaml-defaults.el"))
 
 ;; TODO Add to tuareg mode
 (defun my/jump-to-dune-project-file ()
@@ -562,16 +559,10 @@ Uses `org-clock-csv-to-file'."
            (ocaml-eglot-construct))))
 
 ;; TODO
-;; The same require added by opam user-setup
-;; (if (file-exists-p "~/.emacs.d/opam-user-setup.el")
-;;     (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el"))
 
 (add-hook! tuareg-mode
 
            :local (prettify-symbols-mode -1)
-
-           ;; TODO?
-           ;; (opam-update-env (projectile-project-root))
 
            ;; Don't insert new comment indicators on new lines
            (setq +evil-want-o/O-to-continue-comments nil)
@@ -615,7 +606,7 @@ Uses `org-clock-csv-to-file'."
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure)
   :config
-  
+
 
   ;; TODO Clean up: see https://preview.dune.build/
   ;; (add-to-list 'exec-path "~/.local/bin" t)
