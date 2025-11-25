@@ -40,6 +40,14 @@
   ;; (sleep-for 1)
   (doom/reload-theme))
 
+;; https://stackoverflow.com/a/66287459/1187277
+(defun what-face (pos)
+  "Show the font face at point"
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
 ;; Colemacs keys for jumping
 (global-evil-colemak-basics-mode) ; Enable colemak rebinds
 
@@ -144,7 +152,7 @@
         ("Proof Society - Entries" "https://www.proofsociety.org/entries/feed/")
         ("Arch News" "https://archlinux.org/feeds/news/")
         ("Pxtl.ca" "https://pxtl.ca/rss.xml")
-        ))
+        ("semioticrobotic" "https://buttondown.email/semioticrobotic/rss")))
 
 (map!
  :map newsticker-treeview-mode-map
@@ -446,6 +454,9 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (transform-thing-at-point 'symbol 'md-format-github-user))
 
+(custom-theme-set-faces! nil
+  '(tuareg-font-lock-governing-face :inherit font-lock-doc-face))
+
 (add-hook!
  prog-mode
  (which-function-mode 1)
@@ -482,10 +493,12 @@ Uses `org-clock-csv-to-file'."
            :append (setq lsp-lens-enable nil))
 
 (map!
- :map flycheck-mode-map
+ :map flymake-mode-map
  :localleader
  (:prefix ("e" . "error")
-  :desc "list" "e" #'flycheck-list-errors))
+  :desc "start" "s" #'flymake-start
+  :desc "buffer" "b" #'flymake-show-buffer-diagnostics
+  :desc "project" "e" #'flymake-show-project-diagnostics))
 
 ;; Don't automatically format in nxml-mode, since it breaks org-export of htmlized source code
 ;; (add-to-list '+format-on-save-enabled-modes 'nxml-mode t)
