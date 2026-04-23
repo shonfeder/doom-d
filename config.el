@@ -569,6 +569,10 @@ Uses `org-clock-csv-to-file'."
 
            (setq dune-watch-minor-mode 't)
 
+           ;; Don't do infuriating things with comments!?
+           ;; https://github.com/doomemacs/doomemacs/issues/2081
+           (setq comment-line-break-function #'newline)
+
            (custom-set-variables
             '(indent-tabs-mode nil)
             '(compilation-context-lines 2)
@@ -600,13 +604,17 @@ Uses `org-clock-csv-to-file'."
 
 
 (use-package! ocaml-eglot
-  :after tuareg
+  :after tuareg merlin
   :init
   :hook
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure)
   :config
 
+
+  ;; Don't do infuriating things with comments!?
+  ;; https://github.com/doomemacs/doomemacs/issues/2081
+  (setq comment-line-break-function #'newline)
 
   ;; TODO Clean up: see https://preview.dune.build/
   ;; (add-to-list 'exec-path "~/.local/bin" t)
@@ -630,7 +638,7 @@ Uses `org-clock-csv-to-file'."
 
  :localleader
  :desc "Type enclosing"  :n "t" #'ocaml-eglot-type-enclosing
- :desc "Run ocamlformat" :n "f" #'ocamlformat
+ :desc "Format buffer"   :n "f" #'+format/buffer
  :desc "Construct"       :n "c" #'my/ocaml-eglot-construct
  :desc "Deconstruct"     :n "C" #'ocaml-eglot-destruct
  :desc "Search"          :n "s" #'ocaml-eglot-search
@@ -653,7 +661,7 @@ Uses `org-clock-csv-to-file'."
   :desc "Prev error "      :n "p" 'ocaml-eglot-error-prev)
 
  (:prefix ("y" . "yank")
-  :desc "Yank type" "t" #'merlin-copy-enclosing))
+  :desc "Yank type" "t" #'ocaml-eglot-type-enclosing-copy))
 
 (map!
  :mode dune-mode
