@@ -520,7 +520,7 @@ Uses `org-clock-csv-to-file'."
 (add-to-list 'auto-mode-alist '("\\.v\\'" . coq-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 (add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
-(add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
+;; (add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
 
 ;; (my/load-if-exists (my/doom-config-file "ocaml-defaults.el"))
 
@@ -573,43 +573,39 @@ Uses `org-clock-csv-to-file'."
 
 ;; TODO
 
-(add-hook! tuareg-mode
+;; (add-hook! tuareg-mode
 
-           :local (prettify-symbols-mode -1)
+;;            :local (prettify-symbols-mode -1)
 
-           ;; Don't insert new comment indicators on new lines
-           (setq +evil-want-o/O-to-continue-comments nil)
+;;            ;; Don't insert new comment indicators on new lines
+;;            (setq +evil-want-o/O-to-continue-comments nil)
 
-           (setq dune-watch-minor-mode 't)
+;;            (setq dune-watch-minor-mode 't)
 
-           ;; Don't do infuriating things with comments!?
-           ;; https://github.com/doomemacs/doomemacs/issues/2081
-           (setq comment-line-break-function #'newline)
-
-           (custom-set-variables
-            '(indent-tabs-mode nil)
-            '(compilation-context-lines 2)
-            '(compilation-error-screen-columns nil)
-            '(compilation-scroll-output t)
-            '(compilation-search-path (quote (nil "src")))
-            '(electric-indent-mode nil)
-            '(next-line-add-newlines nil)
-            '(require-final-newline t)
-            '(sentence-end-double-space nil)
-            '(show-trailing-whitespace t)
-            '(visible-bell t)
-            '(show-paren-mode t)
-            '(next-error-highlight t)
-            '(next-error-highlight-no-select t)
-            '(backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
-            '(ac-use-fuzzy nil)
-            '(line-move-visual t)))
+;;            (custom-set-variables
+;;             '(indent-tabs-mode nil)
+;;             '(compilation-context-lines 2)
+;;             '(compilation-error-screen-columns nil)
+;;             '(compilation-scroll-output t)
+;;             '(compilation-search-path (quote (nil "src")))
+;;             '(electric-indent-mode nil)
+;;             '(next-line-add-newlines nil)
+;;             '(require-final-newline t)
+;;             '(sentence-end-double-space nil)
+;;             '(show-trailing-whitespace t)
+;;             '(visible-bell t)
+;;             '(show-paren-mode t)
+;;             '(next-error-highlight t)
+;;             '(next-error-highlight-no-select t)
+;;             '(backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
+;;             '(ac-use-fuzzy nil)
+;;             '(line-move-visual t)))
 
 
-(add-hook! merlin-mode
-  (custom-set-faces!
-    '(merlin-eldoc-occurrences-face
-      :backgrond "grey15")))
+;; (add-hook! merlin-mode
+;;   (custom-set-faces!
+;;     '(merlin-eldoc-occurrences-face
+;;       :backgrond "grey15")))
 
 (add-hook! dune-watch-minor-mode
   (setq dune-watch-command-format
@@ -617,17 +613,13 @@ Uses `org-clock-csv-to-file'."
 
 
 (use-package! ocaml-eglot
-  :after tuareg merlin
+  :after tuareg
   :init
   :hook
-  (tuareg-mode . ocaml-eglot)
+  (neocaml-base-mode . ocaml-eglot-mode)
   (ocaml-eglot . eglot-ensure)
   :config
 
-
-  ;; Don't do infuriating things with comments!?
-  ;; https://github.com/doomemacs/doomemacs/issues/2081
-  (setq comment-line-break-function #'newline)
 
   ;; TODO Clean up: see https://preview.dune.build/
   ;; (add-to-list 'exec-path "~/.local/bin" t)
@@ -646,15 +638,16 @@ Uses `org-clock-csv-to-file'."
       :desc "Rename" "r" #'ocaml-eglot-rename)
 
 (map!
- :map (tuareg-mode-map)
+ :map (neocaml-base-mode-map)
  :after ocaml-eglot
 
  :localleader
  :desc "Type enclosing"  :n "t" #'ocaml-eglot-type-enclosing
- :desc "Format buffer"   :n "f" #'+format/buffer
+ :desc "Run ocamlformat" :n "f" #'ocamlformat
  :desc "Construct"       :n "c" #'my/ocaml-eglot-construct
  :desc "Deconstruct"     :n "C" #'ocaml-eglot-destruct
  :desc "Search"          :n "s" #'ocaml-eglot-search
+ :desc "ElDoc"           :n "." #'eldoc-doc-buffer
 
  (:prefix ("d" . "dune")
   :desc "Check"                   :n "c" 'my/ocaml-compile-check
@@ -674,7 +667,13 @@ Uses `org-clock-csv-to-file'."
   :desc "Prev error "      :n "p" 'ocaml-eglot-error-prev)
 
  (:prefix ("y" . "yank")
-  :desc "Yank type" "t" #'ocaml-eglot-type-enclosing-copy))
+  :desc "Yank type" "t" #'merlin-copy-enclosing))
+
+(add-hook! neocaml-base-mode
+  (neocaml-repl-minor-mode)
+  (neocaml-dune-interaction-mode)
+  (outline-minor-mode)
+  (eglot-ensure))
 
 (map!
  :mode dune-mode

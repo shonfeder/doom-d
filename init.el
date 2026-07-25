@@ -161,10 +161,10 @@
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
-       (ocaml
-        +tree-sitter
-        ;; +lsp
-        )             ; an objective camel
+       ;; (ocaml
+       ;;  +tree-sitter
+       ;;  +lsp
+       ;; )             ; an objective camel
        (org              ; organize your plain life in plain text
         +attach          ; custom attachment system
         +babel           ; running code in org
