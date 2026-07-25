@@ -102,3 +102,8 @@
   :pin "6734dfc1992eb782f0a936ce3cd7c78b7c1d39d3")
 
 (package! ocaml-eglot)
+
+(package! neocaml)
+
+(package! teyjus-mode
+  :recipe (:local-repo "lisp/teyjus-mode"))

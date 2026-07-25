@@ -687,7 +687,18 @@ Uses `org-clock-csv-to-file'."
  :desc "Library stanza"         :n "l" #'dune-insert-library-form
  :desc "Test stanza"            :n "t" #'dune-insert-test-form)
 
-(my/load-if-exists "~/lib/teyjus/emacs/teyjus.el")
+(use-package! teyjus-mode
+  :mode ("\\.mod\\'" "\\.sig\\'" "\\.elpi\\'")
+  :config
+  ;; Only needed if tjcc/tjsim aren't on your PATH:
+  ;; (setq teyjus-tjcc-executable "~/teyjus/tjcc"
+  ;;       teyjus-tjsim-executable "~/teyjus/tjsim")
+  (map! :map teyjus-mode-map
+        :localleader
+        :desc "Compile module"  "c" #'teyjus-compile
+        :desc "Run simulator"   "z" #'teyjus-simulate
+        :desc "Next error"      "n" #'next-error
+        :desc "Previous error"  "p" #'previous-error))
 
 (add-hook! z3-mode
   (setq z3-solver-cmd "/bin/env z3"))
