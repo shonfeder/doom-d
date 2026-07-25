@@ -613,11 +613,11 @@ Uses `org-clock-csv-to-file'."
 
 
 (use-package! ocaml-eglot
-  :after tuareg
+  :after neocaml
   :init
   :hook
   (neocaml-base-mode . ocaml-eglot-mode)
-  (ocaml-eglot . eglot-ensure)
+  (ocaml-eglot-mode . eglot-ensure)
   :config
 
 
@@ -639,7 +639,6 @@ Uses `org-clock-csv-to-file'."
 
 (map!
  :map (neocaml-base-mode-map)
- :after ocaml-eglot
 
  :localleader
  :desc "Type enclosing"  :n "t" #'ocaml-eglot-type-enclosing
