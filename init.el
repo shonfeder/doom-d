@@ -1,19 +1,19 @@
-;;; init.el -*- lexical-binding: t; -*-
+;;; $DOOMDIR/init.el -*- lexical-binding: t; -*-
 
 ;; This file controls what Doom modules are enabled and what order they load
 ;; in. Remember to run 'doom sync' after modifying it!
 
-;; NOTE Press 'SPC h d h' (or 'C-h d h' for non-vim users) to access Doom's
-;;      documentation. There you'll find a link to Doom's Module Index where all
-;;      of our modules are listed, including what flags they support.
+;; NOTE: Press 'SPC h d h' (or 'C-h d h' for non-vim users) to access Doom's
+;;   documentation. There you'll find a link to Doom's Module Index where all of
+;;   our modules are listed, including what flags they support.
 
-;; NOTE Move your cursor over a module's name (or its flags) and press 'K' (or
-;;      'C-c c k' for non-vim users) to view its documentation. This works on
-;;      flags as well (those symbols that start with a plus).
+;; NOTE: Move your cursor over a module's name (or its flags) and press 'K' (or
+;;   'C-c c k' for non-vim users) to view its documentation. This works on flags
+;;   as well (those symbols that start with a plus).
 ;;
-;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
-;;      directory (for easy access to its source code).
-;;
+;;   Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
+;;   directory (for easy access to its source code).
+
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -32,7 +32,7 @@
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
+       dashboard         ; a nifty splash screen for Emacs
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        (emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
@@ -45,6 +45,7 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       ;;smooth-scroll     ; So smooth you won't believe it's not butter
        ;;tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        unicode           ; extended unicode support for various languages
@@ -67,6 +68,7 @@
        ;;parinfer          ; turn lisp into python, sort of
        rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
+       (whitespace +guess +trim)  ; a butler for your whitespace
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
@@ -76,6 +78,7 @@
        electric          ; smarter, keyword-based electric-indent
        eww               ; the internet is gross
        ibuffer         ; interactive buffer management
+       tramp             ; remote files at your arthritic fingertips
        undo              ; persistent, smarter undo for your inevitable mistakes
        vc                ; version-control and Emacs, sitting in a tree
 
@@ -83,7 +86,8 @@
        ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
-       vterm             ; the best terminal emulation in Emacs
+       ;;vterm             ; almost the best terminal emulation in Emacs
+       ghostel           ; the best terminal emulation in Emacs
 
        :checkers
        syntax            ; tasing you for every semicolon you forget
@@ -103,14 +107,13 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       lsp
+       (lsp +eglot)
        (magit
         ;; +forge see https://github.com/magit/forge/issues/598#issuecomment-1928068226
         )      ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        pdf               ; pdf enhancements
-       ;;prodigy           ; FIXME managing external services & code builders
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        tree-sitter       ; syntax and parsing, sitting in a tree...
@@ -121,7 +124,8 @@
        ;;tty               ; improve the terminal Emacs experience
 
        :lang
-       ;;agda              ; types of types of types of types...
+       ;;ada               ; In strong typing we (blindly) trust
+       ;;(agda +local)     ; types of types of types of types...
        ;;beancount         ; mind the GAAP
        ;;(cc +lsp)         ; C > C++ == 1
        ;;clojure           ; java with a lisp
@@ -129,7 +133,7 @@
        coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
-       data              ; config/data formats
+       ;;data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
        ;;elixir            ; erlang done right
@@ -149,6 +153,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        json              ; At least it ain't XML
+       ;;janet             ; Fun fact: Janet is me!
        (java +lsp)       ; the poster child for carpal tunnel syndrome
        (javascript
         +tree-sitter)        ; all(hope(abandon(ye(who(enter(here))))))
@@ -165,6 +170,7 @@
        ;;  +tree-sitter
        ;;  +lsp
        ;; )             ; an objective camel
+       ;;odin              ; C, minus its footguns
        (org              ; organize your plain life in plain text
         +attach          ; custom attachment system
         +babel           ; running code in org
@@ -180,6 +186,7 @@
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
+       ;;graphviz          ; diagrams for confusing yourself even more
        ;;purescript        ; javascript, but functional
        (python
         +lsp
