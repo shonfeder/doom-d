@@ -1,12 +1,5 @@
 ;;; teyjus-mode.el --- Major mode for Teyjus Lambda Prolog -*- lexical-binding: t; -*-
 
-;; Rewritten by claude with prompt:
-;; 
-;; Turn the lambda prolog emacs mode at
-;; https://raw.githubusercontent.com/teyjus/teyjus/refs/heads/master/emacs/teyjus.el
-;; into a modern emacs module that I can load cleanly using doom emacs and
-;; integrate correctly into my configuration.
-
 ;; Author: Kamal Aboul-Hosn (original), Andrew Gacek (Teyjus 2.0 reduction)
 ;; Maintainer: you
 ;; Version: 3.0
@@ -25,6 +18,13 @@
 ;; `compilation-mode' machinery (so `next-error' / `M-g n' work
 ;; natively).
 ;;
+;; Rewritten by claude with prompt:
+;;
+;; Turn the lambda prolog emacs mode at
+;; https://raw.githubusercontent.com/teyjus/teyjus/refs/heads/master/emacs/teyjus.el
+;; into a modern emacs module that I can load cleanly using doom emacs and
+;; integrate correctly into my configuration.
+;;
 ;; Features:
 ;;   - Syntax highlighting for .mod and .sig files
 ;;   - `teyjus-compile' (C-c C-c): compile the current module with tjcc
@@ -35,6 +35,7 @@
 ;;
 ;; Customize `teyjus-tjcc-executable' / `teyjus-tjsim-executable' if
 ;; the binaries are not on your PATH.
+
 
 ;;; Code:
 
@@ -82,17 +83,67 @@
 ;;;; Font lock
 
 (defconst teyjus--builtin-keywords
-  '("abs" "sqrt" "sin" "cos" "arctan" "ln" "floor" "ceil"
-    "truncate" "rabs" "size" "chr" "string_to_int" "substring"
-    "int_to_string" "real_to_string" "std_in" "std_out"
-    "std_err" "is" "open_in" "open_out" "open_string"
-    "open_append" "close_in" "close_out" "term_to_string"
-    "string_to_term" "input" "output" "input_line" "lookahead"
-    "eof" "flush" "print" "read" "printterm" "readterm" "nil"
-    "not" "true" "fail" "pi" "sigma" "type" "kind"
-    "infix" "infixl" "infixr" "prefix" "prefixr"
-    "postfix" "postfixl" "local" "exportdef" "useonly"
-    "accum_sig" "import" "accumulate")
+  '(
+    "abs"
+    "accum_sig"
+    "accumulate"
+    "arctan"
+    "ceil"
+    "chr"
+    "close_in"
+    "close_out"
+    "cos"
+    "eof"
+    "exportdef"
+    "fail"
+    "floor"
+    "flush"
+    "import"
+    "infix"
+    "infixl"
+    "infixr"
+    "input"
+    "input_line"
+    "int_to_string"
+    "is"
+    "kind"
+    "ln"
+    "local"
+    "lookahead"
+    "nil"
+    "not"
+    "open_append"
+    "open_in"
+    "open_out"
+    "open_string"
+    "output"
+    "pi"
+    "postfix"
+    "postfixl"
+    "prefix"
+    "prefixr"
+    "print"
+    "printterm"
+    "rabs"
+    "read"
+    "readterm"
+    "real_to_string"
+    "sigma"
+    "sin"
+    "size"
+    "sqrt"
+    "std_err"
+    "std_in"
+    "std_out"
+    "string_to_int"
+    "string_to_term"
+    "substring"
+    "term_to_string"
+    "true"
+    "truncate"
+    "type"
+    "useonly"
+    )
   "Built-in keywords and functions of Teyjus Lambda Prolog.")
 
 (defconst teyjus--builtin-types
