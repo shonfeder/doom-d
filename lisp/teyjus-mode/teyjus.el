@@ -111,6 +111,7 @@
     "ln"
     "local"
     "lookahead"
+    "namespace"
     "nil"
     "not"
     "open_append"
