@@ -1,8 +1,5 @@
 ;;; ~/.doom.d/config.el -*- lexical-binding: t; -*-
 
-;;; WARNING for config.el:
-;;; This config is generated from ./config.org
-
 ;; A mellow, low-contrast, dark theme
 (setq doom-theme 'doom-wilmersdorf)
 
@@ -48,8 +45,10 @@
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
-;; Colemacs keys for jumping
-(global-evil-colemak-basics-mode) ; Enable colemak rebinds
+(use-package! evil-colemak-basics
+  :demand t
+  :init (setopt evil-colemak-basics-char-jump-commands 'evil-snipe)
+  :config (global-evil-colemak-basics-mode))
 
 (setq my/colemak-home-row '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?o))
 ;; see https://github.com/abo-abo/avy/wiki/defcustom
@@ -59,18 +58,14 @@
   ;; https://github.com/abo-abo/ace-window#aw-keys
   (setq aw-keys my/colemak-home-row))
 
-(add-hook! evil-colemak-basics-mode
-           ;; (setq evil-coleak-basics-layout-mod 'mod-dh) ; Swap "h" and "m"
-           (setq evil-colemak-basics-char-jump-commands 'evil-snipe))
-
 (map!
  :after evil-colemak-basics
- :map evil-colemak-basics-keymap
- :n  "J" #'ace-window
+ :map override
+ :nvm  "J" #'ace-window
 
- :nv "j" #'evil-avy-goto-word-or-subword-1
- :nv "gn" #'evil-avy-goto-line-below
- :nv "ge" #'evil-avy-goto-line-above
+ :nvm "j" #'evil-avy-goto-word-or-subword-1
+ :nvm "gn" #'evil-avy-goto-line-below
+ :nvm "ge" #'evil-avy-goto-line-above
 
  ;; fixes for DH
  :nvm "m" #'evil-backward-char
@@ -78,10 +73,7 @@
 
  :gnvme "C-n" #'next-line
  :gnvme "C-e" #'previous-line
- )
 
-;; Global maps
-(map!
  (:prefix ("t". "text")
   :desc "Align Regexp" :nv "a" #'align-regexp
   (:prefix ("l" . "lookup")
@@ -93,6 +85,10 @@
    :desc "Paras" :nv "p" #'transpose-paragraphs)
   (:prefix ("s" . "surround")
    :desc "Word with \"" :n "'" #'my/surround-word-with-quotes))
+ )
+
+;; Global maps
+(map!
 
  :n "C-;" #'iedit-mode
 
@@ -618,7 +614,6 @@ Uses `org-clock-csv-to-file'."
 
 (use-package! ocaml-eglot
   :after neocaml
-  :init
   :hook
   (neocaml-base-mode . ocaml-eglot-mode)
   (ocaml-eglot-mode . eglot-ensure)
