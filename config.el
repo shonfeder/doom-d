@@ -134,11 +134,11 @@
 
 (after! dirvish
   (setq dirvish-hide-details t)
-  (setq! dirvish-quick-access-entries
-         `(("h" "~/"                          "Home")
-           ("e" ,user-emacs-directory         "Emacs user directory")
-           ("d" "~/Downloads/"                "Downloads")
-           ("t" "~/.local/share/Trash/files/" "Trash"))))
+  (setopt dirvish-quick-access-entries
+          `(("h" "~/"                          "Home")
+            ("e" ,user-emacs-directory         "Emacs user directory")
+            ("d" "~/Downloads/"                "Downloads")
+            ("t" "~/.local/share/Trash/files/" "Trash"))))
 
 (map!
  :map dired-mode-map
