@@ -199,6 +199,8 @@ The module must already be compiled with `teyjus-compile'."
 (add-to-list 'auto-mode-alist '("\\.mod\\'" . teyjus-mode))
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.sig\\'" . teyjus-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.elpi\\'" . teyjus-mode))
 
 (provide 'teyjus-mode)
 
