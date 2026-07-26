@@ -78,7 +78,10 @@
 
  :gnvme "C-n" #'next-line
  :gnvme "C-e" #'previous-line
+ )
 
+;; Global maps
+(map!
  (:prefix ("t". "text")
   :desc "Align Regexp" :nv "a" #'align-regexp
   (:prefix ("l" . "lookup")
@@ -121,7 +124,8 @@
  ;; eww browser launching
  :leader "e" #'eww
  ;; RSS reader start
- :leader "r" #'newsticker-show-news)
+ :leader "r" #'newsticker-show-news
+ )
 
 (add-hook! dired-mode
   (setq dired-guess-shell-alist-user
