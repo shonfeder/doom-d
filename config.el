@@ -94,16 +94,16 @@
 
  :leader "d" #'save-buffer
 
- :leader (:prefix ("F". "frame")
+ :leader (:prefix ("F" . "frame")
           :desc "Switch other frame" "o" #'other-frame
           :desc "Create new frame" "n" #'new-frame)
 
- :leader (:prefix ("j". "jump")
+ :leader (:prefix ("j" . "jump")
           :desc "Jump Forward" :nv "j" #'evil-jump-forward
           :desc "Jump Backward" :nv "J" #'evil-jump-backward
           :desc "Show Jumps" :nv "s" #'evil-show-jumps)
 
- :leader (:prefix ("w". "window")
+ :leader (:prefix "w"
                   "m" #'evil-window-left
                   "i" #'evil-window-right
                   "e" #'evil-window-up
