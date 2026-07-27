@@ -133,7 +133,7 @@
           ("\\.csv\\'" "xdg-open"))))
 
 (after! dirvish
-  (setq dirvish-hide-details t)
+  (setopt dirvish-hide-details t)
   (setopt dirvish-quick-access-entries
           `(("h" "~/"                          "Home")
             ("e" ,user-emacs-directory         "Emacs user directory")
