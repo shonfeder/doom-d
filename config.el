@@ -5,16 +5,6 @@
 
 (setq-default doom-localleader-key ",")
 
-;; Make dired use trash instead of removing things
-(setq delete-by-moving-to-trash t)
-
-;; Requires installing FiraCode: https://github.com/tonsky/FiraCode
-(setq doom-font (font-spec :family "Fira Code Light" :size 16))
-
-;; Workaround for bug preventing bulk edits via wgrep
-;; See https://github.com/mhayashi1120/Emacs-wgrep/issues/36
-(setq consult-grep-max-columns 1000)
-
 (defun my/doom-config-file (f)
   "A file path relative to the doom user dir"
   (file-name-concat doom-user-dir f))
@@ -23,6 +13,23 @@
   "Load the given file, if it exists"
   (if (file-exists-p f)
       (load-file f)))
+
+;; Make dired use trash instead of removing things
+(setq delete-by-moving-to-trash t)
+
+(defcustom my/font-size 16
+  "The font size to use in my config (varies based on the monitor in use)"
+  :type 'integer)
+
+;; Load a local config file, if it exists
+(my/load-if-exists (my/doom-config-file "local.el"))
+
+;; Requires installing FiraCode: https://github.com/tonsky/FiraCode
+(setq doom-font (font-spec :family "Fira Code Light" :size my/font-size))
+
+;; Workaround for bug preventing bulk edits via wgrep
+;; See https://github.com/mhayashi1120/Emacs-wgrep/issues/36
+(setq consult-grep-max-columns 1000)
 
 (setq my/using-external-monitor 't)
 
@@ -553,11 +560,17 @@ Uses `org-clock-csv-to-file'."
 
 (defun my/ocaml-compile-check ()
   (interactive)
-  (my/ocaml-compile "build @check"))
+  (neocaml-dune-command "build @check"))
 
-(defun my/ocaml-compile-build ()
+(defun my/ocaml-build-watch ()
   (interactive)
-  (my/ocaml-compile "build"))
+  (let ((current-prefix-arg t))
+    (neocaml-dune-build)))
+
+(defun my/ocaml-test-watch ()
+  (interactive)
+  (let ((current-prefix-arg t))
+    (neocaml-dune-test)))
 
 (defun my/ocaml-compile-test ()
   (interactive)
@@ -640,6 +653,8 @@ Uses `org-clock-csv-to-file'."
  :map (neocaml-base-mode-map)
 
  :localleader
+ :desc "intf/impl"       :n "a" #'ff-find-other-file
+ :desc "intf/impl"       :n "A" #'ff-find-other-file-other-window
  :desc "Type enclosing"  :n "t" #'ocaml-eglot-type-enclosing
  :desc "Run ocamlformat" :n "f" #'ocamlformat
  :desc "Construct"       :n "c" #'my/ocaml-eglot-construct
@@ -647,22 +662,33 @@ Uses `org-clock-csv-to-file'."
  :desc "Search"          :n "s" #'ocaml-eglot-search
  :desc "ElDoc"           :n "." #'eldoc-doc-buffer
 
+ (:prefix ("o" . "outline")
+  :desc "consult"  :n "o" #'consult-outline
+  :desc "hide alt" :n "O" #'outline-hide-other
+  :desc "children" :n "c" #'outline-toggle-children
+  :desc "hide sub" :n "h" #'outline-hide-sublevels
+  :desc "show sub" :n "H" #'outline-show-subtree
+  :desc "show all" :n "A" #'outline-show-all)
+
  (:prefix ("d" . "dune")
-  :desc "Check"                   :n "c" 'my/ocaml-compile-check
-  :desc "Build"                   :n "b" 'my/ocaml-compile-build
-  :desc "Test"                    :n "T" 'my/ocaml-compile-test
-  :desc "Dune Watch"              :n "w" 'dune-watch-minor-mode
-  :desc "Visit dune file"         :n "d" #'my/jump-to-dune-file
-  :desc "Visit dune-project file" :n "P" #'my/jump-to-dune-project-file
-  :desc "Promote"                 :n "p" 'dune-promote)
+  :desc "check"             :n "c" 'my/ocaml-compile-check
+  :desc "build"             :n "b" #'neocaml-dune-build
+  :desc "build -w"          :n "B" #'my/ocaml-build-watch
+  :desc "test"              :n "t" #'neocaml-dune-test
+  :desc "test -w"           :n "T" #'my/ocaml-test-watch
+  :desc "dune file"         :n "d" #'neocaml-dune-find-dune-file
+  :desc "dune-project file" :n "P" #'my/jump-to-dune-project-file
+  :desc "promote"           :n "p" #'neocaml-dune-promote
+  :desc "format"            :n "p" #'neocaml-dune-fmt)
 
  (:prefix ("h" . "hole")
-  :desc "Next hole" :n "n" 'ocaml-eglot-hole-next
-  :desc "Prev hole" :n "p" 'ocaml-eglot-hole-prev)
+  :desc "Next hole" :n "n" #'ocaml-eglot-hole-next
+  :desc "Prev hole" :n "p" #'ocaml-eglot-hole-prev)
 
  (:prefix ("e" . "error")
-  :desc "Next error"       :n "n" 'ocaml-eglot-error-next
-  :desc "Prev error "      :n "p" 'ocaml-eglot-error-prev)
+  :desc "next" :n "n" #'next-error
+  :desc "prev" :n "p" #'previous-error
+  :desc "list" :n "e" #'flycheck-list-errors)
 
  (:prefix ("y" . "yank")
   :desc "Yank type" "t" #'merlin-copy-enclosing))
@@ -709,7 +735,3 @@ Uses `org-clock-csv-to-file'."
  :map (python-mode-map)
  :localleader
  :desc "poetry mode" "p" #'poetry)
-
-(let ((local-settings (my/doom-config-file "local.el")))
-  (if (file-exists-p local-settings)
-      (load-file local-settings)))
