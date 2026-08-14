@@ -75,9 +75,8 @@
 (package! org-transclusion)
 (package! jsonnet-mode)
 
-;; Pinning to avoid broken versions
-;; (package! magit :pin "26be78e")
-;; (package! forge :pin "dc4e9ca")
+
+(package! magit-todos)
 
 ;; From source
 (package! etymology-of-word :recipe (:type git
@@ -102,8 +101,6 @@
   :pin "6734dfc1992eb782f0a936ce3cd7c78b7c1d39d3")
 
 (package! ocaml-eglot)
-
-(package! neocaml)
 
 (package! teyjus-mode
   :recipe (:local-repo "lisp/teyjus-mode"))

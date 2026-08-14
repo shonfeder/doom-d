@@ -486,9 +486,10 @@ Uses `org-clock-csv-to-file'."
  :n "f" 'magit-fetch
  :n "F" 'magit-pull)
 
-(add-hook! eglot-managed-mode
-           ;; disable eglot inlays
-           (eglot-inlay-hints-mode -1))
+;; See https://github.com/alphapapa/magit-todos
+(use-package! magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
 
 (map!
  :map lsp-mode-map
@@ -560,17 +561,15 @@ Uses `org-clock-csv-to-file'."
 
 (defun my/ocaml-compile-check ()
   (interactive)
-  (neocaml-dune-command "build @check"))
+  (my/ocaml-compile "build @check"))
 
 (defun my/ocaml-build-watch ()
   (interactive)
-  (let ((current-prefix-arg t))
-    (neocaml-dune-build)))
+  (my/ocaml-compile "build"))
 
 (defun my/ocaml-test-watch ()
   (interactive)
-  (let ((current-prefix-arg t))
-    (neocaml-dune-test)))
+  (my/ocaml-compile "test -w"))
 
 (defun my/ocaml-compile-test ()
   (interactive)
@@ -624,11 +623,16 @@ Uses `org-clock-csv-to-file'."
   (setq dune-watch-command-format
         "dune %s --watch --terminal-persistence=clear-on-rebuild"))
 
+(setenv "OCAMLLSP_SEMANTIC_HIGHLIGHTING" "full")
+(add-hook! eglot-managed-mode
+           ;; disable eglot inlays
+           (eglot-inlay-hints-mode -1)
+           ;; Ensure semantic-token fontification is on in managed buffers
+           ;; (redundant on Eglot ≥ 1.20, harmless insurance otherwise)
+           (eglot-semantic-tokens-mode 1))
 
 (use-package! ocaml-eglot
-  :after neocaml
   :hook
-  (neocaml-base-mode . ocaml-eglot-mode)
   (ocaml-eglot-mode . eglot-ensure)
   :config
 
@@ -650,7 +654,7 @@ Uses `org-clock-csv-to-file'."
       :desc "Rename" "r" #'ocaml-eglot-rename)
 
 (map!
- :map (neocaml-base-mode-map)
+ :map (tuareg-mode-map)
 
  :localleader
  :desc "intf/impl"       :n "a" #'ff-find-other-file
@@ -671,15 +675,16 @@ Uses `org-clock-csv-to-file'."
   :desc "show all" :n "A" #'outline-show-all)
 
  (:prefix ("d" . "dune")
-  :desc "check"             :n "c" 'my/ocaml-compile-check
-  :desc "build"             :n "b" #'neocaml-dune-build
+  :desc "check"             :n "c" #'my/ocaml-compile-check
+  :desc "build"             :n "b" #'my/ocaml-compile
   :desc "build -w"          :n "B" #'my/ocaml-build-watch
-  :desc "test"              :n "t" #'neocaml-dune-test
+  :desc "test"              :n "t" #'my/ocaml-compile-test
   :desc "test -w"           :n "T" #'my/ocaml-test-watch
-  :desc "dune file"         :n "d" #'neocaml-dune-find-dune-file
+  :desc "dune file"         :n "d" #'my/jump-to-dune-file
   :desc "dune-project file" :n "P" #'my/jump-to-dune-project-file
-  :desc "promote"           :n "p" #'neocaml-dune-promote
-  :desc "format"            :n "p" #'neocaml-dune-fmt)
+  ;; :desc "promote"           :n "p" #'
+  ;; :desc "format"            :n "p" #'my/ocaml
+  )
 
  (:prefix ("h" . "hole")
   :desc "Next hole" :n "n" #'ocaml-eglot-hole-next
@@ -692,12 +697,6 @@ Uses `org-clock-csv-to-file'."
 
  (:prefix ("y" . "yank")
   :desc "Yank type" "t" #'merlin-copy-enclosing))
-
-(add-hook! neocaml-base-mode
-  (neocaml-repl-minor-mode)
-  (neocaml-dune-interaction-mode)
-  (outline-minor-mode)
-  (eglot-ensure))
 
 (map!
  :mode dune-mode
