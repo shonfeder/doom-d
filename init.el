@@ -109,7 +109,7 @@
        lookup              ; navigate your code and its documentation
        (lsp +eglot)
        (magit
-        ;; +forge see https://github.com/magit/forge/issues/598#issuecomment-1928068226
+        +forge
         )      ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
