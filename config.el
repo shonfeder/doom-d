@@ -584,34 +584,38 @@ Uses `org-clock-csv-to-file'."
            (ocaml-eglot-construct))))
 
 ;; TODO
+(add-hook! tuareg-mode
 
-;; (add-hook! tuareg-mode
+           ;; :local (prettify-symbols-mode -1)
 
-;;            :local (prettify-symbols-mode -1)
+           ;; Don't insert new comment indicators on new lines
+           (setq +evil-want-o/O-to-continue-comments nil)
 
-;;            ;; Don't insert new comment indicators on new lines
-;;            (setq +evil-want-o/O-to-continue-comments nil)
+           (setq dune-watch-minor-mode 't)
 
-;;            (setq dune-watch-minor-mode 't)
+           (custom-set-faces!
+             '(tuareg-font-double-semicolon-face
+               :foreground "dim gray" :weight normal))
 
-;;            (custom-set-variables
-;;             '(indent-tabs-mode nil)
-;;             '(compilation-context-lines 2)
-;;             '(compilation-error-screen-columns nil)
-;;             '(compilation-scroll-output t)
-;;             '(compilation-search-path (quote (nil "src")))
-;;             '(electric-indent-mode nil)
-;;             '(next-line-add-newlines nil)
-;;             '(require-final-newline t)
-;;             '(sentence-end-double-space nil)
-;;             '(show-trailing-whitespace t)
-;;             '(visible-bell t)
-;;             '(show-paren-mode t)
-;;             '(next-error-highlight t)
-;;             '(next-error-highlight-no-select t)
-;;             '(backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
-;;             '(ac-use-fuzzy nil)
-;;             '(line-move-visual t)))
+           ;; (custom-set-variables
+           ;;  '(indent-tabs-mode nil)
+           ;;  '(compilation-context-lines 2)
+           ;;  '(compilation-error-screen-columns nil)
+           ;;  '(compilation-scroll-output t)
+           ;;  '(compilation-search-path (quote (nil "src")))
+           ;;  '(electric-indent-mode nil)
+           ;;  '(next-line-add-newlines nil)
+           ;;  '(require-final-newline t)
+           ;;  '(sentence-end-double-space nil)
+           ;;  '(show-trailing-whitespace t)
+           ;;  '(visible-bell t)
+           ;;  '(show-paren-mode t)
+           ;;  '(next-error-highlight t)
+           ;;  '(next-error-highlight-no-select t)
+           ;;  '(backup-directory-alist '(("." . "~/.local/share/emacs/backups")))
+           ;;  '(ac-use-fuzzy nil)
+           ;;  '(line-move-visual t))
+           )
 
 
 ;; (add-hook! merlin-mode
