@@ -738,3 +738,12 @@ Uses `org-clock-csv-to-file'."
  :map (python-mode-map)
  :localleader
  :desc "poetry mode" "p" #'poetry)
+
+(use-package! forester
+  :demand t
+  :init
+  (require 'treesit)
+  (require 'rainbow-delimiters)
+  (require 'project)
+  (require 'json)
+  :mode ("\\.tree\\'" . forester-mode))

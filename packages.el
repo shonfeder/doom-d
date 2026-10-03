@@ -110,3 +110,7 @@
   :pin "99e2d8fb7177cae3bfa2dec2910fc28216d5f5a8")
 
 (package! flycheck-mercury)
+
+(package! forester
+  :recipe (:host github :repo "ToposInstitute/forester.el")
+  :pin "5b9a961b9bca4023e0ba94041fcedce2d3dddc2c")
