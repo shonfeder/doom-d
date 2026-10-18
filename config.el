@@ -739,11 +739,24 @@ Uses `org-clock-csv-to-file'."
  :localleader
  :desc "poetry mode" "p" #'poetry)
 
+(defvar my-forester-mode-map (make-sparse-keymap)
+  "Forester mode map.")
+
+(map! :map forester-mode-map
+      :localleader
+      (:prefix ("n" . "new")
+       :desc "New+Goto" :n "n" #'forester-new-and-goto))
+
 (use-package! forester
-  :demand t
   :init
   (require 'treesit)
   (require 'rainbow-delimiters)
   (require 'project)
   (require 'json)
   :mode ("\\.tree\\'" . forester-mode))
+
+(add-hook! forester-mode
+  (setopt-local visual-wrap-prefix-mode t)
+  (setopt-local visual-wrap-extra-indent 2)
+  (turn-off-auto-fill)
+  (visual-fill-column-mode))
