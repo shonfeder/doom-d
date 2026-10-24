@@ -1,0 +1,9 @@
+# key: pers
+# name: forester person
+# --
+\title{${1:Name}}
+\taxon{Person}
+\meta{external}{${2:URL}}
+\date{`(format-time-string "%Y-%m-%d")`}
+
+${3:\p${4:Description}}
