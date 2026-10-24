@@ -756,7 +756,7 @@ Uses `org-clock-csv-to-file'."
   :mode ("\\.tree\\'" . forester-mode))
 
 (add-hook! forester-mode
-  (setopt-local visual-wrap-prefix-mode t)
   (setopt-local visual-wrap-extra-indent 2)
   (turn-off-auto-fill)
-  (visual-fill-column-mode))
+  (visual-fill-column-mode)
+  (visual-wrap-prefix-mode))
