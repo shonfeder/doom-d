@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: forester-reference
+# uuid: forester-reference
+# key: ref
+# condition: t
+# --
+\title{${1:Title}}
+\author{${2:Author}}
+\date{${3:Year}}
+\taxon{Reference}
+\meta{external}{${4:URL}}

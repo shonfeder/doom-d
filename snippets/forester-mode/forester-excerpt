@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: forester-excerpt
+# uuid: forester-excerpt
+# key: exc
+# condition: t
+# --
+\subtree[${1:ID}]{
+  \title{${2:Title}}
+  \taxon{Excerpt}
+  \tag{${3:Tag}}
+  \blockquote{${4:Quotation}}
+
+  ${5:\subtree[${1}-remarks]{
+    \taxon{Remarks\}
+    ${6:\title{${7:Title}\}}
+    \p{$8\}
+   }}
+}

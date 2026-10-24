@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: forester-topic
+# uuid: forester-topic
+# key: topic
+# condition: t
+# --
+\title{$1}
+\taxon{Topic}
+\date{`(format-time-string "%Y-%m-%d")`}
+\author{me}
+
+\p{$2}
