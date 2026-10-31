@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: forester-subtree
+# key: sub
+# --
+\subtree${1:[${2:ID}]}{
+  \title{${3:Title}}
+  $0
+}

@@ -10,9 +10,12 @@
   \tag{${3:Tag}}
   \blockquote{${4:Quotation}}
 
-  ${5:\subtree[${1}-remarks]{
-    \taxon{Remarks\}
-    ${6:\title{${7:Title}\}}
-    \p{$8\}
-   }}
+  \scope{
+    \put\transclude/expanded{false}
+    ${5:\subtree[${1}-remarks]{
+        \taxon{Remarks\}
+        ${6:\title{${7:Title}\}}
+        \p{$8\}
+    }}
+  }
 }
