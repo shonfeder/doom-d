@@ -744,8 +744,17 @@ Uses `org-clock-csv-to-file'."
 
 (map! :map forester-mode-map
       :localleader
+      :desc "Goto"         :n "g" #'forester-goto
+      :desc "Find Title"   :n "f" #'forester-find-title
+      :desc "Find Parents" :n "f" #'forester-find-parents
+      :desc "Link"         :n "l" #'forester-link
+      :desc "Transclude"   :n "i" #'forester-transclude
+      :desc "Ref"          :n "r" #'forester-ref
       (:prefix ("n" . "new")
-       :desc "New+Goto" :n "n" #'forester-new-and-goto))
+       :desc "New+Goto"       :n "n" #'forester-new-and-goto
+       :desc "New"            :n "N" #'forester-new
+       :desc "New+Trans+Goto" :n "t" #'forester-new-and-transclude-and-goto
+       :desc "New+Trans"      :n "T" #'forester-new-and-transclude))
 
 (use-package! forester
   :init
