@@ -547,15 +547,7 @@ Uses `org-clock-csv-to-file'."
     (find-file-other-window dune-file)))
 
 (defun my/ocaml-compile (cmd)
-  (interactive)
-  (save-buffer)
-  (let* ((default-directory
-          (or (locate-dominating-file buffer-file-name "Makefile") default-directory))
-         (compile-command (concat "(cd " default-directory "&& dune " cmd ")"))
-         ;; (compilation-directory
-         ;;  (or (locate-dominating-file buffer-file-name "Makefile") nil))
-         )
-    (recompile)))
+  (neocaml-dune-command cmd))
 
 (defun my/ocaml-compile-check ()
   (interactive)
@@ -657,6 +649,8 @@ Uses `org-clock-csv-to-file'."
 (after! eglot
   (add-to-list 'eglot-ignored-server-capabilities :semanticTokensProvider))
 
+(add-hook! neocaml-base-mode-hook
+  (neocaml-dune-interaction-mode))
 (map!
  :map (neocaml-base-mode-map)
 
