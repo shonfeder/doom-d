@@ -629,24 +629,23 @@ Uses `org-clock-csv-to-file'."
 (add-hook! eglot-managed-mode
            ;; disable eglot inlays
            (eglot-inlay-hints-mode -1)
+           ;; Semantic tokens can mess up syntax highlighting,
+           ;; so it's currently disabled.
            ;; Ensure semantic-token fontification is on in managed buffers
-           ;; (redundant on Eglot ≥ 1.20, harmless insurance otherwise)
-           (eglot-semantic-tokens-mode 1))
+           ;; (eglot-semantic-tokens-mode 1)
+           )
 
 (use-package! ocaml-eglot
+  :after neocaml
   :hook
+  (neocaml-base-mode . ocaml-eglot-mode)
   (ocaml-eglot-mode . eglot-ensure)
   :config
-
-
-  ;; TODO Clean up: see https://preview.dune.build/
-  ;; (add-to-list 'exec-path "~/.local/bin" t)
-  ;; (setenv "PATH" (concat (expand-file-name "~/.local/bin") ":" (getenv "PATH")))
 
   (setq ocaml-eglot-construct-with-local-values 't)
 
   (add-to-list '+lookup-documentation-functions #'ocaml-eglot-document)
-  (add-to-list '+lookup-references-functions #'ocaml-eglot-occurences)
+  (add-to-list '+lookup-references-functions #'ocaml-eglot-occurrences)
   (add-to-list '+lookup-type-definition-functions #'ocaml-eglot-find-declaration)
   (add-to-list '+lookup-definition-functions #'ocaml-eglot-find-definition))
 
@@ -659,7 +658,7 @@ Uses `org-clock-csv-to-file'."
   (add-to-list 'eglot-ignored-server-capabilities :semanticTokensProvider))
 
 (map!
- :map (neocaml-mode-map)
+ :map (neocaml-base-mode-map)
 
  :localleader
  :desc "intf/impl"       :n "a" #'ff-find-other-file
