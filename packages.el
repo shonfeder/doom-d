@@ -114,3 +114,5 @@
 (package! forester
   :recipe (:host github :repo "ToposInstitute/forester.el")
   :pin "5b9a961b9bca4023e0ba94041fcedce2d3dddc2c")
+
+(package! neocaml)

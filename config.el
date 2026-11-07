@@ -530,8 +530,6 @@ Uses `org-clock-csv-to-file'."
 (add-to-list 'auto-mode-alist '("\\.dhall\\'" . dhall-mode))
 ;; (add-to-list 'auto-mode-alist '("dune-project\\'" . dune-mode))
 
-;; (my/load-if-exists (my/doom-config-file "ocaml-defaults.el"))
-
 ;; TODO Add to tuareg mode
 (defun my/jump-to-dune-project-file ()
   (interactive)
@@ -623,11 +621,11 @@ Uses `org-clock-csv-to-file'."
 ;;     '(merlin-eldoc-occurrences-face
 ;;       :backgrond "grey15")))
 
-(add-hook! dune-watch-minor-mode
-  (setq dune-watch-command-format
-        "dune %s --watch --terminal-persistence=clear-on-rebuild"))
+;; (add-hook! dune-watch-minor-mode
+;;   (setq dune-watch-command-format
+;;         "dune %s --watch --terminal-persistence=clear-on-rebuild"))
 
-(setenv "OCAMLLSP_SEMANTIC_HIGHLIGHTING" "full")
+;; (setenv "OCAMLLSP_SEMANTIC_HIGHLIGHTING" "full")
 (add-hook! eglot-managed-mode
            ;; disable eglot inlays
            (eglot-inlay-hints-mode -1)
@@ -657,8 +655,11 @@ Uses `org-clock-csv-to-file'."
       :desc "Document identifier" "K" #'ocaml-eglot-document-identifier
       :desc "Rename" "r" #'ocaml-eglot-rename)
 
+(after! eglot
+  (add-to-list 'eglot-ignored-server-capabilities :semanticTokensProvider))
+
 (map!
- :map (tuareg-mode-map)
+ :map (neocaml-mode-map)
 
  :localleader
  :desc "intf/impl"       :n "a" #'ff-find-other-file
