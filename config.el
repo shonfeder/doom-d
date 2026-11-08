@@ -553,9 +553,13 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (my/ocaml-compile "build @check"))
 
-(defun my/ocaml-build-watch ()
+(defun my/ocaml-build ()
   (interactive)
   (my/ocaml-compile "build"))
+
+(defun my/ocaml-build-watch ()
+  (interactive)
+  (my/ocaml-compile "build -w"))
 
 (defun my/ocaml-test-watch ()
   (interactive)
@@ -674,7 +678,7 @@ Uses `org-clock-csv-to-file'."
 
  (:prefix ("d" . "dune")
   :desc "check"             :n "c" #'my/ocaml-compile-check
-  :desc "build"             :n "b" #'my/ocaml-compile
+  :desc "build"             :n "b" #'my/ocaml-build
   :desc "build -w"          :n "B" #'my/ocaml-build-watch
   :desc "test"              :n "t" #'my/ocaml-compile-test
   :desc "test -w"           :n "T" #'my/ocaml-test-watch
