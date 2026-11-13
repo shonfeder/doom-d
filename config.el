@@ -478,8 +478,15 @@ Uses `org-clock-csv-to-file'."
   (interactive)
   (transform-thing-at-point 'symbol 'md-format-github-user))
 
-(custom-theme-set-faces! nil
-  '(tuareg-font-lock-governing-face :inherit font-lock-doc-face))
+(defun my/dune-pr ()
+  "Replace a dune PR number at point (#5338 or 5338) with a markdown link."
+  (interactive)
+  (if (thing-at-point-looking-at "#?\\([0-9]+\\)")
+      (let ((n (match-string 1)))
+        (replace-match
+         (format "[ocaml/dune#%s](https://github.com/ocaml/dune/pull/%s)" n n)
+         t t))
+    (user-error "No PR number at point")))
 
 (add-hook!
  prog-mode
@@ -594,6 +601,9 @@ Uses `org-clock-csv-to-file'."
     (progn (save-excursion (insert "_"))
            (ocaml-eglot-construct))))
 
+(custom-theme-set-faces! nil
+  '(tuareg-font-lock-governing-face :inherit font-lock-doc-face))
+
 ;; TODO
 (add-hook! tuareg-mode
 
@@ -670,8 +680,9 @@ Uses `org-clock-csv-to-file'."
 (after! eglot
   (add-to-list 'eglot-ignored-server-capabilities :semanticTokensProvider))
 
-(add-hook! neocaml-base-mode-hook
+(add-hook! neocaml-base-mode
   (neocaml-dune-interaction-mode))
+
 (map!
  :map (neocaml-base-mode-map)
 
