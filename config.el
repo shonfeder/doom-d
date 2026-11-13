@@ -439,6 +439,23 @@ Uses `org-clock-csv-to-file'."
                :desc "Footenote" "f" #'markdown-insert-footnote
                :desc "Strikethru" "s" #'markdown-insert-strike-through))
 
+;; Configure markdown previews to let tables span entire window size:
+(after! markdown-mode
+  (setq markdown-xhtml-header-content
+        (concat markdown-xhtml-header-content
+                "<style>
+  body {
+    max-width: 100%;
+  }
+  p {
+    max-width: 740px
+  }
+  table {
+    min-width: 100%;
+    max-width: 100% !important;
+  }
+  </style>")))
+
 (defun md-format-github-url (url)
   (let ((parts
          (string-split
